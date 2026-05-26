@@ -17,8 +17,18 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
             @foreach($beritaAcara as $berita)
             <a href="{{ route('berita-acara.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
-                <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--teal)); position: relative; display: flex; align-items: center; justify-content: center;">
-                    <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--teal); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px;">{{ ucfirst($berita->kategori) }}</div>
+                <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--teal)); position: relative;">
+                    @php
+                        $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
+                        if (!$coverImage && $berita->narasi) {
+                            preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $berita->narasi, $image);
+                            $coverImage = $image['src'] ?? null;
+                        }
+                    @endphp
+                    @if($coverImage)
+                        <img src="{{ $coverImage }}" alt="{{ $berita->judul }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    @endif
+                    <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--teal); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px; z-index: 10;">{{ ucfirst($berita->kategori) }}</div>
                 </div>
                 <div style="padding: 22px; flex: 1; display: flex; flex-direction: column;">
                     <div class="mono" style="font-size: 11px; color: var(--muted); letter-spacing: .8px; margin-bottom: 10px;">{{ $berita->tanggal->format('d M Y') }}</div>

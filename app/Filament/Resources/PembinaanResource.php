@@ -12,6 +12,7 @@ class PembinaanResource extends Resource
 {
     protected static ?string $model = Pembinaan::class;
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+    protected static ?string $pluralModelLabel = 'Pembinaan Statistik';
     protected static ?string $navigationGroup = 'Pembinaan';
     protected static ?string $navigationLabel = 'Sesi Pembinaan';
     protected static ?int $navigationSort = 1;
@@ -39,7 +40,7 @@ class PembinaanResource extends Resource
             Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable(),
             Tables\Columns\TextColumn::make('presensi_count')->counts('presensi')->label('Total Presensi'),
             Tables\Columns\TextColumn::make('file_absensi')->label('File')->limit(20),
-        ])->actions([Tables\Actions\EditAction::make()]);
+        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
     public static function getPages(): array
     {

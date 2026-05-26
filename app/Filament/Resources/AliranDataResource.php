@@ -15,6 +15,7 @@ class AliranDataResource extends Resource
 {
     protected static ?string $model = AliranData::class;
     protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-up';
+    protected static ?string $pluralModelLabel = 'Aliran Data';
     protected static ?string $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Aliran Data';
     protected static ?int $navigationSort = 4;
@@ -55,7 +56,7 @@ class AliranDataResource extends Resource
             Tables\Columns\TextColumn::make('tanggal_tayang')->date('d M Y'),
         ])->filters([
             Tables\Filters\TernaryFilter::make('sudah_tayang')->label('Status Tayang'),
-        ])->actions([Tables\Actions\EditAction::make()]);
+        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder

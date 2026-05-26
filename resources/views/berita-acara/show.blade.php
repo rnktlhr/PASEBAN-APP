@@ -20,9 +20,24 @@
 <section style="padding: 60px 0; background: #f8fafc; min-height: 50vh;">
     <div class="container" style="max-width: 800px;">
         <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 40px; box-shadow: var(--shadow-sm);">
+            <style>
+                .prose figcaption.attachment__caption { display: none !important; }
+                .prose figure.attachment { margin: 24px 0; text-align: center; }
+                .prose figure.attachment img { max-width: 100%; height: auto; border-radius: 8px; }
+            </style>
+            @if($beritaAcara->gambar)
+                <div style="margin: -40px -40px 40px -40px; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; height: 350px;">
+                    <img src="{{ asset('storage/' . $beritaAcara->gambar) }}" alt="{{ $beritaAcara->judul }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            @endif
             <div style="font-size: 16px; line-height: 1.8; color: var(--ink);">
                 {!! nl2br(e($beritaAcara->ringkasan)) !!}
             </div>
+            @if($beritaAcara->narasi)
+                <div class="prose" style="font-size: 16px; line-height: 1.8; color: var(--ink); margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--line);">
+                    {!! $beritaAcara->narasi !!}
+                </div>
+            @endif
         </div>
     </div>
 </section>

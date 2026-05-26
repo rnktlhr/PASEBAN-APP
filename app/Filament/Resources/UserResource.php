@@ -62,6 +62,7 @@ class UserResource extends Resource
             Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas'),
         ])->actions([
             Tables\Actions\EditAction::make(),
+            Tables\Actions\DeleteAction::make(),
         ])->bulkActions([
             Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),

@@ -17,6 +17,7 @@ class MetadataResource extends Resource
 {
     protected static ?string $model = Metadata::class;
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
+    protected static ?string $pluralModelLabel = 'Metadata';
     protected static ?string $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Metadata';
     protected static ?int $navigationSort = 3;
@@ -64,18 +65,21 @@ class MetadataResource extends Resource
                 ->label('Kegiatan')->limit(30)->searchable(),
             Tables\Columns\TextColumn::make('jenis')
                 ->badge()
-                ->color(fn ($state) => $state instanceof JenisMetadata ? $state->color() : 'gray'),
+                ->color(fn ($state) => $state instanceof JenisMetadata ? $state->color() : 'gray')
+                ,
             Tables\Columns\TextColumn::make('tahun')->sortable(),
             Tables\Columns\SelectColumn::make('status_kominfo')
                 ->options(StatusKominfo::metadataOptions())
-                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo())),
+                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo()))
+                ,
             Tables\Columns\SelectColumn::make('status_bps')
                 ->options(StatusBps::options())
-                ->disabled(fn () => !auth()->user()?->isAdmin()),
+                ->disabled(fn () => !auth()->user()?->isAdmin())
+                ,
         ])->filters([
             Tables\Filters\SelectFilter::make('jenis')
                 ->options(JenisMetadata::options()),
-        ])->actions([Tables\Actions\EditAction::make()]);
+        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder

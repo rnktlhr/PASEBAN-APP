@@ -40,17 +40,25 @@ class DinasResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->width(60),
-                Tables\Columns\TextColumn::make('nama')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('singkatan')->searchable(),
-                Tables\Columns\TextColumn::make('kategori')->badge(),
+                Tables\Columns\TextColumn::make('id')->sortable()->width(60)->size('lg'),
+                Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->size('lg'),
+                Tables\Columns\TextColumn::make('singkatan')->searchable()->size('lg'),
+                Tables\Columns\TextColumn::make('kategori')
+                    ->size('lg')
+                    ->badge()
+                    ->color(function (?string $state): string {
+                        if (!$state) return 'gray';
+                        $colors = ['primary', 'success', 'warning', 'danger', 'info'];
+                        return $colors[abs(crc32($state)) % count($colors)];
+                    }),
                 Tables\Columns\TextColumn::make('kegiatan_statistik_count')
                     ->counts('kegiatanStatistik')
                     ->label('Jumlah Kegiatan')
-                    ->sortable(),
+                    ->sortable()
+                    ->size('lg'),
             ])
             ->filters([])
-            ->actions([Tables\Actions\EditAction::make()])
+            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
 

@@ -17,6 +17,7 @@ class RomantikResource extends Resource
 {
     protected static ?string $model = Romantik::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-check';
+    protected static ?string $pluralModelLabel = 'Romantik';
     protected static ?string $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Romantik';
     protected static ?int $navigationSort = 2;
@@ -67,17 +68,20 @@ class RomantikResource extends Resource
             Tables\Columns\TextColumn::make('tahun')->sortable(),
             Tables\Columns\SelectColumn::make('status_dinas')
                 ->options(StatusDinas::options())
-                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas())),
+                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas()))
+                ,
             Tables\Columns\SelectColumn::make('status_kominfo')
                 ->options(StatusKominfo::romantikOptions())
-                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo())),
+                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo()))
+                ,
             Tables\Columns\SelectColumn::make('status_bps')
                 ->options(StatusBps::options())
-                ->disabled(fn () => !auth()->user()?->isAdmin()),
+                ->disabled(fn () => !auth()->user()?->isAdmin())
+                ,
         ])->filters([
             Tables\Filters\SelectFilter::make('status_bps')
                 ->options(StatusBps::options()),
-        ])->actions([Tables\Actions\EditAction::make()]);
+        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder

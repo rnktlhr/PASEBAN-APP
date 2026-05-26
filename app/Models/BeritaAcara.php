@@ -15,7 +15,9 @@ class BeritaAcara extends Model
         'judul',
         'tanggal',
         'kategori',
+        'gambar',
         'ringkasan',
+        'narasi',
     ];
 
     protected $casts = [

@@ -15,6 +15,7 @@ class KegiatanStatistikResource extends Resource
 {
     protected static ?string $model = KegiatanStatistik::class;
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static ?string $pluralModelLabel = 'Kegiatan Statistik';
     protected static ?string $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Kegiatan Statistik';
     protected static ?int $navigationSort = 1;
@@ -52,7 +53,8 @@ class KegiatanStatistikResource extends Resource
                 ->searchable()->sortable()->limit(40),
             Tables\Columns\TextColumn::make('jenis')
                 ->badge()
-                ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray'),
+                ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray')
+                ,
             Tables\Columns\TextColumn::make('tahun')->sortable(),
         ])->filters([
             Tables\Filters\SelectFilter::make('tahun')
@@ -61,6 +63,7 @@ class KegiatanStatistikResource extends Resource
                 ->options(JenisKegiatan::options()),
         ])->actions([
             Tables\Actions\EditAction::make(),
+            Tables\Actions\DeleteAction::make(),
         ])->bulkActions([
             Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),

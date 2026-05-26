@@ -15,6 +15,7 @@ class MonevResource extends Resource
 {
     protected static ?string $model = Monev::class;
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static ?string $pluralModelLabel = 'Monitoring Evaluasi';
     protected static ?string $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Monitoring & Evaluasi';
     protected static ?int $navigationSort = 5;
@@ -59,8 +60,9 @@ class MonevResource extends Resource
                 ->label('Rencana'),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
-                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray'),
-        ])->actions([Tables\Actions\EditAction::make()]);
+                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray')
+                ,
+        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
