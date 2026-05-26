@@ -1,6 +1,10 @@
 <?php
+
 namespace App\Filament\Resources;
 
+use App\Enums\JenisMetadata;
+use App\Enums\StatusBps;
+use App\Enums\StatusKominfo;
 use App\Filament\Resources\MetadataResource\Pages;
 use App\Models\Metadata;
 use Filament\Forms;
@@ -18,17 +22,35 @@ class MetadataResource extends Resource
     protected static ?int $navigationSort = 3;
     protected static bool $isScopedToTenant = false;
 
-    public static function canAccess(): bool { $u = auth()->user(); return $u && ($u->isAdmin() || $u->isKominfo()); }
+    public static function canAccess(): bool
+    {
+        $u = auth()->user();
+        return $u && ($u->isAdmin() || $u->isKominfo());
+    }
 
     public static function form(Form $form): Form
     {
         $user = auth()->user();
         return $form->schema([
-            Forms\Components\Select::make('kegiatan_id')->relationship('kegiatanStatistik', 'nama')->searchable()->preload()->required()->disabled(fn () => !$user?->isAdmin()),
-            Forms\Components\Select::make('jenis')->options(['kegiatan' => 'Metadata Kegiatan', 'variabel' => 'Metadata Variabel', 'indikator' => 'Metadata Indikator'])->required()->disabled(fn () => !$user?->isAdmin()),
-            Forms\Components\TextInput::make('tahun')->numeric()->required()->disabled(fn () => !$user?->isAdmin()),
-            Forms\Components\Select::make('status_kominfo')->options(['belum_diajukan' => 'Belum Diajukan', 'draft' => 'Draft', 'submit' => 'Submit', 'sudah_diperbaiki' => 'Sudah Diperbaiki', 'disetujui' => 'Disetujui'])->required()->disabled(fn () => !($user?->isAdmin() || $user?->isKominfo())),
-            Forms\Components\Select::make('status_bps')->options(['sedang_diperiksa' => 'Sedang Diperiksa', 'perlu_perbaikan' => 'Perlu Perbaikan', 'disetujui' => 'Disetujui'])->required()->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\Select::make('kegiatan_id')
+                ->relationship('kegiatanStatistik', 'nama')
+                ->searchable()->preload()->required()
+                ->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\Select::make('jenis')
+                ->options(JenisMetadata::options())
+                ->required()
+                ->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\TextInput::make('tahun')
+                ->numeric()->required()
+                ->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\Select::make('status_kominfo')
+                ->options(StatusKominfo::metadataOptions())
+                ->required()
+                ->disabled(fn () => !($user?->isAdmin() || $user?->isKominfo())),
+            Forms\Components\Select::make('status_bps')
+                ->options(StatusBps::options())
+                ->required()
+                ->disabled(fn () => !$user?->isAdmin()),
             Forms\Components\Textarea::make('catatan')->columnSpanFull(),
         ]);
     }
@@ -36,14 +58,23 @@ class MetadataResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')->label('Dinas')->searchable(),
-            Tables\Columns\TextColumn::make('kegiatanStatistik.nama')->label('Kegiatan')->limit(30)->searchable(),
-            Tables\Columns\TextColumn::make('jenis')->badge()->color(fn ($state) => match($state) { 'kegiatan' => 'primary', 'variabel' => 'warning', 'indikator' => 'success' }),
+            Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
+                ->label('Dinas')->searchable(),
+            Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
+                ->label('Kegiatan')->limit(30)->searchable(),
+            Tables\Columns\TextColumn::make('jenis')
+                ->badge()
+                ->color(fn ($state) => $state instanceof JenisMetadata ? $state->color() : 'gray'),
             Tables\Columns\TextColumn::make('tahun')->sortable(),
-            Tables\Columns\SelectColumn::make('status_kominfo')->options(['belum_diajukan' => 'Belum Diajukan', 'draft' => 'Draft', 'submit' => 'Submit', 'sudah_diperbaiki' => 'Sudah Diperbaiki', 'disetujui' => 'Disetujui'])->disabled(fn () => ! (auth()->user()?->isAdmin() || auth()->user()?->isKominfo())),
-            Tables\Columns\SelectColumn::make('status_bps')->options(['sedang_diperiksa' => 'Sedang Diperiksa', 'perlu_perbaikan' => 'Perlu Perbaikan', 'disetujui' => 'Disetujui'])->disabled(fn () => ! auth()->user()?->isAdmin()),
+            Tables\Columns\SelectColumn::make('status_kominfo')
+                ->options(StatusKominfo::metadataOptions())
+                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo())),
+            Tables\Columns\SelectColumn::make('status_bps')
+                ->options(StatusBps::options())
+                ->disabled(fn () => !auth()->user()?->isAdmin()),
         ])->filters([
-            Tables\Filters\SelectFilter::make('jenis')->options(['kegiatan' => 'Kegiatan', 'variabel' => 'Variabel', 'indikator' => 'Indikator']),
+            Tables\Filters\SelectFilter::make('jenis')
+                ->options(JenisMetadata::options()),
         ])->actions([Tables\Actions\EditAction::make()]);
     }
 
@@ -59,6 +90,9 @@ class MetadataResource extends Resource
 
     public static function getPages(): array
     {
-        return ['index' => Pages\ListMetadata::route('/'), 'edit' => Pages\EditMetadata::route('/{record}/edit')];
+        return [
+            'index' => Pages\ListMetadata::route('/'),
+            'edit' => Pages\EditMetadata::route('/{record}/edit'),
+        ];
     }
 }

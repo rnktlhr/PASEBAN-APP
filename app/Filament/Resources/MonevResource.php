@@ -1,5 +1,8 @@
 <?php
+
 namespace App\Filament\Resources;
+
+use App\Enums\StatusMonev;
 use App\Filament\Resources\MonevResource\Pages;
 use App\Models\Monev;
 use Filament\Forms;
@@ -17,28 +20,49 @@ class MonevResource extends Resource
     protected static ?int $navigationSort = 5;
     protected static bool $isScopedToTenant = false;
 
-    public static function canAccess(): bool { return auth()->user()?->isAdmin() ?? false; }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
+
     public static function form(Form $form): Form
     {
+        $bulanOptions = config('paseban.bulan');
+
         return $form->schema([
-            Forms\Components\Select::make('kegiatan_id')->relationship('kegiatanStatistik', 'nama')->searchable()->preload()->required(),
-            Forms\Components\TextInput::make('tahun')->numeric()->required()->default(date('Y')),
-            Forms\Components\Select::make('bulan_rencana_mulai')->options(array_combine(range(1,12), ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']))->required(),
-            Forms\Components\Select::make('bulan_rencana_selesai')->options(array_combine(range(1,12), ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']))->required(),
-            Forms\Components\Select::make('bulan_realisasi_mulai')->options(array_combine(range(1,12), ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'])),
-            Forms\Components\Select::make('bulan_realisasi_selesai')->options(array_combine(range(1,12), ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'])),
-            Forms\Components\Select::make('status')->options(['belum_mulai' => 'Belum Mulai', 'sedang_berjalan' => 'Sedang Berjalan', 'tepat_waktu' => 'Tepat Waktu', 'terlambat' => 'Terlambat'])->required(),
+            Forms\Components\Select::make('kegiatan_id')
+                ->relationship('kegiatanStatistik', 'nama')
+                ->searchable()->preload()->required(),
+            Forms\Components\TextInput::make('tahun')
+                ->numeric()->required()->default(date('Y')),
+            Forms\Components\Select::make('bulan_rencana_mulai')
+                ->options($bulanOptions)->required(),
+            Forms\Components\Select::make('bulan_rencana_selesai')
+                ->options($bulanOptions)->required(),
+            Forms\Components\Select::make('bulan_realisasi_mulai')
+                ->options($bulanOptions),
+            Forms\Components\Select::make('bulan_realisasi_selesai')
+                ->options($bulanOptions),
+            Forms\Components\Select::make('status')
+                ->options(StatusMonev::options())
+                ->required(),
         ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('kegiatanStatistik.nama')->label('Kegiatan')->limit(30)->searchable(),
+            Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
+                ->label('Kegiatan')->limit(30)->searchable(),
             Tables\Columns\TextColumn::make('tahun')->sortable(),
-            Tables\Columns\TextColumn::make('bulan_rencana_mulai')->label('Rencana'),
-            Tables\Columns\TextColumn::make('status')->badge()->color(fn ($state) => match($state) { 'tepat_waktu' => 'success', 'terlambat' => 'danger', 'sedang_berjalan' => 'warning', default => 'gray' }),
+            Tables\Columns\TextColumn::make('bulan_rencana_mulai')
+                ->label('Rencana'),
+            Tables\Columns\TextColumn::make('status')
+                ->badge()
+                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray'),
         ])->actions([Tables\Actions\EditAction::make()]);
     }
+
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
         $query = parent::getEloquentQuery();
@@ -51,6 +75,10 @@ class MonevResource extends Resource
 
     public static function getPages(): array
     {
-        return ['index' => Pages\ListMonev::route('/'), 'create' => Pages\CreateMonev::route('/create'), 'edit' => Pages\EditMonev::route('/{record}/edit')];
+        return [
+            'index' => Pages\ListMonev::route('/'),
+            'create' => Pages\CreateMonev::route('/create'),
+            'edit' => Pages\EditMonev::route('/{record}/edit'),
+        ];
     }
 }

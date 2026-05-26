@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusMonev;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,9 +12,6 @@ class Monev extends Model
     use HasFactory;
 
     protected $table = 'monev';
-
-    public const STATUS_TEPAT_WAKTU = 'tepat_waktu';
-    public const STATUS_TERLAMBAT = 'terlambat';
 
     protected $fillable = [
         'kegiatan_id',
@@ -31,6 +29,7 @@ class Monev extends Model
         'bulan_rencana_selesai' => 'integer',
         'bulan_realisasi_mulai' => 'integer',
         'bulan_realisasi_selesai' => 'integer',
+        'status' => StatusMonev::class,
     ];
 
     public function kegiatanStatistik(): BelongsTo

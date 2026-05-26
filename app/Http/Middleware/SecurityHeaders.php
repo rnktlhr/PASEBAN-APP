@@ -27,12 +27,34 @@ class SecurityHeaders
         // Permissions Policy (disable dangerous features)
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
 
-        // Content Security Policy
-        $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'self';");
+        // Prevent cross-domain Flash/PDF loading
+        $response->headers->set('X-Permitted-Cross-Domain-Policies', 'none');
+
+        $csp = [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "font-src 'self' https://fonts.gstatic.com",
+            "img-src 'self' data: blob:",
+            "connect-src 'self'",
+            "frame-ancestors 'self'",
+        ];
+
+        if (app()->environment('local')) {
+            // Allow Vite dev server
+            $viteHosts = "http://localhost:5173 http://127.0.0.1:5173 http://[::1]:5173";
+            $viteWs = "ws://localhost:5173 ws://127.0.0.1:5173 ws://[::1]:5173";
+            $csp[1] .= " " . $viteHosts;
+            $csp[2] .= " " . $viteHosts;
+            $csp[4] .= " " . $viteHosts;
+            $csp[5] .= " " . $viteHosts . " " . $viteWs;
+        }
+
+        $response->headers->set('Content-Security-Policy', implode('; ', $csp));
 
         // HSTS (only in production with HTTPS)
         if (app()->environment('production')) {
-            $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+            $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
         }
 
         return $response;

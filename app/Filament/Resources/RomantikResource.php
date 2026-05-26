@@ -1,6 +1,10 @@
 <?php
+
 namespace App\Filament\Resources;
 
+use App\Enums\StatusDinas;
+use App\Enums\StatusKominfo;
+use App\Enums\StatusBps;
 use App\Filament\Resources\RomantikResource\Pages;
 use App\Models\Romantik;
 use Filament\Forms;
@@ -28,11 +32,25 @@ class RomantikResource extends Resource
     {
         $user = auth()->user();
         return $form->schema([
-            Forms\Components\Select::make('kegiatan_id')->relationship('kegiatanStatistik', 'nama')->searchable()->preload()->required()->disabled(fn () => !$user?->isAdmin()),
-            Forms\Components\TextInput::make('tahun')->numeric()->required()->disabled(fn () => !$user?->isAdmin()),
-            Forms\Components\Select::make('status_dinas')->options(['belum_diajukan' => 'Belum Diajukan', 'sudah_diajukan' => 'Sudah Diajukan', 'belum_diperbaiki' => 'Belum Diperbaiki', 'sudah_diperbaiki' => 'Sudah Diperbaiki'])->required()->disabled(fn () => !($user?->isAdmin() || $user?->isDinas())),
-            Forms\Components\Select::make('status_kominfo')->options(['sedang_diperiksa' => 'Sedang Diperiksa', 'disetujui' => 'Disetujui'])->required()->disabled(fn () => !($user?->isAdmin() || $user?->isKominfo())),
-            Forms\Components\Select::make('status_bps')->options(['sedang_diperiksa' => 'Sedang Diperiksa', 'perlu_perbaikan' => 'Perlu Perbaikan', 'disetujui' => 'Disetujui'])->required()->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\Select::make('kegiatan_id')
+                ->relationship('kegiatanStatistik', 'nama')
+                ->searchable()->preload()->required()
+                ->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\TextInput::make('tahun')
+                ->numeric()->required()
+                ->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\Select::make('status_dinas')
+                ->options(StatusDinas::options())
+                ->required()
+                ->disabled(fn () => !($user?->isAdmin() || $user?->isDinas())),
+            Forms\Components\Select::make('status_kominfo')
+                ->options(StatusKominfo::romantikOptions())
+                ->required()
+                ->disabled(fn () => !($user?->isAdmin() || $user?->isKominfo())),
+            Forms\Components\Select::make('status_bps')
+                ->options(StatusBps::options())
+                ->required()
+                ->disabled(fn () => !$user?->isAdmin()),
             Forms\Components\DatePicker::make('tanggal_pengajuan'),
             Forms\Components\DatePicker::make('tanggal_persetujuan'),
             Forms\Components\Textarea::make('catatan')->columnSpanFull(),
@@ -42,14 +60,23 @@ class RomantikResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')->label('Dinas')->searchable()->sortable(),
-            Tables\Columns\TextColumn::make('kegiatanStatistik.nama')->label('Kegiatan')->limit(30)->searchable(),
+            Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
+                ->label('Dinas')->searchable()->sortable(),
+            Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
+                ->label('Kegiatan')->limit(30)->searchable(),
             Tables\Columns\TextColumn::make('tahun')->sortable(),
-            Tables\Columns\SelectColumn::make('status_dinas')->options(['belum_diajukan' => 'Belum Diajukan', 'sudah_diajukan' => 'Sudah Diajukan', 'belum_diperbaiki' => 'Belum Diperbaiki', 'sudah_diperbaiki' => 'Sudah Diperbaiki'])->disabled(fn () => ! (auth()->user()?->isAdmin() || auth()->user()?->isDinas())),
-            Tables\Columns\SelectColumn::make('status_kominfo')->options(['sedang_diperiksa' => 'Sedang Diperiksa', 'disetujui' => 'Disetujui'])->disabled(fn () => ! (auth()->user()?->isAdmin() || auth()->user()?->isKominfo())),
-            Tables\Columns\SelectColumn::make('status_bps')->options(['sedang_diperiksa' => 'Sedang Diperiksa', 'perlu_perbaikan' => 'Perlu Perbaikan', 'disetujui' => 'Disetujui'])->disabled(fn () => ! auth()->user()?->isAdmin()),
+            Tables\Columns\SelectColumn::make('status_dinas')
+                ->options(StatusDinas::options())
+                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas())),
+            Tables\Columns\SelectColumn::make('status_kominfo')
+                ->options(StatusKominfo::romantikOptions())
+                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo())),
+            Tables\Columns\SelectColumn::make('status_bps')
+                ->options(StatusBps::options())
+                ->disabled(fn () => !auth()->user()?->isAdmin()),
         ])->filters([
-            Tables\Filters\SelectFilter::make('status_bps')->options(['sedang_diperiksa' => 'Sedang Diperiksa', 'perlu_perbaikan' => 'Perlu Perbaikan', 'disetujui' => 'Disetujui']),
+            Tables\Filters\SelectFilter::make('status_bps')
+                ->options(StatusBps::options()),
         ])->actions([Tables\Actions\EditAction::make()]);
     }
 
@@ -65,6 +92,9 @@ class RomantikResource extends Resource
 
     public static function getPages(): array
     {
-        return ['index' => Pages\ListRomantik::route('/'), 'edit' => Pages\EditRomantik::route('/{record}/edit')];
+        return [
+            'index' => Pages\ListRomantik::route('/'),
+            'edit' => Pages\EditRomantik::route('/{record}/edit'),
+        ];
     }
 }

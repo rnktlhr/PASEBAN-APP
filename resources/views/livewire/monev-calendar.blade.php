@@ -1,118 +1,146 @@
 <div>
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; gap: 16px;">
+    {{-- Header --}}
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 28px;">
         <div>
-            <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--teal-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">◆ Monitoring & Evaluasi</div>
-            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Kalender Monitoring & Evaluasi</h2>
-            <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Rencana vs realisasi kegiatan statistik sektoral sepanjang tahun {{ $tahun }}.</p>
+            <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">◆ Monitoring & Evaluasi</div>
+            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Gantt Chart Kegiatan Statistik Sektoral</h2>
         </div>
-        <div style="display: flex; gap: 8px; align-items: center; justify-content: flex-end; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; border: 1px solid var(--line); border-radius: 6px; background: #fff; overflow: hidden; padding: 0 2px; box-shadow: var(--shadow-sm); height: 36px;">
-                <button type="button" wire:click="decrementTahun" style="padding: 6px 8px; color: var(--muted); cursor: pointer;" aria-label="Tahun sebelumnya"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-                <div class="mono" style="padding: 0 10px; font-size: 13px; font-weight: 700; color: var(--navy); min-width: 40px; text-align: center;">{{ $tahun }}</div>
-                <button type="button" wire:click="incrementTahun" style="padding: 6px 8px; color: var(--muted); cursor: pointer;" aria-label="Tahun berikutnya"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
-            </div>
-            
-            <select wire:model.live="dinas_id" style="padding: 0 10px; height: 36px; border: 1px solid var(--line); border-radius: 6px; font-size: 12.5px; color: var(--navy); font-weight: 500; background: #fff; outline: none; width: 140px; box-shadow: var(--shadow-sm); cursor: pointer;">
-                <option value="">Semua OPD</option>
-                @foreach(\App\Models\Dinas::orderBy('singkatan')->get() as $dinas)
-                    <option value="{{ $dinas->id }}">{{ $dinas->singkatan }}</option>
-                @endforeach
-            </select>
-
-            <select wire:model.live="status" style="padding: 0 10px; height: 36px; border: 1px solid var(--line); border-radius: 6px; font-size: 12.5px; color: var(--navy); font-weight: 500; background: #fff; outline: none; width: 120px; box-shadow: var(--shadow-sm); cursor: pointer;">
-                <option value="">Semua Status</option>
-                <option value="tepat_waktu">Tepat Waktu</option>
-                <option value="terlambat">Terlambat</option>
-            </select>
-
-            <div style="display: flex; align-items: center;">
-                <input type="text" wire:model.live.debounce.500ms="search" placeholder="Cari kegiatan..." style="padding: 0 10px; height: 36px; border: 1px solid var(--line); border-radius: 6px; font-size: 12.5px; color: var(--navy); font-weight: 500; background: #fff; outline: none; width: 140px; box-shadow: var(--shadow-sm);">
-            </div>
-
-            <div style="display: flex; gap: 8px; align-items: center;">
-                <a href="{{ route('monev.export.excel', ['tahun' => $tahun, 'dinas_id' => $dinas_id, 'status' => $status, 'search' => $search]) }}" style="padding: 0 12px; height: 36px; background: #00B3B3; color: #fff; border-radius: 6px; font-size: 12.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); transition: .2s;" onmouseover="this.style.background='#009999'" onmouseout="this.style.background='#00B3B3'">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Excel
-                </a>
-                <a href="{{ route('monev.export.pdf', ['tahun' => $tahun, 'dinas_id' => $dinas_id, 'status' => $status, 'search' => $search]) }}" style="padding: 0 12px; height: 36px; background: #F58220; color: #fff; border-radius: 6px; font-size: 12.5px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); transition: .2s;" onmouseover="this.style.background='#d66a15'" onmouseout="this.style.background='#F58220'">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    PDF
-                </a>
-            </div>
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <a href="{{ route('monev.export.excel', ['tahun' => $tahun, 'dinas_id' => $dinas_id, 'status' => $status, 'search' => $search]) }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 6px; background: #2e7d32; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: .2px; box-shadow: var(--shadow-sm); transition: background .15s;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Excel
+            </a>
+            <a href="{{ route('monev.export.pdf', ['tahun' => $tahun, 'dinas_id' => $dinas_id, 'status' => $status, 'search' => $search]) }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 6px; background: var(--red); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: .2px; box-shadow: var(--shadow-sm); transition: background .15s;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                PDF
+            </a>
         </div>
     </div>
 
-    <div style="display: flex; gap: 20px; margin-bottom: 14px; padding-left: 4px; flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink); font-weight: 500;"><span style="width: 18px; height: 8px; border-radius: 2px; background: var(--light-blue);"></span>Rencana</div>
-        <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink); font-weight: 500;"><span style="width: 18px; height: 8px; border-radius: 2px; background: var(--navy);"></span>Realisasi Tepat Waktu</div>
-        <div style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--ink); font-weight: 500;"><span style="width: 18px; height: 8px; border-radius: 2px; background: var(--red);"></span>Terlambat</div>
+    {{-- Summary Stats --}}
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--muted);">Total Kegiatan</div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;">{{ $totalKegiatan }}</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: #2e7d32;">Tepat Waktu</div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: #2e7d32; margin-top: 6px;">{{ $monevTepatWaktu }}</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--red);">Terlambat</div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--red); margin-top: 6px;">{{ $monevTerlambat }}</div>
+        </div>
+        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--muted);">Keberhasilan</div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;">{{ $pctKeberhasilan }}%</div>
+        </div>
     </div>
 
-    <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; position: relative;">
-        <!-- Loading overlay -->
-        <div wire:loading class="absolute inset-0 z-10" style="background: rgba(255,255,255,0.7); backdrop-filter: blur(2px);">
-            <div class="flex items-center justify-center h-full">
-                <svg class="animate-spin h-8 w-8 text-[var(--navy)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-            </div>
+    {{-- Filters --}}
+    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+        {{-- Year navigation --}}
+        <div style="display: flex; align-items: center; gap: 0;">
+            <button type="button" wire:click="decrementTahun" style="padding: 8px 10px; border: 1px solid var(--line); border-right: none; border-radius: 6px 0 0 6px; background: #fff; cursor: pointer; color: var(--muted);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <span class="mono" style="display: inline-flex; align-items: center; justify-content: center; width: 65px; height: 38px; border: 1px solid var(--line); background: #fff; font-size: 14px; font-weight: 700; color: var(--navy);">{{ $tahun }}</span>
+            <button type="button" wire:click="incrementTahun" style="padding: 8px 10px; border: 1px solid var(--line); border-left: none; border-radius: 0 6px 6px 0; background: #fff; cursor: pointer; color: var(--muted);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
         </div>
-        
-        <div style="overflow-x: auto;">
-            <div style="min-width: 1100px;">
-                <div style="display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(12, 1fr); background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                    <div style="padding: 12px 16px; font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: .5px;">Kegiatan Statistik</div>
-                    @foreach(['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'] as $bln)
-                    <div style="padding: 12px 4px; text-align: center; font-size: 11.5px; font-weight: 700; color: var(--navy); border-left: 1px solid rgba(5,82,159,.08);">{{ $bln }}</div>
+
+        <select wire:model.live="dinas_id" style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 180px; height: 38px; color: var(--ink);">
+            <option value="">Semua OPD</option>
+            @foreach($dinasList as $d)
+                <option value="{{ $d->id }}">{{ $d->singkatan }}</option>
+            @endforeach
+        </select>
+
+        <select wire:model.live="status" style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 160px; height: 38px; color: var(--ink);">
+            <option value="">Semua Status</option>
+            @foreach(\App\Enums\StatusMonev::options() as $val => $lbl)
+                <option value="{{ $val }}">{{ $lbl }}</option>
+            @endforeach
+        </select>
+
+        <input type="text" wire:model.live.debounce.400ms="search" placeholder="Cari kegiatan..." style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; width: 220px; height: 38px; color: var(--ink); outline: none;">
+    </div>
+
+    {{-- Table --}}
+    <div class="table-responsive" style="position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+        {{-- Loading overlay — uses CSS class from style.css --}}
+        <div wire:loading class="loading-overlay">
+            <div class="spinner"></div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px;">
+            <thead>
+                <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 0; background: var(--navy-50); z-index: 2; min-width: 50px;">No</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 50px; background: var(--navy-50); z-index: 2; min-width: 250px;">Kegiatan</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); min-width: 100px;">OPD</th>
+                    <th style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--navy); min-width: 80px;">Status</th>
+                    @foreach(config('paseban.bulan') as $m => $namaBulan)
+                    <th style="padding: 14px 8px; text-align: center; font-weight: 600; color: var(--muted); font-size: 11px; min-width: 36px;">{{ $namaBulan }}</th>
                     @endforeach
-                </div>
-
-                @forelse($monevItems as $monev)
-                <div style="display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(12, 1fr); border-bottom: 1px solid var(--line); min-height: 60px; align-items: stretch;">
-                    <div style="padding: 14px 16px; display: flex; flex-direction: column; justify-content: center; gap: 6px;">
-                        <div style="font-size: 13.5px; font-weight: 700; color: var(--ink);">{{ $monev->kegiatanStatistik->nama }}</div>
-                        <div style="font-size: 11.5px; color: var(--muted);">{{ $monev->kegiatanStatistik->dinas->singkatan ?? '' }}</div>
-                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                            <span style="font-size: 10.5px; font-weight: 700; color: var(--navy); background: var(--navy-50); padding: 2px 8px; border-radius: 999px;">{{ ucfirst(str_replace('_', ' ', $monev->kegiatanStatistik->jenis)) }}</span>
-                        </div>
-                    </div>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($monevItems as $idx => $monev)
+                @php
+                    $statusEnum = $monev->status;
+                    $statusColor = match($statusEnum?->value ?? $monev->status) {
+                        'tepat_waktu' => '#2e7d32',
+                        'terlambat' => 'var(--red)',
+                        'sedang_berjalan' => '#e67700',
+                        default => 'var(--muted)',
+                    };
+                    $statusBg = match($statusEnum?->value ?? $monev->status) {
+                        'tepat_waktu' => '#e6f4ea',
+                        'terlambat' => 'var(--red-50)',
+                        'sedang_berjalan' => '#fff8e1',
+                        default => '#f5f5f5',
+                    };
+                @endphp
+                <tr style="border-bottom: 1px solid var(--line);">
+                    <td style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1;">{{ $idx + 1 }}</td>
+                    <td style="padding: 14px 16px; font-weight: 600; color: var(--navy); position: sticky; left: 50px; background: #fff; z-index: 1;">{{ $monev->kegiatanStatistik->nama ?? '-' }}</td>
+                    <td style="padding: 14px 16px; color: var(--ink);">{{ $monev->kegiatanStatistik->dinas->singkatan ?? '-' }}</td>
+                    <td style="padding: 14px 16px; text-align: center;">
+                        <span style="display: inline-block; width: 115px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 11px; font-weight: 600; color: {{ $statusColor }}; background: {{ $statusBg }};">
+                            {{ $statusEnum?->label() ?? ucfirst(str_replace('_', ' ', $monev->status)) }}
+                        </span>
+                    </td>
                     @for($m = 1; $m <= 12; $m++)
-                    @php
-                        $isRencana = $m >= $monev->bulan_rencana_mulai && $m <= $monev->bulan_rencana_selesai;
-                        $isRealisasi = $monev->bulan_realisasi_mulai && $monev->bulan_realisasi_selesai && $m >= $monev->bulan_realisasi_mulai && $m <= $monev->bulan_realisasi_selesai;
-                        $realisasiColor = $monev->status === 'terlambat' ? 'var(--red)' : 'var(--navy)';
-                    @endphp
-                    <div style="padding: 10px 6px; border-left: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; gap: 4px;">
-                        <div style="height: 8px; border-radius: 2px; {{ $isRencana ? 'background: var(--light-blue);' : '' }}"></div>
-                        <div style="height: 8px; border-radius: 2px; {{ $isRealisasi ? 'background: '.$realisasiColor.';' : '' }}"></div>
-                    </div>
+                        @php
+                            $isRencana = $m >= $monev->bulan_rencana_mulai && $m <= $monev->bulan_rencana_selesai;
+                            $isRealisasi = $monev->bulan_realisasi_mulai && $monev->bulan_realisasi_selesai && $m >= $monev->bulan_realisasi_mulai && $m <= $monev->bulan_realisasi_selesai;
+                            $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'transparent');
+                        @endphp
+                        <td style="padding: 6px; text-align: center;">
+                            @if($isRealisasi || $isRencana)
+                            <div style="width: 24px; height: 24px; border-radius: 4px; background: {{ $cellBg }}; opacity: {{ $isRealisasi ? 1 : 0.25 }}; margin: auto;" title="{{ $isRealisasi ? 'Realisasi' : 'Rencana' }}"></div>
+                            @endif
+                        </td>
                     @endfor
-                </div>
+                </tr>
                 @empty
-                <div style="padding: 32px; text-align: center; color: var(--muted);">Data tidak ditemukan untuk filter ini.</div>
+                <tr>
+                    <td colspan="16" style="padding: 40px; text-align: center; color: var(--muted);">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px; opacity: .4;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <div style="font-weight: 600;">Belum ada data Monev</div>
+                        <div style="font-size: 13px; margin-top: 6px;">Tidak ditemukan kegiatan untuk filter yang dipilih.</div>
+                    </td>
+                </tr>
                 @endforelse
-            </div>
-        </div>
+            </tbody>
+        </table>
     </div>
 
-    <!-- stats row -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px;">
-        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-sm);">
-            <div style="font-size: 12.5px; color: var(--muted); font-weight: 500; margin-bottom: 6px;">Total Kegiatan</div>
-            <div style="font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px; line-height: 1;">{{ $totalKegiatan }}</div>
-        </div>
-        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-sm);">
-            <div style="font-size: 12.5px; color: var(--muted); font-weight: 500; margin-bottom: 6px;">Tepat Waktu</div>
-            <div style="font-size: 30px; font-weight: 800; color: var(--teal-600); letter-spacing: -.6px; line-height: 1;">{{ $monevTepatWaktu }}</div>
-        </div>
-        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-sm);">
-            <div style="font-size: 12.5px; color: var(--muted); font-weight: 500; margin-bottom: 6px;">Terlambat</div>
-            <div style="font-size: 30px; font-weight: 800; color: var(--red); letter-spacing: -.6px; line-height: 1;">{{ $monevTerlambat }}</div>
-        </div>
-        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-sm);">
-            <div style="font-size: 12.5px; color: var(--muted); font-weight: 500; margin-bottom: 6px;">Tingkat Keberhasilan</div>
-            <div style="font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px; line-height: 1;">{{ $pctKeberhasilan }}%</div>
-        </div>
+    {{-- Legend --}}
+    <div style="display: flex; gap: 24px; margin-top: 16px; font-size: 12px; color: var(--muted); flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 18px; height: 18px; border-radius: 3px; background: var(--navy); opacity: .25;"></div> Rencana</div>
+        <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 18px; height: 18px; border-radius: 3px; background: var(--orange);"></div> Realisasi</div>
     </div>
 </div>

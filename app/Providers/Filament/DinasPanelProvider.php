@@ -26,6 +26,7 @@ class DinasPanelProvider extends PanelProvider
             ->id('dinas')
             ->path('dinas')
             ->login()
+            ->darkMode(false)
             ->tenant(\App\Models\Dinas::class, slugAttribute: 'slug')
             ->brandName('Paseban')
             ->colors([

@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Enums;
+
+enum JenisKegiatan: string
+{
+    case SURVEI = 'survei';
+    case PENDATAAN_LENGKAP = 'pendataan_lengkap';
+    case KOMPROMIN = 'kompromin';
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::SURVEI => 'Survei',
+            self::PENDATAAN_LENGKAP => 'Pendataan Lengkap',
+            self::KOMPROMIN => 'Kompilasi Produk Administrasi (Kompromin)',
+        };
+    }
+
+    public static function options(): array
+    {
+        return collect(self::cases())->mapWithKeys(
+            fn (self $case) => [$case->value => $case->label()]
+        )->toArray();
+    }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::SURVEI => 'primary',
+            self::PENDATAAN_LENGKAP => 'success',
+            self::KOMPROMIN => 'warning',
+        };
+    }
+}

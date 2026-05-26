@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\StatusMonev;
 use App\Models\AliranData;
 use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
@@ -21,8 +22,8 @@ class StatsOverviewWidget extends BaseWidget
         $metadataSelesai = Metadata::where('tahun', $tahun)->where('status_bps', 'disetujui')->count();
         $aliranTayang = AliranData::where('tahun', $tahun)->where('sudah_tayang', true)->count();
         $aliranTotal = AliranData::where('tahun', $tahun)->count();
-        $monevTepat = Monev::where('tahun', $tahun)->where('status', 'tepat_waktu')->count();
-        $monevTerlambat = Monev::where('tahun', $tahun)->where('status', 'terlambat')->count();
+        $monevTepat = Monev::where('tahun', $tahun)->where('status', StatusMonev::TEPAT_WAKTU)->count();
+        $monevTerlambat = Monev::where('tahun', $tahun)->where('status', StatusMonev::TERLAMBAT)->count();
 
         return [
             Stat::make('Kegiatan Statistik ' . $tahun, $totalKegiatan)

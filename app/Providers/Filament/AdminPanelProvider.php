@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->darkMode(false)
             ->brandName('Paseban Admin')
             ->colors([
                 'primary' => Color::Orange,

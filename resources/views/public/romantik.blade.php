@@ -8,15 +8,16 @@
     </div>
 
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
-        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-            <thead>
-                <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 200px;">OPD / Kegiatan</th>
-                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy);">Status Dinas</th>
-                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy);">Status Kominfo</th>
-                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy);">Status BPS</th>
-                </tr>
-            </thead>
+        <div class="table-responsive">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
+                <thead>
+                    <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
+                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 40%;">OPD / Kegiatan</th>
+                        <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 20%;">Status Dinas</th>
+                        <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 20%;">Status Kominfo</th>
+                        <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 20%;">Status BPS</th>
+                    </tr>
+                </thead>
             <tbody>
                 @forelse($romantik as $item)
                 <tr style="border-bottom: 1px solid var(--line);">
@@ -47,6 +48,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 @endsection

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
@@ -18,16 +19,29 @@ class UserResource extends Resource
     protected static ?int $navigationSort = 2;
     protected static bool $isScopedToTenant = false;
 
-    public static function canAccess(): bool { return auth()->user()?->isAdmin() ?? false; }
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->isAdmin() ?? false;
+    }
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\TextInput::make('name')->required()->maxLength(255),
-            Forms\Components\TextInput::make('email')->email()->required()->maxLength(255),
-            Forms\Components\TextInput::make('password')->password()->dehydrated(fn ($state) => filled($state))->required(fn ($livewire) => $livewire instanceof Pages\CreateUser),
-            Forms\Components\Select::make('role')->options(['admin_bps' => 'Admin BPS', 'kominfo' => 'Kominfo', 'dinas' => 'Dinas', 'bappeda' => 'Bappeda'])->required(),
-            Forms\Components\Select::make('dinas_id')->relationship('dinas', 'nama')->searchable()->preload()->nullable()->label('Dinas / OPD'),
+            Forms\Components\TextInput::make('name')
+                ->required()->maxLength(255),
+            Forms\Components\TextInput::make('email')
+                ->email()->required()->maxLength(255),
+            Forms\Components\TextInput::make('password')
+                ->password()
+                ->dehydrated(fn ($state) => filled($state))
+                ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser),
+            Forms\Components\Select::make('role')
+                ->options(config('paseban.roles'))
+                ->required(),
+            Forms\Components\Select::make('dinas_id')
+                ->relationship('dinas', 'nama')
+                ->searchable()->preload()->nullable()
+                ->label('Dinas / OPD'),
         ]);
     }
 
@@ -36,13 +50,31 @@ class UserResource extends Resource
         return $table->columns([
             Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('email')->searchable(),
-            Tables\Columns\TextColumn::make('role')->badge()->color(fn (string $state) => match($state) { 'admin_bps' => 'danger', 'kominfo' => 'warning', 'dinas' => 'primary', 'bappeda' => 'gray' }),
+            Tables\Columns\TextColumn::make('role')
+                ->badge()
+                ->color(fn (string $state) => match ($state) {
+                    'admin_bps' => 'danger',
+                    'kominfo' => 'warning',
+                    'dinas' => 'primary',
+                    'bappeda' => 'gray',
+                    default => 'gray',
+                }),
             Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas'),
-        ])->actions([Tables\Actions\EditAction::make()])->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
+        ])->actions([
+            Tables\Actions\EditAction::make(),
+        ])->bulkActions([
+            Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]),
+        ]);
     }
 
     public static function getPages(): array
     {
-        return ['index' => Pages\ListUsers::route('/'), 'create' => Pages\CreateUser::route('/create'), 'edit' => Pages\EditUser::route('/{record}/edit')];
+        return [
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
+        ];
     }
 }

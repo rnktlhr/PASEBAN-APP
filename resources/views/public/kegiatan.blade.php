@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Identifikasi Kegiatan Statistik — Paseban')
+
 @section('content')
 <div class="container" style="padding: 40px 32px; min-height: calc(100vh - 74px);">
     <div style="margin-bottom: 24px;">
@@ -8,28 +10,43 @@
     </div>
 
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
-        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-            <thead>
+        <div class="table-responsive">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
+                <thead>
                 <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 60px;">No</th>
-                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 200px;">OPD</th>
+                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 60px;">No</th>
+                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 220px;">OPD</th>
                     <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy);">Nama Kegiatan</th>
-                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 180px;">Jenis</th>
+                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 260px;">Jenis</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($kegiatan as $idx => $keg)
                 <tr style="border-bottom: 1px solid var(--line);">
-                    <td style="padding: 16px; color: var(--muted);">{{ $idx + 1 }}</td>
+                    <td style="padding: 16px; text-align: center; color: var(--muted);">{{ $idx + 1 }}</td>
                     <td style="padding: 16px; font-weight: 600; color: var(--navy);">{{ $keg->dinas->singkatan ?? '-' }}</td>
                     <td style="padding: 16px; color: var(--ink);">{{ $keg->nama }}</td>
-                    <td style="padding: 16px;">
+                    <td style="padding: 16px; text-align: center;">
                         @php
-                            $colors = ['survei' => 'var(--teal)', 'pendataan_lengkap' => 'var(--green)', 'kompromin' => '#F58220'];
-                            $bgColors = ['survei' => 'var(--teal-50)', 'pendataan_lengkap' => '#e6f4ea', 'kompromin' => 'rgba(245,130,32,.1)'];
+                            $jenisEnum = $keg->jenis;
+                            $colors = [
+                                'survei' => 'var(--teal)',
+                                'pendataan_lengkap' => 'var(--green)',
+                                'kompromin' => 'var(--orange)',
+                            ];
+                            $bgColors = [
+                                'survei' => 'var(--teal-50)',
+                                'pendataan_lengkap' => '#e6f4ea',
+                                'kompromin' => 'var(--orange-50)',
+                            ];
+                            $jenisValue = $jenisEnum instanceof \App\Enums\JenisKegiatan ? $jenisEnum->value : $keg->jenis;
+                            $jenisLabel = $jenisEnum instanceof \App\Enums\JenisKegiatan ? $jenisEnum->label() : ucfirst(str_replace('_', ' ', $keg->jenis));
+                            if ($jenisValue === 'kompromin') {
+                                $jenisLabel = 'Kompromin';
+                            }
                         @endphp
-                        <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $colors[$keg->jenis] }}; background: {{ $bgColors[$keg->jenis] }};">
-                            {{ ucfirst(str_replace('_', ' ', $keg->jenis)) }}
+                        <span style="display: inline-block; width: 145px; text-align: center; padding: 5px 0; border-radius: 999px; font-size: 11.5px; font-weight: 600; color: {{ $colors[$jenisValue] ?? 'var(--muted)' }}; background: {{ $bgColors[$jenisValue] ?? '#f5f5f5' }};">
+                            {{ $jenisLabel }}
                         </span>
                     </td>
                 </tr>
@@ -40,6 +57,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 @endsection

@@ -14,18 +14,22 @@
 
 <section style="padding: 60px 0; background: #f8fafc; min-height: 50vh;">
     <div class="container">
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
             @foreach($beritaAcara as $berita)
-            <article style="border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer; display: flex; flex-direction: column;">
+            <a href="{{ route('berita-acara.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
                 <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--teal)); position: relative; display: flex; align-items: center; justify-content: center;">
                     <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--teal); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px;">{{ ucfirst($berita->kategori) }}</div>
                 </div>
                 <div style="padding: 22px; flex: 1; display: flex; flex-direction: column;">
                     <div class="mono" style="font-size: 11px; color: var(--muted); letter-spacing: .8px; margin-bottom: 10px;">{{ $berita->tanggal->format('d M Y') }}</div>
                     <h3 style="margin: 0; font-size: 16.5px; line-height: 1.35; font-weight: 700; color: var(--navy); letter-spacing: -.2px;">{{ $berita->judul }}</h3>
-                    <p style="margin: 10px 0 0; font-size: 13.5px; color: var(--muted); line-height: 1.55;">{{ Str::limit($berita->ringkasan, 150) }}</p>
+                    <p style="margin: 10px 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1;">{{ Str::limit($berita->ringkasan, 150) }}</p>
+                    <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--orange-600); margin-top: auto;">
+                        Lihat Detail
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </div>
                 </div>
-            </article>
+            </a>
             @endforeach
         </div>
 

@@ -68,7 +68,11 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return match ($panel->getId()) {
+            'admin' => $this->isAdmin(),
+            'dinas' => $this->isDinas() || $this->isKominfo() || $this->isBappeda(),
+            default => false,
+        };
     }
 
     public function getTenants(Panel $panel): array|Collection
@@ -78,6 +82,11 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function canAccessTenant(Model $tenant): bool
     {
+        // Admin BPS can access any tenant context
+        if ($this->isAdmin()) {
+            return true;
+        }
+
         return $this->dinas_id === $tenant->id;
     }
 }

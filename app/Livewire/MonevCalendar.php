@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
-use Livewire\Attributes\Url;
+use App\Models\Dinas;
 use App\Models\Monev;
 use App\Models\KegiatanStatistik;
+use App\Enums\StatusMonev;
+use Livewire\Component;
+use Livewire\Attributes\Url;
 
 class MonevCalendar extends Component
 {
@@ -28,12 +30,12 @@ class MonevCalendar extends Component
 
     public function decrementTahun()
     {
-        $this->tahun = (int)$this->tahun - 1;
+        $this->tahun = (int) $this->tahun - 1;
     }
 
     public function incrementTahun()
     {
-        $this->tahun = (int)$this->tahun + 1;
+        $this->tahun = (int) $this->tahun + 1;
     }
 
     public function getMonevDataProperty()
@@ -42,8 +44,9 @@ class MonevCalendar extends Component
             ->where('tahun', (int) $this->tahun);
 
         if (!empty($this->dinas_id)) {
-            $monevQuery->whereHas('kegiatanStatistik', function($q) {
-                $q->where('dinas_id', $this->dinas_id);
+            $dinasId = (int) $this->dinas_id;
+            $monevQuery->whereHas('kegiatanStatistik', function ($q) use ($dinasId) {
+                $q->where('dinas_id', $dinasId);
             });
         }
 
@@ -52,18 +55,19 @@ class MonevCalendar extends Component
         }
 
         if (!empty($this->search)) {
-            $monevQuery->whereHas('kegiatanStatistik', function($q) {
-                $q->where('nama', 'like', '%' . $this->search . '%');
+            $escapedSearch = str_replace(['%', '_'], ['\%', '\_'], $this->search);
+            $monevQuery->whereHas('kegiatanStatistik', function ($q) use ($escapedSearch) {
+                $q->where('nama', 'like', '%' . $escapedSearch . '%');
             });
         }
 
         $items = $monevQuery->get();
 
-        $tepatWaktu = $items->where('status', Monev::STATUS_TEPAT_WAKTU)->count();
-        $terlambat = $items->where('status', Monev::STATUS_TERLAMBAT)->count();
+        $tepatWaktu = $items->where('status', StatusMonev::TEPAT_WAKTU)->count();
+        $terlambat = $items->where('status', StatusMonev::TERLAMBAT)->count();
         $total = $items->count();
         $pct = $total > 0 ? round(($tepatWaktu / $total) * 100) : 0;
-        
+
         $totalKegiatan = KegiatanStatistik::where('tahun', (int) $this->tahun)->count();
 
         return [
@@ -72,7 +76,7 @@ class MonevCalendar extends Component
             'terlambat' => $terlambat,
             'total' => $total,
             'pct' => $pct,
-            'totalKegiatan' => $totalKegiatan
+            'totalKegiatan' => $totalKegiatan,
         ];
     }
 
@@ -80,12 +84,16 @@ class MonevCalendar extends Component
     {
         $data = $this->monevData;
 
+        // Provide Dinas list to view instead of querying in Blade template
+        $dinasList = Dinas::orderBy('singkatan')->get(['id', 'singkatan']);
+
         return view('livewire.monev-calendar', [
             'monevItems' => $data['items'],
             'monevTepatWaktu' => $data['tepatWaktu'],
             'monevTerlambat' => $data['terlambat'],
             'pctKeberhasilan' => $data['pct'],
             'totalKegiatan' => $data['totalKegiatan'],
+            'dinasList' => $dinasList,
         ]);
     }
 }

@@ -8,16 +8,17 @@
     </div>
 
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
-        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-            <thead>
-                <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 250px;">Kegiatan / OPD</th>
-                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy);">Nama Data</th>
-                    <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy);">Frekuensi</th>
-                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy);">Status Tayang</th>
-                    <th style="padding: 16px; text-align: right; font-weight: 700; color: var(--navy);">Tgl Tayang</th>
-                </tr>
-            </thead>
+        <div class="table-responsive">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
+                <thead>
+                    <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
+                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 35%;">Kegiatan / OPD</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 30%;">Nama Data</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 15%;">Frekuensi</th>
+                        <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 10%;">Status Tayang</th>
+                        <th style="padding: 16px; text-align: right; font-weight: 700; color: var(--navy); width: 10%;">Tgl Tayang</th>
+                    </tr>
+                </thead>
             <tbody>
                 @forelse($aliranData as $item)
                 <tr style="border-bottom: 1px solid var(--line);">
@@ -49,6 +50,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 @endsection

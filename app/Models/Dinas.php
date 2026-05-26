@@ -9,10 +9,6 @@ use Filament\Models\Contracts\HasName;
 
 class Dinas extends Model implements HasName
 {
-    public function getFilamentName(): string
-    {
-        return $this->nama;
-    }
     use HasFactory;
 
     protected $table = 'dinas';
@@ -23,6 +19,13 @@ class Dinas extends Model implements HasName
         'slug',
         'kategori',
     ];
+
+    public function getFilamentName(): string
+    {
+        return $this->nama;
+    }
+
+    // --- Relationships ---
 
     public function users(): HasMany
     {

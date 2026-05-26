@@ -10,7 +10,7 @@
     
     <ul>
         @foreach($kegiatanList as $kegiatan)
-            <li><strong>{{ $kegiatan->nama }}</strong> (Jenis: {{ ucfirst(str_replace('_', ' ', $kegiatan->jenis)) }})</li>
+            <li><strong>{{ $kegiatan->nama }}</strong> (Jenis: {{ $kegiatan->jenis instanceof \App\Enums\JenisKegiatan ? $kegiatan->jenis->label() : ucfirst(str_replace('_', ' ', $kegiatan->jenis)) }})</li>
         @endforeach
     </ul>
     

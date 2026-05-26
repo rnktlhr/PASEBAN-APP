@@ -3,44 +3,49 @@
 namespace App\Exports;
 
 use App\Models\Monev;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class MonevExport implements FromView, ShouldAutoSize
 {
-    protected $request;
+    protected int $tahun;
+    protected ?int $dinasId;
+    protected ?string $status;
+    protected ?string $search;
 
-    public function __construct(Request $request)
+    public function __construct(int $tahun, ?int $dinasId = null, ?string $status = null, ?string $search = null)
     {
-        $this->request = $request;
+        $this->tahun = $tahun;
+        $this->dinasId = $dinasId;
+        $this->status = $status;
+        $this->search = $search;
     }
 
     public function view(): View
     {
-        $tahun = (int) $this->request->input('tahun', date('Y'));
-        $monevQuery = Monev::with('kegiatanStatistik.dinas')->where('tahun', $tahun);
-        
-        if ($this->request->filled('dinas_id')) {
-            $monevQuery->whereHas('kegiatanStatistik', function($q) {
-                $q->where('dinas_id', $this->request->dinas_id);
+        $monevQuery = Monev::with('kegiatanStatistik.dinas')->where('tahun', $this->tahun);
+
+        if ($this->dinasId) {
+            $monevQuery->whereHas('kegiatanStatistik', function ($q) {
+                $q->where('dinas_id', $this->dinasId);
             });
         }
-        if ($this->request->filled('status')) {
-            $monevQuery->where('status', $this->request->status);
+        if ($this->status) {
+            $monevQuery->where('status', $this->status);
         }
-        if ($this->request->filled('search')) {
-            $monevQuery->whereHas('kegiatanStatistik', function($q) {
-                $q->where('nama', 'like', '%' . $this->request->search . '%');
+        if ($this->search) {
+            $escapedSearch = str_replace(['%', '_'], ['\%', '\_'], $this->search);
+            $monevQuery->whereHas('kegiatanStatistik', function ($q) use ($escapedSearch) {
+                $q->where('nama', 'like', '%' . $escapedSearch . '%');
             });
         }
-        
+
         $monevItems = $monevQuery->get();
 
         return view('exports.monev_pdf', [
             'monevItems' => $monevItems,
-            'tahun' => $tahun
+            'tahun' => $this->tahun,
         ]);
     }
 }

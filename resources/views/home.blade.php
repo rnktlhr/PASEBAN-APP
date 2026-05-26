@@ -1,351 +1,524 @@
 @extends('layouts.app')
 
+@section('title', 'Paseban — Dashboard Statistik Sektoral Bantul')
+@section('meta_description', 'Dashboard pemantauan kegiatan statistik sektoral Kabupaten Bantul. Lihat progress Romantik, Metadata, Aliran Data, dan Monitoring Evaluasi.')
+
 @section('content')
-<!-- Hero Section -->
-<section style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-900) 60%, #021a3d 100%); color: #fff; position: relative; overflow: hidden;">
-    <!-- decorative grid -->
-    <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .12;" aria-hidden="true">
-        <defs>
-            <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
-                <path d="M56 0H0V56" fill="none" stroke="#fff" stroke-width=".5"/>
-            </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)"/>
-    </svg>
-    <!-- glow -->
-    <div style="position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(245,130,32,.25), transparent 70%); border-radius: 50%;"></div>
-
-    <div class="container" style="padding: 72px 32px 88px; position: relative; display: grid; grid-template-columns: 1.3fr 1fr; gap: 60px; align-items: center;">
-        <div>
-            <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(245,130,32,.18); border: 1px solid rgba(245,130,32,.4); font-size: 12px; font-weight: 600; color: #fdbd83; margin-bottom: 24px;">
-                <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--teal);"></span>
-                Periode Pelaporan &middot; Tahun {{ $tahun }}
-            </div>
-            <h1 style="margin: 0; font-size: 56px; line-height: 1.05; letter-spacing: -1.5px; font-weight: 800;">
-                Selamat Datang di <span style="background: linear-gradient(120deg, #fff 0%, #fdbd83 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Paseban</span>
-            </h1>
-            <p style="margin: 20px 0 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.78); font-weight: 400;">
-                <strong style="color: #fff; font-weight: 600;">Pemantauan Statistik Sektoral Bantul</strong> — platform terpadu BPS Kabupaten Bantul untuk pembinaan, pendampingan, dan monitoring kegiatan statistik sektoral di lingkungan Pemerintah Kabupaten Bantul.
-            </p>
-
-            <div style="display: flex; gap: 36px; margin-top: 44px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.12);">
-                <div>
-                    <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">{{ $totalDinas }}</div>
-                    <div style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">OPD Terdaftar</div>
-                </div>
-                <div>
-                    <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">{{ $totalKegiatan }}</div>
-                    <div style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">Kegiatan {{ $tahun }}</div>
-                </div>
-                <div>
-                    <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">{{ $tingkatRespon }}%</div>
-                    <div style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">Tingkat Respon</div>
-                </div>
-            </div>
+    {{-- Hero Section --}}
+    <section
+        style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-900) 60%, #021a3d 100%); color: #fff; position: relative; overflow: hidden;">
+        {{-- decorative grid --}}
+        <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .12;" aria-hidden="true">
+            <defs>
+                <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+                    <path d="M56 0H0V56" fill="none" stroke="#fff" stroke-width=".5" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+        {{-- glow --}}
+        <div
+            style="position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(245,130,32,.25), transparent 70%); border-radius: 50%;">
         </div>
 
-        <div style="position: relative; height: 380px;">
-            <div style="position: absolute; top: 20px; right: 0; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 22px 22px 10px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.25); transform: rotate(2deg);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
-                    <span class="mono" style="letter-spacing: 1.5px; font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.8);">ROMANTIK &middot; {{ $tahun }}</span>
-                    <span style="color: #fdbd83; font-weight: 700; letter-spacing: 1px; font-size: 10px; display: flex; align-items: center; gap: 5px;">
-                        <span style="width: 6px; height: 6px; background: #fdbd83; border-radius: 50%; box-shadow: 0 0 6px #fdbd83;"></span> LIVE
-                    </span>
+        <div class="container hero-grid" style="padding-top: 72px; padding-bottom: 88px; position: relative;">
+            <div>
+                <div
+                    style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(245,130,32,.18); border: 1px solid rgba(245,130,32,.4); font-size: 12px; font-weight: 600; color: #fdbd83; margin-bottom: 24px;">
+                    <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--orange);"></span>
+                    Periode Pelaporan &middot; Tahun {{ $tahun }}
                 </div>
-                <div id="hero-mini-chart" style="height: 140px; width: 100%;"></div>
-            </div>
-            <div style="position: absolute; bottom: 0; left: 20px; width: 220px; background: rgba(255,255,255,.96); color: var(--ink); border-radius: 14px; padding: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.4); transform: rotate(-3deg);">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                    <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--teal-50); color: var(--teal-600); display: grid; place-items: center;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    </div>
-                    <div>
-                        <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Status</div>
-                        <div style="font-size: 14px; font-weight: 700;">Romantik Disetujui</div>
-                    </div>
-                </div>
-                <div style="height: 6px; background: #eef0f4; border-radius: 3px; overflow: hidden;">
-                    <div style="width: {{ $pctRomantik }}%; height: 100%; background: linear-gradient(90deg, var(--teal), #f5a347);"></div>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--muted);" class="mono">
-                    <span>{{ $romantikDiajukan }} / {{ $totalKegiatan }}</span><span>{{ $pctRomantik }}%</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Summary Cards -->
-<section style="padding: 72px 0 40px;">
-    <div class="container">
-        <div style="margin-bottom: 28px;">
-            <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--teal-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">◆ Ringkasan Statistik</div>
-            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Ringkasan Kegiatan Statistik</h2>
-            <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Capaian kegiatan statistik sektoral lintas OPD per tahun {{ $tahun }}.</p>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-            @php
-            $cards = [
-                ['icon' => '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>', 'title' => 'Identifikasi Kegiatan Statistik', 'value' => $totalKegiatan, 'label' => 'kegiatan tahun ini', 'sub' => null, 'url' => route('public.kegiatan')],
-                ['icon' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/>', 'title' => 'Romantik', 'value' => $romantikDiajukan, 'label' => 'sudah diajukan', 'sub' => ['value' => $romantikBelum, 'label' => 'belum diajukan'], 'url' => route('public.romantik')],
-                ['icon' => '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>', 'title' => 'Metadata Kegiatan', 'value' => $metaKegiatanDone, 'label' => 'sudah menyusun', 'sub' => ['value' => $metaKegiatanTotal - $metaKegiatanDone, 'label' => 'belum menyusun'], 'url' => route('public.metadata')],
-                ['icon' => '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>', 'title' => 'Metadata Variabel', 'value' => $metaVariabelDone, 'label' => 'sudah menyusun', 'sub' => ['value' => $metaVariabelTotal - $metaVariabelDone, 'label' => 'belum menyusun'], 'url' => route('public.metadata')],
-                ['icon' => '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>', 'title' => 'Metadata Indikator', 'value' => $metaIndikatorDone, 'label' => 'sudah menyusun', 'sub' => ['value' => $metaIndikatorTotal - $metaIndikatorDone, 'label' => 'belum menyusun'], 'url' => route('public.metadata')],
-                ['icon' => '<path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2-2.4-3.5-4.4-3.5h-1.2c-.7-3-3.2-5.2-6.2-5.6-3-.3-5.9 1.3-7.3 4-1.2 2.5-1 6.5.5 8.8m8.7-1.6V21"/><path d="M16 16l-4-4-4 4"/>', 'title' => 'Aliran Data Sedata Sebantul', 'value' => $aliranTayang, 'label' => 'sudah tayang', 'sub' => ['value' => $aliranBelum, 'label' => 'belum tayang'], 'url' => route('public.aliran_data')],
-            ];
-            @endphp
-            @foreach($cards as $card)
-            <a href="{{ $card['url'] }}" style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm);" class="block hover:-translate-y-1 transition-transform duration-200">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
-                    <div style="width: 44px; height: 44px; border-radius: 10px; background: var(--teal-50); color: var(--teal-600); display: grid; place-items: center;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $card['icon'] !!}</svg>
-                    </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted);"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </div>
-                <h3 style="margin: 0 0 16px; font-size: 15.5px; font-weight: 700; color: var(--navy);">{{ $card['title'] }}</h3>
-                <div style="display: flex; gap: 20px; align-items: flex-end;">
-                    <div>
-                        <span class="mono" style="font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;">{{ $card['value'] }}</span>
-                        <span style="font-size: 13px; color: var(--muted); margin-left: 6px;">{{ $card['label'] }}</span>
-                    </div>
-                    @if($card['sub'])
-                    <div>
-                        <span class="mono" style="font-size: 16px; font-weight: 600; color: var(--muted);">{{ $card['sub']['value'] }}</span>
-                        <span style="font-size: 12px; color: var(--muted); margin-left: 4px;">{{ $card['sub']['label'] }}</span>
-                    </div>
-                    @endif
-                </div>
-            </a>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-<!-- Visualisasi Data Section -->
-<section style="padding: 20px 0 80px;">
-    <div class="container">
-        <div style="margin-bottom: 28px;">
-            <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--teal-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">◆ Visualisasi Data</div>
-            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Visualisasi Progress Pemantauan</h2>
-            <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Klik diagram untuk melihat rincian per dinas.</p>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px;">
-            <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Identifikasi Kegiatan Statistik</h3>
-                    <button style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">
-                        {{ $tahun }}
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
-                </div>
-                <div id="bar-chart" style="flex: 1; width: 100%;"></div>
-                <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Tahun aktif</div>
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #fdbd83;"></span>Tahun sebelumnya</div>
-                </div>
-            </div>
-
-            <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Rekomendasi Statistik (Romantik)</h3>
-                    <button style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">
-                        {{ $tahun }}
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
-                </div>
-                <div id="donut-romantik" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;"></div>
-                <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah diajukan {{ $romantikDiajukan }}</div>
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum diajukan {{ $romantikBelum }}</div>
-                </div>
-            </div>
-
-            <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Metadata Statistik</h3>
-                    <button style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">
-                        {{ $tahun }}
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
-                </div>
-                <div id="donut-metadata" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;"></div>
-                <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah menyusun {{ $metaKegiatanDone }}</div>
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum menyusun {{ $metaKegiatanTotal - $metaKegiatanDone }}</div>
-                </div>
-            </div>
-
-            <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Aliran Data (Sedata Sebantul)</h3>
-                    <button style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">
-                        {{ $tahun }}
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </button>
-                </div>
-                <div id="donut-aliran" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;"></div>
-                <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah tayang {{ $aliranTayang }}</div>
-                    <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum tayang {{ $aliranBelum }}</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Monitoring & Evaluasi Section -->
-<section style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
-    <div class="container">
-    <div class="container">
-        <livewire:monev-calendar :tahun-awal="$tahun" />
-    </div>
-    </div>
-</section>
-<!-- Pembinaan Section -->
-<section style="padding: 72px 0;">
-    <div class="container">
-        <div style="background: var(--navy); border-radius: 12px; padding: 44px 48px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: center; position: relative; overflow: hidden;">
-            <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .08;" aria-hidden="true">
-                <defs><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#fff"/></pattern></defs>
-                <rect width="100%" height="100%" fill="url(#dots)"/>
-            </svg>
-            <div style="position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(245,130,32,.35), transparent 65%); border-radius: 50%;"></div>
-
-            <div style="position: relative; color: #fff;">
-                <div style="font-size: 12px; letter-spacing: 1.5px; color: #fdbd83; text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">◆ Pembinaan Statistik</div>
-                <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">Pembinaan Statistik Sektoral Kabupaten Bantul</h2>
-                <p style="margin: 14px 0 24px; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,.78); max-width: 540px;">
-                    Materi dan dokumentasi pembinaan kegiatan statistik sektoral — akses panduan teknis, regulasi, dan modul pelatihan untuk seluruh OPD se-Kabupaten Bantul.
+                <h1 class="hero-title" style="margin: 0;">
+                    Selamat Datang di <span
+                        style="background: linear-gradient(120deg, #fff 0%, #fdbd83 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Paseban</span>
+                </h1>
+                <p
+                    style="margin: 20px 0 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.78); font-weight: 400;">
+                    <strong style="color: #fff; font-weight: 600;">Pemantauan Statistik Sektoral Bantul</strong> — platform
+                    terpadu BPS Kabupaten Bantul untuk pembinaan, pendampingan, dan monitoring kegiatan statistik sektoral
+                    di lingkungan Pemerintah Kabupaten Bantul.
                 </p>
-                <a href="{{ env('PEDOMAN_URL', 'https://bpsbantul.my.canva.site/pss2026') }}" target="_blank" style="display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--teal); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(245,130,32,.4); text-decoration: none; transition: transform .15s ease;">
-                    Masuk Modul Pembinaan <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+
+                <div class="hero-stats">
+                    <div>
+                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
+                            {{ $totalDinas }}</div>
+                        <div
+                            style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
+                            OPD Terdaftar</div>
+                    </div>
+                    <div>
+                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
+                            {{ $totalKegiatan }}</div>
+                        <div
+                            style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
+                            Kegiatan {{ $tahun }}</div>
+                    </div>
+                    <div>
+                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
+                            {{ $tingkatRespon }}%</div>
+                        <div
+                            style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
+                            Tingkat Respon</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="position: relative; height: 380px;" x-data="heroSlider()" x-init="start()">
+                <div
+                    style="position: absolute; top: 20px; right: 0; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 22px 22px 10px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.25); transform: rotate(2deg);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
+                        <span class="mono"
+                            style="letter-spacing: 1.5px; font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.8);" x-html="slides[active].title + ' &middot; {{ $tahun }}'">ROMANTIK
+                            &middot; {{ $tahun }}</span>
+                        <span
+                            style="color: #00B69B; font-weight: 700; letter-spacing: 1px; font-size: 10px; display: flex; align-items: center; gap: 5px;">
+                            <span
+                                style="width: 6px; height: 6px; background: #00B69B; border-radius: 50%; box-shadow: 0 0 6px #00B69B;"></span>
+                            LIVE
+                        </span>
+                    </div>
+                    <div id="hero-mini-chart" style="height: 140px; width: 100%;"></div>
+                </div>
+                <div
+                    style="position: absolute; bottom: 0; left: 20px; width: 220px; background: rgba(255,255,255,.96); color: var(--ink); border-radius: 14px; padding: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.4); transform: rotate(-3deg);">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <div
+                            style="width: 36px; height: 36px; border-radius: 10px; background: #e6f8f5; color: #00B69B; display: grid; place-items: center;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div
+                                style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
+                                Status</div>
+                            <div style="font-size: 14px; font-weight: 700;" x-text="slides[active].cardTitle">Romantik Disetujui</div>
+                        </div>
+                    </div>
+                    <div style="height: 6px; background: #eef0f4; border-radius: 3px; overflow: hidden;">
+                        <div
+                            :style="`width: ${slides[active].cardPct}%; height: 100%; background: linear-gradient(90deg, #00B69B, #34d399); transition: width 0.5s ease;`">
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--muted);"
+                        class="mono">
+                        <span x-text="slides[active].cardValue + ' / ' + slides[active].cardTotal">{{ $romantikDiajukan }} / {{ $totalKegiatan }}</span><span x-text="slides[active].cardPct + '%'">{{ $pctRomantik }}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Summary Cards --}}
+    <section style="padding: 72px 0 40px;">
+        <div class="container">
+            <div style="margin-bottom: 28px;">
+                <div
+                    style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
+                    ◆ Ringkasan Statistik</div>
+                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
+                    Ringkasan Kegiatan Statistik</h2>
+                <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Capaian kegiatan statistik sektoral
+                    lintas OPD per tahun {{ $tahun }}.</p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                @php
+                    $cards = [
+                        ['icon' => '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>', 'title' => 'Identifikasi Kegiatan Statistik', 'value' => $totalKegiatan, 'label' => 'kegiatan tahun ini', 'sub' => null, 'url' => route('public.kegiatan')],
+                        ['icon' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/>', 'title' => 'Romantik', 'value' => $romantikDiajukan, 'label' => 'sudah diajukan', 'sub' => ['value' => $romantikBelum, 'label' => 'belum diajukan'], 'url' => route('public.romantik')],
+                        ['icon' => '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>', 'title' => 'Metadata Kegiatan', 'value' => $metaKegiatanDone, 'label' => 'sudah menyusun', 'sub' => ['value' => $metaKegiatanTotal - $metaKegiatanDone, 'label' => 'belum menyusun'], 'url' => route('public.metadata')],
+                        ['icon' => '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>', 'title' => 'Metadata Variabel', 'value' => $metaVariabelDone, 'label' => 'sudah menyusun', 'sub' => ['value' => $metaVariabelTotal - $metaVariabelDone, 'label' => 'belum menyusun'], 'url' => route('public.metadata')],
+                        ['icon' => '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>', 'title' => 'Metadata Indikator', 'value' => $metaIndikatorDone, 'label' => 'sudah menyusun', 'sub' => ['value' => $metaIndikatorTotal - $metaIndikatorDone, 'label' => 'belum menyusun'], 'url' => route('public.metadata')],
+                        ['icon' => '<path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2-2.4-3.5-4.4-3.5h-1.2c-.7-3-3.2-5.2-6.2-5.6-3-.3-5.9 1.3-7.3 4-1.2 2.5-1 6.5.5 8.8m8.7-1.6V21"/><path d="M16 16l-4-4-4 4"/>', 'title' => 'Aliran Data Sedata Sebantul', 'value' => $aliranTayang, 'label' => 'sudah tayang', 'sub' => ['value' => $aliranBelum, 'label' => 'belum tayang'], 'url' => route('public.aliran_data')],
+                    ];
+                @endphp
+                @foreach($cards as $card)
+                    <a href="{{ $card['url'] }}" class="card-link">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                            <div
+                                style="width: 44px; height: 44px; border-radius: 10px; background: var(--orange-50); color: var(--orange-600); display: grid; place-items: center;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $card['icon'] !!}</svg>
+                            </div>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted);">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </div>
+                        <h3 style="margin: 0 0 16px; font-size: 15.5px; font-weight: 700; color: var(--navy);">
+                            {{ $card['title'] }}</h3>
+                        <div style="display: flex; gap: 20px; align-items: flex-end;">
+                            <div>
+                                <span class="mono"
+                                    style="font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;">{{ $card['value'] }}</span>
+                                <span
+                                    style="font-size: 13px; color: var(--muted); margin-left: 6px;">{{ $card['label'] }}</span>
+                            </div>
+                            @if($card['sub'])
+                                <div>
+                                    <span class="mono"
+                                        style="font-size: 16px; font-weight: 600; color: var(--muted);">{{ $card['sub']['value'] }}</span>
+                                    <span
+                                        style="font-size: 12px; color: var(--muted); margin-left: 4px;">{{ $card['sub']['label'] }}</span>
+                                </div>
+                            @endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- Visualisasi Data Section --}}
+    <section style="padding: 20px 0 80px;">
+        <div class="container">
+            <div style="margin-bottom: 28px;">
+                <div
+                    style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
+                    ◆ Visualisasi Data</div>
+                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
+                    Visualisasi Progress Pemantauan</h2>
+                <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Klik diagram untuk melihat rincian per
+                    dinas.</p>
+            </div>
+            <div class="charts-grid">
+                <div
+                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Identifikasi Kegiatan
+                            Statistik</h3>
+                        <span
+                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                    </div>
+                    <div id="bar-chart" style="flex: 1; width: 100%;"></div>
+                    <div
+                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
+                        <div style="display: flex; align-items: center; gap: 6px;"><span
+                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Jumlah
+                            kegiatan</div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Rekomendasi Statistik
+                            (Romantik)</h3>
+                        <span
+                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                    </div>
+                    <div id="donut-romantik"
+                        style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
+                    </div>
+                    <div
+                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
+                        <div style="display: flex; align-items: center; gap: 6px;"><span
+                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
+                            diajukan {{ $romantikDiajukan }}</div>
+                        <div style="display: flex; align-items: center; gap: 6px;"><span
+                                style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
+                            diajukan {{ $romantikBelum }}</div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Metadata Statistik
+                        </h3>
+                        <span
+                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                    </div>
+                    <div id="donut-metadata"
+                        style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
+                    </div>
+                    <div
+                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
+                        <div style="display: flex; align-items: center; gap: 6px;"><span
+                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
+                            menyusun {{ $metaKegiatanDone }}</div>
+                        <div style="display: flex; align-items: center; gap: 6px;"><span
+                                style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
+                            menyusun {{ $metaKegiatanTotal - $metaKegiatanDone }}</div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Aliran Data (Sedata
+                            Sebantul)</h3>
+                        <span
+                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                    </div>
+                    <div id="donut-aliran"
+                        style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
+                    </div>
+                    <div
+                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
+                        <div style="display: flex; align-items: center; gap: 6px;"><span
+                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
+                            tayang {{ $aliranTayang }}</div>
+                        <div style="display: flex; align-items: center; gap: 6px;"><span
+                                style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
+                            tayang {{ $aliranBelum }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Monitoring & Evaluasi Section --}}
+    <section
+        style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+        <div class="container">
+            <livewire:monev-calendar :tahun-awal="$tahun" />
+        </div>
+    </section>
+
+    {{-- Pembinaan Section --}}
+    <section style="padding: 72px 0;">
+        <div class="container">
+            <div
+                style="background: var(--navy); border-radius: 12px; padding: 44px 48px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: center; position: relative; overflow: hidden;">
+                <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .08;" aria-hidden="true">
+                    <defs>
+                        <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+                            <circle cx="2" cy="2" r="1.2" fill="#fff" />
+                        </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#dots)" />
+                </svg>
+                <div
+                    style="position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(245,130,32,.35), transparent 65%); border-radius: 50%;">
+                </div>
+
+                <div style="position: relative; color: #fff;">
+                    <div
+                        style="font-size: 12px; letter-spacing: 1.5px; color: #fdbd83; text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
+                        ◆ Pembinaan Statistik</div>
+                    <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">
+                        Pembinaan Statistik Sektoral Kabupaten Bantul</h2>
+                    <p
+                        style="margin: 14px 0 24px; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,.78); max-width: 540px;">
+                        Materi dan dokumentasi pembinaan kegiatan statistik sektoral — akses panduan teknis, regulasi, dan
+                        modul pelatihan untuk seluruh OPD se-Kabupaten Bantul.
+                    </p>
+                    <a href="{{ config('paseban.pedoman_url') }}" target="_blank" rel="noopener noreferrer"
+                        style="display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(245,130,32,.4); text-decoration: none; transition: transform .15s ease;">
+                        Masuk Modul Pembinaan <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                    </a>
+                </div>
+
+                <div style="position: relative; display: flex; justify-content: center;">
+                    <div
+                        style="background: #fff; border-radius: 10px; width: 220px; padding: 18px; box-shadow: 0 20px 50px rgba(0,0,0,.3); transform: rotate(-3deg);">
+                        <div
+                            style="width: 40px; height: 40px; border-radius: 8px; background: var(--orange-50); color: var(--orange-600); display: grid; place-items: center; margin-bottom: 12px;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                        </div>
+                        <div
+                            style="font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .5px; text-transform: uppercase;">
+                            Tahun {{ $tahun }}</div>
+                        <div
+                            style="font-size: 14px; font-weight: 700; color: var(--navy); margin-top: 4px; line-height: 1.3;">
+                            Penyusunan Metadata Kegiatan</div>
+                        <div
+                            style="margin-top: 14px; height: 4px; background: #eef0f4; border-radius: 2px; overflow: hidden;">
+                            <div style="width: {{ $pctMetadata }}%; height: 100%; background: var(--orange);"></div>
+                        </div>
+                        <div class="mono"
+                            style="font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: .5px;">
+                            {{ $metaKegiatanDone }} / {{ $metaKegiatanTotal }} kegiatan selesai</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- Berita Acara Section --}}
+    <section style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line);">
+        <div class="container">
+            <div style="margin-bottom: 28px;">
+                <div
+                    style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
+                    ◆ Berita Acara</div>
+                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Berita
+                    Acara Kegiatan</h2>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                @foreach($beritaAcara as $berita)
+                    <a href="{{ route('berita-acara.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+                        <div
+                            style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--orange)); position: relative; display: flex; align-items: center; justify-content: center;">
+                            <div
+                                style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px;">
+                                {{ ucfirst($berita->kategori) }}</div>
+                        </div>
+                        <div style="padding: 22px; flex: 1; display: flex; flex-direction: column;">
+                            <div class="mono"
+                                style="font-size: 11px; color: var(--muted); letter-spacing: .8px; margin-bottom: 10px;">
+                                {{ $berita->tanggal->format('d M Y') }}</div>
+                            <h3
+                                style="margin: 0; font-size: 16.5px; line-height: 1.35; font-weight: 700; color: var(--navy); letter-spacing: -.2px;">
+                                {{ $berita->judul }}</h3>
+                            <p style="margin: 10px 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1;">
+                                {{ Str::limit($berita->ringkasan, 150) }}</p>
+                            <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--orange-600); margin-top: auto;">
+                                Lihat Detail
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+            <div style="margin-top: 36px; text-align: center;">
+                <a href="{{ route('berita-acara.index') }}" class="btn-outline-orange">
+                    Lihat Semua Berita Acara
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </a>
             </div>
-
-            <div style="position: relative; display: flex; justify-content: center;">
-                <div style="background: #fff; border-radius: 10px; width: 220px; padding: 18px; box-shadow: 0 20px 50px rgba(0,0,0,.3); transform: rotate(-3deg);">
-                    <div style="width: 40px; height: 40px; border-radius: 8px; background: var(--teal-50); color: var(--teal-600); display: grid; place-items: center; margin-bottom: 12px;">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </div>
-                    <div style="font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .5px; text-transform: uppercase;">Tahun {{ $tahun }}</div>
-                    <div style="font-size: 14px; font-weight: 700; color: var(--navy); margin-top: 4px; line-height: 1.3;">Penyusunan Metadata Kegiatan</div>
-                    <div style="margin-top: 14px; height: 4px; background: #eef0f4; border-radius: 2px; overflow: hidden;">
-                        <div style="width: {{ $pctMetadata }}%; height: 100%; background: var(--teal);"></div>
-                    </div>
-                    <div class="mono" style="font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: .5px;">{{ $metaKegiatanDone }} / {{ $metaKegiatanTotal }} kegiatan selesai</div>
-                </div>
-            </div>
         </div>
-    </div>
-</section>
-
-<!-- Berita Acara Section -->
-<section style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line);">
-    <div class="container">
-        <div style="margin-bottom: 28px;">
-            <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--teal-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">◆ Berita Acara</div>
-            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Berita Acara Kegiatan</h2>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-            @foreach($beritaAcara as $berita)
-            <article style="border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer;">
-                <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--teal)); position: relative; display: flex; align-items: center; justify-content: center;">
-                    <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--teal); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px;">{{ ucfirst($berita->kategori) }}</div>
-                </div>
-                <div style="padding: 22px;">
-                    <div class="mono" style="font-size: 11px; color: var(--muted); letter-spacing: .8px; margin-bottom: 10px;">{{ $berita->tanggal->format('d M Y') }}</div>
-                    <h3 style="margin: 0; font-size: 16.5px; line-height: 1.35; font-weight: 700; color: var(--navy); letter-spacing: -.2px;">{{ $berita->judul }}</h3>
-                    <p style="margin: 10px 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.55;">{{ Str::limit($berita->ringkasan, 150) }}</p>
-                </div>
-            </article>
-            @endforeach
-        </div>
-        <div style="margin-top: 36px; text-align: center;">
-            <a href="{{ route('berita-acara.index') }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; background: #fff; border: 1px solid var(--teal); color: var(--teal); text-decoration: none; border-radius: 999px; font-weight: 600; font-size: 14px; transition: .2s; box-shadow: var(--shadow-sm);" onmouseover="this.style.background='var(--teal)'; this.style.color='#fff';" onmouseout="this.style.background='#fff'; this.style.color='var(--teal)';">
-                Lihat Semua Berita Acara
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-            </a>
-        </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Bar Chart
-        new ApexCharts(document.querySelector("#bar-chart"), {
-            series: [
-                { name: 'Tahun aktif', data: @json($chartValues) },
-                { name: 'Tahun sebelumnya', data: [48, 55, 62, 70, 75] }
-            ],
-            chart: { type: 'bar', height: 220, toolbar: { show: false } },
-            colors: ['#F58220', '#fdbd83'],
-            plotOptions: { bar: { horizontal: false, columnWidth: '45%', borderRadius: 4 } },
-            dataLabels: { enabled: true, style: { fontFamily: 'JetBrains Mono', fontSize: '11px', colors: ['#fff'] } },
-            xaxis: { categories: @json($chartYears), axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { fontFamily: 'JetBrains Mono', colors: '#6B6560' } } },
-            yaxis: { show: false },
-            grid: { show: false },
-            legend: { show: false }
-        }).render();
-
-        // Donut config
-        function donut(el, val, label, color) {
-            new ApexCharts(document.querySelector(el), {
-                series: [val],
-                chart: { type: 'radialBar', height: 260 },
-                plotOptions: { radialBar: { hollow: { size: '65%' }, track: { background: '#f1f3f5', strokeWidth: '100%' }, dataLabels: { name: { show: true, color: '#6B6560', fontSize: '11px', fontWeight: 600, fontFamily: 'Inter', offsetY: 25 }, value: { show: true, color: '#05529F', fontSize: '32px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -10, formatter: function(v){return v+"%"} } } } },
-                fill: { colors: [color] },
-                stroke: { lineCap: 'round' },
-                labels: [label]
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.0"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Bar Chart — uses real data from controller
+            new ApexCharts(document.querySelector("#bar-chart"), {
+                series: [
+                    { name: 'Jumlah Kegiatan', data: @json($chartValues) }
+                ],
+                chart: { type: 'bar', height: 220, toolbar: { show: false } },
+                colors: ['#F58220'],
+                plotOptions: { bar: { horizontal: false, columnWidth: '50%', borderRadius: 4 } },
+                dataLabels: { enabled: true, style: { fontFamily: 'JetBrains Mono', fontSize: '11px', colors: ['#fff'] } },
+                xaxis: { categories: @json($chartYears), axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { fontFamily: 'JetBrains Mono', colors: '#6B6560' } } },
+                yaxis: { show: false },
+                grid: { show: false },
+                legend: { show: false }
             }).render();
-        }
 
-        donut('#donut-romantik', {{ $pctRomantik }}, 'SUDAH DIAJUKAN', '#F58220');
-        donut('#donut-metadata', {{ $pctMetadata }}, 'SUDAH MENYUSUN', '#F58220');
-        donut('#donut-aliran', {{ $pctAliran }}, 'SUDAH TAYANG', '#F58220');
+            // Donut config
+            function donut(el, val, label, color) {
+                new ApexCharts(document.querySelector(el), {
+                    series: [val],
+                    chart: { type: 'radialBar', height: 260 },
+                    plotOptions: { radialBar: { hollow: { size: '65%' }, track: { background: '#f1f3f5', strokeWidth: '100%' }, dataLabels: { name: { show: true, color: '#6B6560', fontSize: '11px', fontWeight: 600, fontFamily: 'Inter', offsetY: 25 }, value: { show: true, color: '#05529F', fontSize: '32px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -10, formatter: function (v) { return v + "%" } } } } },
+                    fill: { colors: [color] },
+                    stroke: { lineCap: 'round' },
+                    labels: [label]
+                }).render();
+            }
 
-        // Hero mini chart
-        new ApexCharts(document.querySelector("#hero-mini-chart"), {
-            series: [
-                { name: 'Bottom', data: [0, 0, 15, 25, 15, 20, 25, 15, 30, 20, 0, 0] },
-                { name: 'Value',  data: [0, 0, 15, 15, 20, 20, 20, 20, 15, 15, 0, 0] },
-                { name: 'Top',    data: [0, 0, 15, 25, 35, 40, 30, 45, 25, 30, 0, 0] }
-            ],
-            chart: { 
-                type: 'bar', 
-                height: 150, 
-                stacked: true,
-                toolbar: { show: false },
-                sparkline: { enabled: false },
-                parentHeightOffset: 0
-            },
-            colors: ['rgba(255,255,255,0.15)', '#F58220', 'rgba(255,255,255,0.15)'],
-            plotOptions: { 
-                bar: { 
-                    columnWidth: '55%', 
-                    borderRadius: 4,
-                } 
-            },
-            xaxis: {
-                categories: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-                labels: {
-                    style: { colors: 'rgba(255,255,255,0.5)', fontSize: '9px', fontFamily: 'JetBrains Mono', fontWeight: 600 },
-                    offsetY: 0
+            donut('#donut-romantik', {{ $pctRomantik }}, 'SUDAH DIAJUKAN', '#F58220');
+            donut('#donut-metadata', {{ $pctMetadata }}, 'SUDAH MENYUSUN', '#F58220');
+            donut('#donut-aliran', {{ $pctAliran }}, 'SUDAH TAYANG', '#F58220');
+
+        });
+
+        // Alpine.js component for hero slider
+        function heroSlider() {
+            return {
+                active: 0,
+                chartInstance: null,
+                slides: [
+                    { 
+                        title: 'ROMANTIK', 
+                        cardTitle: 'Romantik Disetujui',
+                        cardValue: {{ $romantikDiajukan }},
+                        cardTotal: {{ $totalKegiatan }},
+                        cardPct: {{ $pctRomantik }},
+                        chartData: @json($heroMonthlyRomantik)
+                    },
+                    { 
+                        title: 'METADATA', 
+                        cardTitle: 'Metadata Terisi',
+                        cardValue: {{ $metaKegiatanDone }},
+                        cardTotal: {{ $metaKegiatanTotal ?: 1 }},
+                        cardPct: {{ $pctMetadata }},
+                        chartData: @json($heroMonthlyMetadata)
+                    },
+                    { 
+                        title: 'ALIRAN DATA', 
+                        cardTitle: 'Data Sudah Tayang',
+                        cardValue: {{ $aliranTayang }},
+                        cardTotal: {{ $aliranTotal ?: 1 }},
+                        cardPct: {{ $pctAliran }},
+                        chartData: @json($heroMonthlyAliran)
+                    }
+                ],
+                start() {
+                    this.initChart();
+                    setInterval(() => {
+                        this.active = (this.active + 1) % this.slides.length;
+                        this.updateChart();
+                    }, 4000); // changes every 4 seconds
                 },
-                axisBorder: { show: false },
-                axisTicks: { show: false },
-                crosshairs: { show: false },
-                tooltip: { enabled: false }
-            },
-            yaxis: { show: false },
-            grid: { show: false, padding: { top: 0, right: 0, bottom: 0, left: 10 } },
-            dataLabels: { enabled: false },
-            fill: { opacity: 1 },
-            stroke: { width: 0 },
-            legend: { show: false },
-            tooltip: { enabled: false }
-        }).render();
-    });
-</script>
+                initChart() {
+                    const options = {
+                        series: [{ name: 'Total', data: this.slides[this.active].chartData }],
+                        chart: {
+                            type: 'bar',
+                            height: 150,
+                            toolbar: { show: false },
+                            parentHeightOffset: 0,
+                            animations: { enabled: true, dynamicAnimation: { speed: 800 } }
+                        },
+                        colors: ['#00B69B'],
+                        plotOptions: { 
+                            bar: { 
+                                columnWidth: '55%', 
+                                borderRadius: 3,
+                                colors: { 
+                                    backgroundBarColors: ['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)'], 
+                                    backgroundBarRadius: 3 
+                                }
+                            } 
+                        },
+                        xaxis: {
+                            categories: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                            labels: { style: { colors: 'rgba(255,255,255,0.5)', fontSize: '9px', fontFamily: 'JetBrains Mono', fontWeight: 600 } },
+                            axisBorder: { show: false },
+                            axisTicks: { show: false }
+                        },
+                        yaxis: { show: false },
+                        grid: { show: false, padding: { top: 0, right: 0, bottom: 0, left: 10 } },
+                        dataLabels: { enabled: false },
+                        tooltip: { enabled: false }
+                    };
+                    this.chartInstance = new ApexCharts(document.querySelector("#hero-mini-chart"), options);
+                    this.chartInstance.render();
+                },
+                updateChart() {
+                    if(this.chartInstance) {
+                        this.chartInstance.updateSeries([{
+                            data: this.slides[this.active].chartData
+                        }]);
+                    }
+                }
+            }
+        }
+    </script>
 @endpush

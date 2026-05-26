@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JenisKegiatan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -23,6 +24,7 @@ class KegiatanStatistik extends Model
 
     protected $casts = [
         'tahun' => 'integer',
+        'jenis' => JenisKegiatan::class,
     ];
 
     public function dinas(): BelongsTo
