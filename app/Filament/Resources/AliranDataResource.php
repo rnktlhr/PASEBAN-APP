@@ -47,16 +47,22 @@ class AliranDataResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                ->label('Dinas')->searchable(),
-            Tables\Columns\TextColumn::make('nama_data')->limit(35)->searchable(),
-            Tables\Columns\TextColumn::make('frekuensi')->badge(),
-            Tables\Columns\IconColumn::make('sudah_tayang')->boolean()->label('Tayang'),
-            Tables\Columns\TextColumn::make('tanggal_tayang')->date('d M Y'),
-        ])->filters([
-            Tables\Filters\TernaryFilter::make('sudah_tayang')->label('Status Tayang'),
-        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
+        return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
+            ->columns([
+                Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
+                    ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
+                    ->label('Kegiatan')->limit(20)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('nama_data')->limit(20)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('tahun')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\IconColumn::make('sudah_tayang')
+                    ->boolean()
+                    ->size(Tables\Columns\IconColumn\IconColumnSize::Large),
+            ])->filters([
+                Tables\Filters\TernaryFilter::make('sudah_tayang')->label('Status Tayang'),
+            ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder

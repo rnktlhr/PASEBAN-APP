@@ -26,16 +26,22 @@
                         <div style="font-size: 12px; color: var(--muted);">{{ $item->kegiatanStatistik->dinas->singkatan ?? '-' }}</div>
                     </td>
                     <td style="padding: 16px; font-weight: 500; color: var(--ink);">
-                        {{ ucfirst($item->jenis) }}
+                        {{ $item->jenis instanceof \App\Enums\JenisMetadata ? $item->jenis->label() : ucfirst($item->jenis) }}
                     </td>
                     <td style="padding: 16px; text-align: center;">
-                        <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; {{ $item->status_kominfo == 'disetujui' ? 'color: var(--green); background: #e6f4ea;' : ($item->status_kominfo == 'belum_diajukan' ? 'color: var(--muted); background: var(--line);' : 'color: #F58220; background: rgba(245,130,32,.1);') }}">
-                            {{ ucwords(str_replace('_', ' ', $item->status_kominfo)) }}
+                        @php
+                            $stKominfo = $item->status_kominfo instanceof \App\Enums\StatusKominfo ? $item->status_kominfo : \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
+                        @endphp
+                        <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stKominfo?->cssColor() ?? '#F58220' }}; background: {{ $stKominfo?->cssBgColor() ?? 'rgba(245,130,32,.1)' }};">
+                            {{ $stKominfo?->label() ?? ucwords(str_replace('_', ' ', $item->status_kominfo)) }}
                         </span>
                     </td>
                     <td style="padding: 16px; text-align: center;">
-                        <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; {{ $item->status_bps == 'disetujui' ? 'color: var(--green); background: #e6f4ea;' : ($item->status_bps == 'perlu_perbaikan' ? 'color: var(--red); background: rgba(220,53,69,.1);' : 'color: #F58220; background: rgba(245,130,32,.1);') }}">
-                            {{ ucwords(str_replace('_', ' ', $item->status_bps)) }}
+                        @php
+                            $stBps = $item->status_bps instanceof \App\Enums\StatusBps ? $item->status_bps : \App\Enums\StatusBps::tryFrom($item->status_bps);
+                        @endphp
+                        <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stBps?->cssColor() ?? '#F58220' }}; background: {{ $stBps?->cssBgColor() ?? 'rgba(245,130,32,.1)' }};">
+                            {{ $stBps?->label() ?? ucwords(str_replace('_', ' ', $item->status_bps)) }}
                         </span>
                     </td>
                 </tr>

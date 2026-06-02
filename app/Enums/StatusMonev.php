@@ -35,4 +35,35 @@ enum StatusMonev: string
             self::TERLAMBAT => 'danger',
         };
     }
+
+    /**
+     * CSS color for public Blade views.
+     */
+    public function cssColor(): string
+    {
+        return match ($this) {
+            self::TEPAT_WAKTU => '#2e7d32',
+            self::TERLAMBAT => 'var(--red)',
+            self::SEDANG_BERJALAN => '#e67700',
+            default => 'var(--muted)',
+        };
+    }
+
+    /**
+     * CSS background for public Blade views.
+     */
+    public function cssBgColor(): string
+    {
+        return match ($this) {
+            self::TEPAT_WAKTU => '#e6f4ea',
+            self::TERLAMBAT => 'var(--red-50)',
+            self::SEDANG_BERJALAN => '#fff8e1',
+            default => '#f5f5f5',
+        };
+    }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

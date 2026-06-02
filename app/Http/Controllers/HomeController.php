@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JenisMetadata;
+use App\Enums\StatusDinas;
+use App\Enums\StatusKominfo;
 use App\Enums\StatusMonev;
 use App\Exports\MonevExport;
 use App\Models\AliranData;
@@ -38,21 +41,21 @@ class HomeController extends Controller
 
         // Romantik
         $romantikDiajukan = Romantik::where('tahun', $tahun)
-            ->whereIn('status_dinas', ['sudah_diajukan', 'sudah_diperbaiki'])->count();
+            ->whereIn('status_dinas', StatusDinas::submittedValues())->count();
         $romantikBelum = Romantik::where('tahun', $tahun)
-            ->where('status_dinas', 'belum_diajukan')->count();
+            ->where('status_dinas', StatusDinas::BELUM_DIAJUKAN->value)->count();
 
         // Metadata (per jenis)
-        $metaKegiatan = Metadata::where('tahun', $tahun)->where('jenis', 'kegiatan');
-        $metaKegiatanDone = (clone $metaKegiatan)->whereIn('status_kominfo', ['submit', 'sudah_diperbaiki', 'disetujui'])->count();
+        $metaKegiatan = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::KEGIATAN->value);
+        $metaKegiatanDone = (clone $metaKegiatan)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
         $metaKegiatanTotal = $metaKegiatan->count();
 
-        $metaVariabel = Metadata::where('tahun', $tahun)->where('jenis', 'variabel');
-        $metaVariabelDone = (clone $metaVariabel)->whereIn('status_kominfo', ['submit', 'sudah_diperbaiki', 'disetujui'])->count();
+        $metaVariabel = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::VARIABEL->value);
+        $metaVariabelDone = (clone $metaVariabel)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
         $metaVariabelTotal = $metaVariabel->count();
 
-        $metaIndikator = Metadata::where('tahun', $tahun)->where('jenis', 'indikator');
-        $metaIndikatorDone = (clone $metaIndikator)->whereIn('status_kominfo', ['submit', 'sudah_diperbaiki', 'disetujui'])->count();
+        $metaIndikator = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::INDIKATOR->value);
+        $metaIndikatorDone = (clone $metaIndikator)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
         $metaIndikatorTotal = $metaIndikator->count();
 
         // Aliran Data
@@ -122,7 +125,7 @@ class HomeController extends Controller
         $request->validate([
             'tahun' => 'nullable|integer|min:2020|max:2099',
             'dinas_id' => 'nullable|integer|exists:dinas,id',
-            'status' => 'nullable|string|in:belum_mulai,sedang_berjalan,tepat_waktu,terlambat',
+            'status' => ['nullable', 'string', \Illuminate\Validation\Rule::in(StatusMonev::values())],
             'search' => 'nullable|string|max:100',
         ]);
 
@@ -139,7 +142,7 @@ class HomeController extends Controller
         $request->validate([
             'tahun' => 'nullable|integer|min:2020|max:2099',
             'dinas_id' => 'nullable|integer|exists:dinas,id',
-            'status' => 'nullable|string|in:belum_mulai,sedang_berjalan,tepat_waktu,terlambat',
+            'status' => ['nullable', 'string', \Illuminate\Validation\Rule::in(StatusMonev::values())],
             'search' => 'nullable|string|max:100',
         ]);
 

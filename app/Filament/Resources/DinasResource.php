@@ -39,12 +39,14 @@ class DinasResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->width(60)->size('lg'),
-                Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->size('lg'),
-                Tables\Columns\TextColumn::make('singkatan')->searchable()->size('lg'),
+                Tables\Columns\TextColumn::make('id')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('singkatan')->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
                 Tables\Columns\TextColumn::make('kategori')
-                    ->size('lg')
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
                     ->badge()
                     ->color(function (?string $state): string {
                         if (!$state) return 'gray';
@@ -55,7 +57,7 @@ class DinasResource extends Resource
                     ->counts('kegiatanStatistik')
                     ->label('Jumlah Kegiatan')
                     ->sortable()
-                    ->size('lg'),
+                    ->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             ])
             ->filters([])
             ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])

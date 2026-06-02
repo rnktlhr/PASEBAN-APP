@@ -89,26 +89,14 @@
             <tbody>
                 @forelse($monevItems as $idx => $monev)
                 @php
-                    $statusEnum = $monev->status;
-                    $statusColor = match($statusEnum?->value ?? $monev->status) {
-                        'tepat_waktu' => '#2e7d32',
-                        'terlambat' => 'var(--red)',
-                        'sedang_berjalan' => '#e67700',
-                        default => 'var(--muted)',
-                    };
-                    $statusBg = match($statusEnum?->value ?? $monev->status) {
-                        'tepat_waktu' => '#e6f4ea',
-                        'terlambat' => 'var(--red-50)',
-                        'sedang_berjalan' => '#fff8e1',
-                        default => '#f5f5f5',
-                    };
+                    $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                 @endphp
                 <tr style="border-bottom: 1px solid var(--line);">
                     <td style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1;">{{ $idx + 1 }}</td>
                     <td style="padding: 14px 16px; font-weight: 600; color: var(--navy); position: sticky; left: 50px; background: #fff; z-index: 1;">{{ $monev->kegiatanStatistik->nama ?? '-' }}</td>
                     <td style="padding: 14px 16px; color: var(--ink);">{{ $monev->kegiatanStatistik->dinas->singkatan ?? '-' }}</td>
                     <td style="padding: 14px 16px; text-align: center;">
-                        <span style="display: inline-block; width: 115px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 11px; font-weight: 600; color: {{ $statusColor }}; background: {{ $statusBg }};">
+                        <span style="display: inline-block; width: 115px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 11px; font-weight: 600; color: {{ $statusEnum?->cssColor() ?? 'var(--muted)' }}; background: {{ $statusEnum?->cssBgColor() ?? '#f5f5f5' }};">
                             {{ $statusEnum?->label() ?? ucfirst(str_replace('_', ' ', $monev->status)) }}
                         </span>
                     </td>

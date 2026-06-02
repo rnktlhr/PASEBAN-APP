@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Enums\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -36,7 +37,7 @@ class UserResource extends Resource
                 ->dehydrated(fn ($state) => filled($state))
                 ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser),
             Forms\Components\Select::make('role')
-                ->options(config('paseban.roles'))
+                ->options(Role::options())
                 ->required(),
             Forms\Components\Select::make('dinas_id')
                 ->relationship('dinas', 'nama')
@@ -47,19 +48,18 @@ class UserResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
-            Tables\Columns\TextColumn::make('email')->searchable(),
+        return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
+            ->columns([
+            Tables\Columns\TextColumn::make('name')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('email')->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\TextColumn::make('role')
+                ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
                 ->badge()
-                ->color(fn (string $state) => match ($state) {
-                    'admin_bps' => 'danger',
-                    'kominfo' => 'warning',
-                    'dinas' => 'primary',
-                    'bappeda' => 'gray',
-                    default => 'gray',
-                }),
-            Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas'),
+                ->color(fn ($state) => $state instanceof Role ? $state->color() : (Role::tryFrom($state)?->color() ?? 'gray'))
+                ->formatStateUsing(fn ($state) => $state instanceof Role ? $state->label() : (Role::tryFrom($state)?->label() ?? $state)),
+            Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas')->size(Tables\Columns\TextColumn\TextColumnSize::Large),
         ])->actions([
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),

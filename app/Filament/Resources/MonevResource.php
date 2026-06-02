@@ -52,16 +52,19 @@ class MonevResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
+        return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
+            ->columns([
+            Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
+                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                ->label('Kegiatan')->limit(30)->searchable(),
-            Tables\Columns\TextColumn::make('tahun')->sortable(),
-            Tables\Columns\TextColumn::make('bulan_rencana_mulai')
-                ->label('Rencana'),
+                ->label('Kegiatan')->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('tanggal_mulai')->date('d M Y')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
-                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray')
-                ,
+                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray')->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+        ])->filters([        
         ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
     }
 

@@ -60,12 +60,15 @@ class RomantikResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
+        return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
+            ->columns([
             Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable(),
+                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                ->label('Kegiatan')->limit(30)->searchable(),
-            Tables\Columns\TextColumn::make('tahun')->sortable(),
+                ->label('Kegiatan')->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('tahun')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\SelectColumn::make('status_dinas')
                 ->options(StatusDinas::options())
                 ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas()))

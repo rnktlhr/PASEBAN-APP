@@ -32,4 +32,28 @@ enum JenisKegiatan: string
             self::KOMPROMIN => 'warning',
         };
     }
+
+    /**
+     * CSS color for public Blade views.
+     */
+    public function cssColor(): string
+    {
+        return match ($this) {
+            self::SURVEI => 'var(--teal)',
+            self::PENDATAAN_LENGKAP => 'var(--green)',
+            self::KOMPROMIN => 'var(--orange)',
+        };
+    }
+
+    /**
+     * CSS background for public Blade views.
+     */
+    public function cssBgColor(): string
+    {
+        return match ($this) {
+            self::SURVEI => 'var(--teal-50)',
+            self::PENDATAAN_LENGKAP => '#e6f4ea',
+            self::KOMPROMIN => 'var(--orange-50)',
+        };
+    }
 }

@@ -54,4 +54,57 @@ enum StatusKominfo: string
             self::DISETUJUI,
         ])->mapWithKeys(fn (self $case) => [$case->value => $case->label()])->toArray();
     }
+
+    public function color(): string
+    {
+        return match ($this) {
+            self::BELUM_DIAJUKAN => 'gray',
+            self::DRAFT => 'gray',
+            self::SUBMIT => 'info',
+            self::SEDANG_DIPERIKSA => 'warning',
+            self::SUDAH_DIPERBAIKI => 'warning',
+            self::DISETUJUI => 'success',
+        };
+    }
+
+    /**
+     * CSS color for public Blade views.
+     */
+    public function cssColor(): string
+    {
+        return match ($this) {
+            self::DISETUJUI => 'var(--green)',
+            self::BELUM_DIAJUKAN => 'var(--muted)',
+            default => '#F58220',
+        };
+    }
+
+    /**
+     * CSS background for public Blade views.
+     */
+    public function cssBgColor(): string
+    {
+        return match ($this) {
+            self::DISETUJUI => '#e6f4ea',
+            self::BELUM_DIAJUKAN => 'var(--line)',
+            default => 'rgba(245,130,32,.1)',
+        };
+    }
+
+    /**
+     * Status values that count as "completed/done" for dashboard progress queries.
+     */
+    public static function completedValues(): array
+    {
+        return [
+            self::SUBMIT->value,
+            self::SUDAH_DIPERBAIKI->value,
+            self::DISETUJUI->value,
+        ];
+    }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

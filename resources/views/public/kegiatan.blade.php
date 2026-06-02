@@ -28,25 +28,10 @@
                     <td style="padding: 16px; color: var(--ink);">{{ $keg->nama }}</td>
                     <td style="padding: 16px; text-align: center;">
                         @php
-                            $jenisEnum = $keg->jenis;
-                            $colors = [
-                                'survei' => 'var(--teal)',
-                                'pendataan_lengkap' => 'var(--green)',
-                                'kompromin' => 'var(--orange)',
-                            ];
-                            $bgColors = [
-                                'survei' => 'var(--teal-50)',
-                                'pendataan_lengkap' => '#e6f4ea',
-                                'kompromin' => 'var(--orange-50)',
-                            ];
-                            $jenisValue = $jenisEnum instanceof \App\Enums\JenisKegiatan ? $jenisEnum->value : $keg->jenis;
-                            $jenisLabel = $jenisEnum instanceof \App\Enums\JenisKegiatan ? $jenisEnum->label() : ucfirst(str_replace('_', ' ', $keg->jenis));
-                            if ($jenisValue === 'kompromin') {
-                                $jenisLabel = 'Kompromin';
-                            }
+                            $jenisEnum = $keg->jenis instanceof \App\Enums\JenisKegiatan ? $keg->jenis : \App\Enums\JenisKegiatan::tryFrom($keg->jenis);
                         @endphp
-                        <span style="display: inline-block; width: 145px; text-align: center; padding: 5px 0; border-radius: 999px; font-size: 11.5px; font-weight: 600; color: {{ $colors[$jenisValue] ?? 'var(--muted)' }}; background: {{ $bgColors[$jenisValue] ?? '#f5f5f5' }};">
-                            {{ $jenisLabel }}
+                        <span style="display: inline-block; width: 145px; text-align: center; padding: 5px 0; border-radius: 999px; font-size: 11.5px; font-weight: 600; color: {{ $jenisEnum?->cssColor() ?? 'var(--muted)' }}; background: {{ $jenisEnum?->cssBgColor() ?? '#f5f5f5' }};">
+                            {{ $jenisEnum?->label() ?? ucfirst(str_replace('_', ' ', $keg->jenis)) }}
                         </span>
                     </td>
                 </tr>

@@ -46,16 +46,20 @@ class KegiatanStatistikResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
+        return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
+            ->columns([
             Tables\Columns\TextColumn::make('dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable(),
+                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\TextColumn::make('nama')
-                ->searchable()->sortable()->limit(40),
+                ->searchable()->sortable()->limit(40)->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\TextColumn::make('jenis')
+                ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
                 ->badge()
                 ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray')
                 ,
-            Tables\Columns\TextColumn::make('tahun')->sortable(),
+            Tables\Columns\TextColumn::make('tahun')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
         ])->filters([
             Tables\Filters\SelectFilter::make('tahun')
                 ->options(fn () => KegiatanStatistik::distinct()->pluck('tahun', 'tahun')->toArray()),

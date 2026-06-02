@@ -35,9 +35,15 @@ class PembinaanResource extends Resource
     }
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            Tables\Columns\TextColumn::make('judul')->searchable()->sortable(),
-            Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable(),
+        return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
+            ->columns([
+            Tables\Columns\TextColumn::make('dinas.singkatan')
+                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('judul')
+                ->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
             Tables\Columns\TextColumn::make('presensi_count')->counts('presensi')->label('Total Presensi'),
             Tables\Columns\TextColumn::make('file_absensi')->label('File')->limit(20),
         ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);

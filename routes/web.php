@@ -27,3 +27,11 @@ Route::get('/romantik', [PublicController::class, 'romantik'])->name('public.rom
 Route::get('/metadata', [PublicController::class, 'metadata'])->name('public.metadata');
 Route::get('/aliran-data', [PublicController::class, 'aliranData'])->name('public.aliran_data');
 Route::get('/monitoring-evaluasi', [PublicController::class, 'monev'])->name('public.monev');
+
+// Temporary route to clear stuck sessions
+Route::get('/force-logout', function () {
+    auth()->logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/admin');
+});

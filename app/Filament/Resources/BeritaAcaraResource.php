@@ -60,14 +60,19 @@ class BeritaAcaraResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            Tables\Columns\TextColumn::make('judul')->searchable()->sortable(),
-            Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable(),
-            Tables\Columns\TextColumn::make('kategori')
-                ->badge()
-                ->color(fn ($state) => $state instanceof KategoriBeritaAcara ? $state->color() : 'gray')
-                ,
-        ])->actions([
+        return $table
+            ->defaultPaginationPageOption(25)
+            ->striped()
+            ->columns([
+                Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
+                    ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
+                    ->label('Kegiatan')->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('nomor_ba')->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            ])->filters([
+                //
+            ])->actions([
             Tables\Actions\EditAction::make(),
             Tables\Actions\DeleteAction::make(),
         ])->bulkActions([

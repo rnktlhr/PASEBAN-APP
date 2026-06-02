@@ -17,10 +17,48 @@ enum StatusBps: string
         };
     }
 
+    public function color(): string
+    {
+        return match ($this) {
+            self::SEDANG_DIPERIKSA => 'warning',
+            self::PERLU_PERBAIKAN => 'danger',
+            self::DISETUJUI => 'success',
+        };
+    }
+
+    /**
+     * CSS color for public Blade views.
+     */
+    public function cssColor(): string
+    {
+        return match ($this) {
+            self::SEDANG_DIPERIKSA => '#F58220',
+            self::PERLU_PERBAIKAN => 'var(--red)',
+            self::DISETUJUI => 'var(--green)',
+        };
+    }
+
+    /**
+     * CSS background for public Blade views.
+     */
+    public function cssBgColor(): string
+    {
+        return match ($this) {
+            self::SEDANG_DIPERIKSA => 'rgba(245,130,32,.1)',
+            self::PERLU_PERBAIKAN => 'rgba(220,53,69,.1)',
+            self::DISETUJUI => '#e6f4ea',
+        };
+    }
+
     public static function options(): array
     {
         return collect(self::cases())->mapWithKeys(
             fn (self $case) => [$case->value => $case->label()]
         )->toArray();
+    }
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
     }
 }
