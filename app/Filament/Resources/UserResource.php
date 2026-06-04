@@ -52,14 +52,14 @@ class UserResource extends Resource
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
-            Tables\Columns\TextColumn::make('name')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
-            Tables\Columns\TextColumn::make('email')->searchable()->size(\Filament\Support\Enums\TextSize::Large),
+            Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+            Tables\Columns\TextColumn::make('email')->searchable(),
             Tables\Columns\TextColumn::make('role')
-                ->size(\Filament\Support\Enums\TextSize::Large)
+                
                 ->badge()
                 ->color(fn ($state) => $state instanceof Role ? $state->color() : (Role::tryFrom($state)?->color() ?? 'gray'))
                 ->formatStateUsing(fn ($state) => $state instanceof Role ? $state->label() : (Role::tryFrom($state)?->label() ?? $state)),
-            Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas')->size(\Filament\Support\Enums\TextSize::Large),
+            Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas'),
         ])->actions([
             \Filament\Actions\EditAction::make(),
             \Filament\Actions\DeleteAction::make(),

@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->darkMode(false)
             ->brandName('Paseban Admin')
+            ->maxContentWidth(\Filament\Support\Enums\Width::Full)
             ->colors([
                 'primary' => Color::Orange,
                 'gray' => Color::Slate,

@@ -51,15 +51,15 @@ class KegiatanStatistikResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                ->label('Dinas')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('nama')
-                ->searchable()->sortable()->limit(40)->size(\Filament\Support\Enums\TextSize::Large),
+                ->searchable()->sortable()->limit(40),
             Tables\Columns\TextColumn::make('jenis')
-                ->size(\Filament\Support\Enums\TextSize::Large)
+                
                 ->badge()
                 ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray')
                 ,
-            Tables\Columns\TextColumn::make('tahun')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+            Tables\Columns\TextColumn::make('tahun')->sortable(),
         ])->filters([
             Tables\Filters\SelectFilter::make('tahun')
                 ->options(fn () => KegiatanStatistik::distinct()->pluck('tahun', 'tahun')->toArray()),

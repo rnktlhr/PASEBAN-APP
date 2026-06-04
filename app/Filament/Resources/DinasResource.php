@@ -42,11 +42,10 @@ class DinasResource extends Resource
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
-                Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
-                Tables\Columns\TextColumn::make('singkatan')->searchable()->size(\Filament\Support\Enums\TextSize::Large),
+                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->wrap(),
+                Tables\Columns\TextColumn::make('singkatan')->searchable(),
                 Tables\Columns\TextColumn::make('kategori')
-                    ->size(\Filament\Support\Enums\TextSize::Large)
                     ->badge()
                     ->color(function (?string $state): string {
                         if (!$state) return 'gray';
@@ -56,8 +55,7 @@ class DinasResource extends Resource
                 Tables\Columns\TextColumn::make('kegiatan_statistik_count')
                     ->counts('kegiatanStatistik')
                     ->label('Jumlah Kegiatan')
-                    ->sortable()
-                    ->size(\Filament\Support\Enums\TextSize::Large),
+                    ->sortable(),
             ])
             ->filters([])
             ->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()])

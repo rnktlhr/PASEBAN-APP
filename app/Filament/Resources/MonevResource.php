@@ -57,17 +57,17 @@ class MonevResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                ->label('Dinas')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                ->label('Kegiatan')->limit(30)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
+                ->label('Kegiatan')->limit(30)->searchable(),
             Tables\Columns\TextColumn::make('bulan_rencana_mulai')
                 ->label('Bulan Mulai')
                 ->formatStateUsing(fn ($state) => config("paseban.bulan.{$state}") ?? $state)
                 ->sortable()
-                ->size(\Filament\Support\Enums\TextSize::Large),
+                ,
             Tables\Columns\TextColumn::make('status')
                 ->badge()
-                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray')->size(\Filament\Support\Enums\TextSize::Large),
+                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray'),
         ])->filters([        
         ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }

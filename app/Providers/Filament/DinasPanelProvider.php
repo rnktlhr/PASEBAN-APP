@@ -29,6 +29,7 @@ class DinasPanelProvider extends PanelProvider
             ->darkMode(false)
             ->tenant(\App\Models\Dinas::class, slugAttribute: 'slug')
             ->brandName('Paseban')
+            ->maxContentWidth(\Filament\Support\Enums\Width::Full)
             ->colors([
                 'primary' => Color::Teal,
                 'gray' => Color::Slate,

@@ -40,10 +40,10 @@ class PembinaanResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                ->label('Dinas')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('judul')
-                ->limit(30)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
-            Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                ->limit(30)->searchable(),
+            Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable(),
             Tables\Columns\TextColumn::make('presensi_count')->counts('presensi')->label('Total Presensi'),
             Tables\Columns\TextColumn::make('file_absensi')->label('File')->limit(20),
         ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);

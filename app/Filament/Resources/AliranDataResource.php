@@ -52,11 +52,11 @@ class AliranDataResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                    ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                    ->label('Dinas')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                    ->label('Kegiatan')->limit(20)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
-                Tables\Columns\TextColumn::make('nama_data')->limit(20)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
-                Tables\Columns\TextColumn::make('tahun')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                    ->label('Kegiatan')->limit(20)->searchable(),
+                Tables\Columns\TextColumn::make('nama_data')->limit(20)->searchable(),
+                Tables\Columns\TextColumn::make('tahun')->sortable(),
                 Tables\Columns\IconColumn::make('sudah_tayang')
                     ->boolean()
                     ->size(\Filament\Support\Enums\IconSize::Large),

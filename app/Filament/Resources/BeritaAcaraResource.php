@@ -65,7 +65,7 @@ class BeritaAcaraResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('judul')
-                    ->label('Judul')->searchable()->sortable()->limit(50)->size(\Filament\Support\Enums\TextSize::Large),
+                    ->label('Judul')->searchable()->sortable()->limit(50),
                 Tables\Columns\TextColumn::make('kategori')
                     ->label('Kategori')->searchable()->sortable()
                     ->formatStateUsing(fn (string $state): string => ucfirst($state))
@@ -75,7 +75,7 @@ class BeritaAcaraResource extends Resource
                         'pembinaan' => 'warning',
                         default => 'gray',
                     }),
-                Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable(),
             ])->filters([
                 //
             ])->actions([
