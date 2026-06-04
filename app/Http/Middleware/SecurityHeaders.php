@@ -42,8 +42,8 @@ class SecurityHeaders
 
         if (app()->environment('local')) {
             // Allow Vite dev server
-            $viteHosts = "http://localhost:5173 http://127.0.0.1:5173 http://[::1]:5173";
-            $viteWs = "ws://localhost:5173 ws://127.0.0.1:5173 ws://[::1]:5173";
+            $viteHosts = "http://localhost:5173 http://127.0.0.1:5173";
+            $viteWs = "ws://localhost:5173 ws://127.0.0.1:5173";
             $csp[1] .= " " . $viteHosts;
             $csp[2] .= " " . $viteHosts;
             $csp[4] .= " " . $viteHosts;

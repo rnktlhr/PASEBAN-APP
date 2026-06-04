@@ -70,20 +70,23 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return match ($panel->getId()) {
             'admin' => $this->isAdmin(),
-            'dinas' => $this->isDinas() || $this->isKominfo() || $this->isBappeda(),
+            'dinas' => true, // Everyone valid can access Dinas panel, restricted by tenants
             default => false,
         };
     }
 
     public function getTenants(Panel $panel): array|Collection
     {
+        if ($this->isAdmin() || $this->isKominfo() || $this->isBappeda()) {
+            return \App\Models\Dinas::all();
+        }
+
         return $this->dinas ? [$this->dinas] : [];
     }
 
     public function canAccessTenant(Model $tenant): bool
     {
-        // Admin BPS can access any tenant context
-        if ($this->isAdmin()) {
+        if ($this->isAdmin() || $this->isKominfo() || $this->isBappeda()) {
             return true;
         }
 

@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DinasResource\Pages;
 use App\Models\Dinas;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -13,8 +13,8 @@ use Filament\Tables\Table;
 class DinasResource extends Resource
 {
     protected static ?string $model = Dinas::class;
-    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-building-office-2';
+    protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
     protected static ?string $navigationLabel = 'Dinas / OPD';
     protected static ?int $navigationSort = 1;
     protected static bool $isScopedToTenant = false;
@@ -24,9 +24,9 @@ class DinasResource extends Resource
         return auth()->user()?->isAdmin() ?? false;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
-        return $form->schema([
+        return $form->components([
             Forms\Components\TextInput::make('nama')
                 ->required()->maxLength(255)->columnSpanFull(),
             Forms\Components\TextInput::make('singkatan')
@@ -42,11 +42,11 @@ class DinasResource extends Resource
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-                Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-                Tables\Columns\TextColumn::make('singkatan')->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('id')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+                Tables\Columns\TextColumn::make('singkatan')->searchable()->size(\Filament\Support\Enums\TextSize::Large),
                 Tables\Columns\TextColumn::make('kategori')
-                    ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
+                    ->size(\Filament\Support\Enums\TextSize::Large)
                     ->badge()
                     ->color(function (?string $state): string {
                         if (!$state) return 'gray';
@@ -57,11 +57,11 @@ class DinasResource extends Resource
                     ->counts('kegiatanStatistik')
                     ->label('Jumlah Kegiatan')
                     ->sortable()
-                    ->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                    ->size(\Filament\Support\Enums\TextSize::Large),
             ])
             ->filters([])
-            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
-            ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
+            ->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()])
+            ->bulkActions([\Filament\Actions\BulkActionGroup::make([\Filament\Actions\DeleteBulkAction::make()])]);
     }
 
     public static function getPages(): array

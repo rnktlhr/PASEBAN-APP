@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <div style="position: relative; height: 380px;" x-data="heroSlider()" x-init="start()">
+            <div style="position: relative; height: 380px;" x-data="heroSlider" x-init="start()">
                 <div
                     style="position: absolute; top: 20px; right: 0; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 22px 22px 10px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.25); transform: rotate(2deg);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
@@ -123,7 +123,7 @@
                 <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Capaian kegiatan statistik sektoral
                     lintas OPD per tahun {{ $tahun }}.</p>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+            <div class="summary-cards-grid">
                 @php
                     $cards = [
                         ['icon' => '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>', 'title' => 'Identifikasi Kegiatan Statistik', 'value' => $totalKegiatan, 'label' => 'kegiatan tahun ini', 'sub' => null, 'url' => route('public.kegiatan')],
@@ -447,8 +447,8 @@
         });
 
         // Alpine.js component for hero slider
-        function heroSlider() {
-            return {
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('heroSlider', () => ({
                 active: 0,
                 chartInstance: null,
                 slides: [
@@ -526,7 +526,7 @@
                         }]);
                     }
                 }
-            }
-        }
+            }));
+        });
     </script>
 @endpush

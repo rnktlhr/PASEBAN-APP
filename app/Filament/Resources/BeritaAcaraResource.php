@@ -6,7 +6,7 @@ use App\Enums\KategoriBeritaAcara;
 use App\Filament\Resources\BeritaAcaraResource\Pages;
 use App\Models\BeritaAcara;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,9 +14,9 @@ use Filament\Tables\Table;
 class BeritaAcaraResource extends Resource
 {
     protected static ?string $model = BeritaAcara::class;
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-newspaper';
     protected static ?string $pluralModelLabel = 'Berita Acara';
-    protected static ?string $navigationGroup = 'Konten';
+    protected static string | \UnitEnum | null $navigationGroup = 'Konten';
     protected static ?string $navigationLabel = 'Berita Acara';
     protected static ?int $navigationSort = 1;
     protected static bool $isScopedToTenant = false;
@@ -26,9 +26,9 @@ class BeritaAcaraResource extends Resource
         return auth()->user()?->isAdmin() ?? false;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
-        return $form->schema([
+        return $form->components([
             Forms\Components\Section::make('Informasi Utama')
                 ->schema([
                     Forms\Components\TextInput::make('judul')
@@ -64,20 +64,26 @@ class BeritaAcaraResource extends Resource
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                    ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-                Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                    ->label('Kegiatan')->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-                Tables\Columns\TextColumn::make('nomor_ba')->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-                Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                Tables\Columns\TextColumn::make('judul')
+                    ->label('Judul')->searchable()->sortable()->limit(50)->size(\Filament\Support\Enums\TextSize::Large),
+                Tables\Columns\TextColumn::make('kategori')
+                    ->label('Kategori')->searchable()->sortable()
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state))
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pendampingan' => 'info',
+                        'pembinaan' => 'warning',
+                        default => 'gray',
+                    }),
+                Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
             ])->filters([
                 //
             ])->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
+            \Filament\Actions\EditAction::make(),
+            \Filament\Actions\DeleteAction::make(),
         ])->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+            \Filament\Actions\BulkActionGroup::make([
+                \Filament\Actions\DeleteBulkAction::make(),
             ]),
         ]);
     }

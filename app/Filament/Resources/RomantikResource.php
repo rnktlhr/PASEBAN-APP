@@ -8,7 +8,7 @@ use App\Enums\StatusBps;
 use App\Filament\Resources\RomantikResource\Pages;
 use App\Models\Romantik;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,9 +16,9 @@ use Filament\Tables\Table;
 class RomantikResource extends Resource
 {
     protected static ?string $model = Romantik::class;
-    protected static ?string $navigationIcon = 'heroicon-o-document-check';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-document-check';
     protected static ?string $pluralModelLabel = 'Romantik';
-    protected static ?string $navigationGroup = 'Pemantauan';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Romantik';
     protected static ?int $navigationSort = 2;
     protected static bool $isScopedToTenant = false;
@@ -29,10 +29,10 @@ class RomantikResource extends Resource
         return $user && ($user->isAdmin() || $user->isKominfo() || $user->isDinas());
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         $user = auth()->user();
-        return $form->schema([
+        return $form->components([
             Forms\Components\Select::make('kegiatan_id')
                 ->relationship('kegiatanStatistik', 'nama')
                 ->searchable()->preload()->required()
@@ -65,10 +65,10 @@ class RomantikResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                ->label('Kegiatan')->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-            Tables\Columns\TextColumn::make('tahun')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->label('Kegiatan')->limit(30)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
+            Tables\Columns\TextColumn::make('tahun')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\SelectColumn::make('status_dinas')
                 ->options(StatusDinas::options())
                 ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas()))
@@ -84,7 +84,7 @@ class RomantikResource extends Resource
         ])->filters([
             Tables\Filters\SelectFilter::make('status_bps')
                 ->options(StatusBps::options()),
-        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
+        ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder

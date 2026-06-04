@@ -6,7 +6,7 @@ use App\Enums\JenisKegiatan;
 use App\Filament\Resources\KegiatanStatistikResource\Pages;
 use App\Models\KegiatanStatistik;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,9 +14,9 @@ use Filament\Tables\Table;
 class KegiatanStatistikResource extends Resource
 {
     protected static ?string $model = KegiatanStatistik::class;
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $pluralModelLabel = 'Kegiatan Statistik';
-    protected static ?string $navigationGroup = 'Pemantauan';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Kegiatan Statistik';
     protected static ?int $navigationSort = 1;
     protected static bool $isScopedToTenant = false;
@@ -27,9 +27,9 @@ class KegiatanStatistikResource extends Resource
         return $user && ($user->isAdmin() || $user->isKominfo() || $user->isDinas());
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
-        return $form->schema([
+        return $form->components([
             Forms\Components\Select::make('dinas_id')
                 ->relationship('dinas', 'nama')
                 ->searchable()->preload()->required()
@@ -51,26 +51,26 @@ class KegiatanStatistikResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('nama')
-                ->searchable()->sortable()->limit(40)->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->searchable()->sortable()->limit(40)->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('jenis')
-                ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
+                ->size(\Filament\Support\Enums\TextSize::Large)
                 ->badge()
                 ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray')
                 ,
-            Tables\Columns\TextColumn::make('tahun')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('tahun')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
         ])->filters([
             Tables\Filters\SelectFilter::make('tahun')
                 ->options(fn () => KegiatanStatistik::distinct()->pluck('tahun', 'tahun')->toArray()),
             Tables\Filters\SelectFilter::make('jenis')
                 ->options(JenisKegiatan::options()),
         ])->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
+            \Filament\Actions\EditAction::make(),
+            \Filament\Actions\DeleteAction::make(),
         ])->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+            \Filament\Actions\BulkActionGroup::make([
+                \Filament\Actions\DeleteBulkAction::make(),
             ]),
         ]);
     }

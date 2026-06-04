@@ -6,7 +6,7 @@ use App\Enums\FrekuensiData;
 use App\Filament\Resources\AliranDataResource\Pages;
 use App\Models\AliranData;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,9 +14,9 @@ use Filament\Tables\Table;
 class AliranDataResource extends Resource
 {
     protected static ?string $model = AliranData::class;
-    protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-up';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-arrow-trending-up';
     protected static ?string $pluralModelLabel = 'Aliran Data';
-    protected static ?string $navigationGroup = 'Pemantauan';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Aliran Data';
     protected static ?int $navigationSort = 4;
     protected static bool $isScopedToTenant = false;
@@ -26,9 +26,9 @@ class AliranDataResource extends Resource
         return auth()->user()?->isAdmin() ?? false;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
-        return $form->schema([
+        return $form->components([
             Forms\Components\Select::make('kegiatan_id')
                 ->relationship('kegiatanStatistik', 'nama')
                 ->searchable()->preload()->required(),
@@ -52,17 +52,17 @@ class AliranDataResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                    ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                    ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
                 Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                    ->label('Kegiatan')->limit(20)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-                Tables\Columns\TextColumn::make('nama_data')->limit(20)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-                Tables\Columns\TextColumn::make('tahun')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                    ->label('Kegiatan')->limit(20)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
+                Tables\Columns\TextColumn::make('nama_data')->limit(20)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
+                Tables\Columns\TextColumn::make('tahun')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
                 Tables\Columns\IconColumn::make('sudah_tayang')
                     ->boolean()
-                    ->size(Tables\Columns\IconColumn\IconColumnSize::Large),
+                    ->size(\Filament\Support\Enums\IconSize::Large),
             ])->filters([
                 Tables\Filters\TernaryFilter::make('sudah_tayang')->label('Status Tayang'),
-            ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
+            ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder

@@ -6,7 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Enums\Role;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,8 +14,8 @@ use Filament\Tables\Table;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-    protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $navigationGroup = 'Master Data';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-users';
+    protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
     protected static ?string $navigationLabel = 'Pengguna';
     protected static ?int $navigationSort = 2;
     protected static bool $isScopedToTenant = false;
@@ -25,9 +25,9 @@ class UserResource extends Resource
         return auth()->user()?->isAdmin() ?? false;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
-        return $form->schema([
+        return $form->components([
             Forms\Components\TextInput::make('name')
                 ->required()->maxLength(255),
             Forms\Components\TextInput::make('email')
@@ -52,20 +52,20 @@ class UserResource extends Resource
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
-            Tables\Columns\TextColumn::make('name')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-            Tables\Columns\TextColumn::make('email')->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('name')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
+            Tables\Columns\TextColumn::make('email')->searchable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('role')
-                ->size(Tables\Columns\TextColumn\TextColumnSize::Large)
+                ->size(\Filament\Support\Enums\TextSize::Large)
                 ->badge()
                 ->color(fn ($state) => $state instanceof Role ? $state->color() : (Role::tryFrom($state)?->color() ?? 'gray'))
                 ->formatStateUsing(fn ($state) => $state instanceof Role ? $state->label() : (Role::tryFrom($state)?->label() ?? $state)),
-            Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas')->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+            Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas')->size(\Filament\Support\Enums\TextSize::Large),
         ])->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
+            \Filament\Actions\EditAction::make(),
+            \Filament\Actions\DeleteAction::make(),
         ])->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+            \Filament\Actions\BulkActionGroup::make([
+                \Filament\Actions\DeleteBulkAction::make(),
             ]),
         ]);
     }

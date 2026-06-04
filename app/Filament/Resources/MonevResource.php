@@ -6,7 +6,7 @@ use App\Enums\StatusMonev;
 use App\Filament\Resources\MonevResource\Pages;
 use App\Models\Monev;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,9 +14,9 @@ use Filament\Tables\Table;
 class MonevResource extends Resource
 {
     protected static ?string $model = Monev::class;
-    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-calendar-days';
     protected static ?string $pluralModelLabel = 'Monitoring Evaluasi';
-    protected static ?string $navigationGroup = 'Pemantauan';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Monitoring & Evaluasi';
     protected static ?int $navigationSort = 5;
     protected static bool $isScopedToTenant = false;
@@ -26,11 +26,11 @@ class MonevResource extends Resource
         return auth()->user()?->isAdmin() ?? false;
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         $bulanOptions = config('paseban.bulan');
 
-        return $form->schema([
+        return $form->components([
             Forms\Components\Select::make('kegiatan_id')
                 ->relationship('kegiatanStatistik', 'nama')
                 ->searchable()->preload()->required(),
@@ -57,15 +57,19 @@ class MonevResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                ->label('Kegiatan')->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-            Tables\Columns\TextColumn::make('tanggal_mulai')->date('d M Y')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->label('Kegiatan')->limit(30)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
+            Tables\Columns\TextColumn::make('bulan_rencana_mulai')
+                ->label('Bulan Mulai')
+                ->formatStateUsing(fn ($state) => config("paseban.bulan.{$state}") ?? $state)
+                ->sortable()
+                ->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
-                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray')->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray')->size(\Filament\Support\Enums\TextSize::Large),
         ])->filters([        
-        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
+        ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder

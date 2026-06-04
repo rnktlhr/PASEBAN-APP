@@ -8,7 +8,7 @@ use App\Enums\StatusKominfo;
 use App\Filament\Resources\MetadataResource\Pages;
 use App\Models\Metadata;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,9 +16,9 @@ use Filament\Tables\Table;
 class MetadataResource extends Resource
 {
     protected static ?string $model = Metadata::class;
-    protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-circle-stack';
     protected static ?string $pluralModelLabel = 'Metadata';
-    protected static ?string $navigationGroup = 'Pemantauan';
+    protected static string | \UnitEnum | null $navigationGroup = 'Pemantauan';
     protected static ?string $navigationLabel = 'Metadata';
     protected static ?int $navigationSort = 3;
     protected static bool $isScopedToTenant = false;
@@ -29,10 +29,10 @@ class MetadataResource extends Resource
         return $u && ($u->isAdmin() || $u->isKominfo());
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         $user = auth()->user();
-        return $form->schema([
+        return $form->components([
             Forms\Components\Select::make('kegiatan_id')
                 ->relationship('kegiatanStatistik', 'nama')
                 ->searchable()->preload()->required()
@@ -63,17 +63,18 @@ class MetadataResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('kegiatanStatistik.dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->label('Dinas')->searchable()->sortable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
-                ->label('Kegiatan')->limit(30)->searchable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                ->label('Kegiatan')->limit(30)->searchable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\TextColumn::make('jenis')
                 ->badge()
-                ->color(fn ($state) => match ($state->value) {
+                ->color(fn ($state) => match (is_object($state) ? $state->value : $state) {
                     'kegiatan' => 'primary',
                     'variabel' => 'info',
                     'indikator' => 'success',
-                })->size(Tables\Columns\TextColumn\TextColumnSize::Large),
-            Tables\Columns\TextColumn::make('tahun')->sortable()->size(Tables\Columns\TextColumn\TextColumnSize::Large),
+                    default => 'gray',
+                })->size(\Filament\Support\Enums\TextSize::Large),
+            Tables\Columns\TextColumn::make('tahun')->sortable()->size(\Filament\Support\Enums\TextSize::Large),
             Tables\Columns\SelectColumn::make('status_kominfo')
                 ->options(StatusKominfo::metadataOptions())
                 ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo()))
@@ -85,7 +86,7 @@ class MetadataResource extends Resource
         ])->filters([
             Tables\Filters\SelectFilter::make('jenis')
                 ->options(JenisMetadata::options()),
-        ])->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()]);
+        ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
