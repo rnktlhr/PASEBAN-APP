@@ -1,13 +1,11 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'PASEBAN'); ?>
+<?php $__env->startSection('meta_description', 'Dashboard pemantauan kegiatan statistik sektoral Kabupaten Bantul. Lihat progress Romantik, Metadata, Aliran Data, dan Monitoring Evaluasi.'); ?>
 
-@section('title', 'PASEBAN')
-@section('meta_description', 'Dashboard pemantauan kegiatan statistik sektoral Kabupaten Bantul. Lihat progress Romantik, Metadata, Aliran Data, dan Monitoring Evaluasi.')
-
-@section('content')
-    {{-- Hero Section --}}
+<?php $__env->startSection('content'); ?>
+    
     <section
         style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-900) 60%, #021a3d 100%); color: #fff; position: relative; overflow: hidden;">
-        {{-- decorative grid --}}
+        
         <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .12;" aria-hidden="true">
             <defs>
                 <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
@@ -16,7 +14,7 @@
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
-        {{-- glow --}}
+        
         <div
             style="position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(245,130,32,.25), transparent 70%); border-radius: 50%;">
         </div>
@@ -26,7 +24,8 @@
                 <div
                     style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(245,130,32,.18); border: 1px solid rgba(245,130,32,.4); font-size: 12px; font-weight: 600; color: #fdbd83; margin-bottom: 24px;">
                     <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--orange);"></span>
-                    Periode Pelaporan &middot; Tahun {{ $tahun }}
+                    Periode Pelaporan &middot; Tahun <?php echo e($tahun); ?>
+
                 </div>
                 <h1 class="hero-title" style="margin: 0;">
                     Selamat Datang di <span
@@ -42,21 +41,21 @@
                 <div class="hero-stats">
                     <div>
                         <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
-                            {{ $totalDinas }}</div>
+                            <?php echo e($totalDinas); ?></div>
                         <div
                             style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
                             OPD Terdaftar</div>
                     </div>
                     <div>
                         <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
-                            {{ $totalKegiatan }}</div>
+                            <?php echo e($totalKegiatan); ?></div>
                         <div
                             style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
-                            Kegiatan {{ $tahun }}</div>
+                            Kegiatan <?php echo e($tahun); ?></div>
                     </div>
                     <div>
                         <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
-                            {{ $tingkatRespon }}%</div>
+                            <?php echo e($tingkatRespon); ?>%</div>
                         <div
                             style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
                             Tingkat Respon</div>
@@ -69,8 +68,8 @@
                     style="position: absolute; top: 20px; right: 0; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 22px 22px 10px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.25); transform: rotate(2deg);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
                         <span class="mono"
-                            style="letter-spacing: 1.5px; font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.8);" x-html="slides[active].title + ' &middot; {{ $tahun }}'">ROMANTIK
-                            &middot; {{ $tahun }}</span>
+                            style="letter-spacing: 1.5px; font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.8);" x-html="slides[active].title + ' &middot; <?php echo e($tahun); ?>'">ROMANTIK
+                            &middot; <?php echo e($tahun); ?></span>
                         <span
                             style="color: #00B69B; font-weight: 700; letter-spacing: 1px; font-size: 10px; display: flex; align-items: center; gap: 5px;">
                             <span
@@ -104,14 +103,14 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--muted);"
                         class="mono">
-                        <span x-text="slides[active].cardValue + ' / ' + slides[active].cardTotal">{{ $romantikDiajukan }} / {{ $totalKegiatan }}</span><span x-text="slides[active].cardPct + '%'">{{ $pctRomantik }}%</span>
+                        <span x-text="slides[active].cardValue + ' / ' + slides[active].cardTotal"><?php echo e($romantikDiajukan); ?> / <?php echo e($totalKegiatan); ?></span><span x-text="slides[active].cardPct + '%'"><?php echo e($pctRomantik); ?>%</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- Summary Cards --}}
+    
     <section style="padding: 72px 0 40px;">
         <div class="container">
             <div style="margin-bottom: 28px;">
@@ -121,10 +120,10 @@
                 <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
                     Ringkasan Kegiatan Statistik</h2>
                 <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Capaian kegiatan statistik sektoral
-                    lintas OPD per tahun {{ $tahun }}.</p>
+                    lintas OPD per tahun <?php echo e($tahun); ?>.</p>
             </div>
             <div class="summary-cards-grid">
-                @php
+                <?php
                     $cards = [
                         ['icon' => '<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>', 'title' => 'Identifikasi Kegiatan Statistik', 'value' => $totalKegiatan, 'label' => 'kegiatan tahun ini', 'sub' => null, 'url' => route('public.kegiatan')],
                         ['icon' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/>', 'title' => 'Romantik', 'value' => $romantikDiajukan, 'label' => 'sudah diajukan', 'sub' => ['value' => $romantikBelum, 'label' => 'belum diajukan'], 'url' => route('public.romantik')],
@@ -133,15 +132,15 @@
                         ['icon' => '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>', 'title' => 'Metadata Indikator', 'value' => $metaIndikatorDone, 'label' => 'sudah menyusun', 'sub' => ['value' => $metaIndikatorTotal - $metaIndikatorDone, 'label' => 'belum menyusun'], 'url' => route('public.metadata')],
                         ['icon' => '<path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2-2.4-3.5-4.4-3.5h-1.2c-.7-3-3.2-5.2-6.2-5.6-3-.3-5.9 1.3-7.3 4-1.2 2.5-1 6.5.5 8.8m8.7-1.6V21"/><path d="M16 16l-4-4-4 4"/>', 'title' => 'Aliran Data Sedata Sebantul', 'value' => $aliranTayang, 'label' => 'sudah tayang', 'sub' => ['value' => $aliranBelum, 'label' => 'belum tayang'], 'url' => route('public.aliran_data')],
                     ];
-                @endphp
-                @foreach($cards as $card)
-                    <a href="{{ $card['url'] }}" class="card-link">
+                ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $cards; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <a href="<?php echo e($card['url']); ?>" class="card-link">
                         <div
                             style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
                             <div
                                 style="width: 44px; height: 44px; border-radius: 10px; background: var(--orange-50); color: var(--orange-600); display: grid; place-items: center;">
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $card['icon'] !!}</svg>
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><?php echo $card['icon']; ?></svg>
                             </div>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted);">
@@ -150,30 +149,30 @@
                             </svg>
                         </div>
                         <h3 style="margin: 0 0 16px; font-size: 15.5px; font-weight: 700; color: var(--navy);">
-                            {{ $card['title'] }}</h3>
+                            <?php echo e($card['title']); ?></h3>
                         <div style="display: flex; gap: 20px; align-items: flex-end;">
                             <div>
                                 <span class="mono"
-                                    style="font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;">{{ $card['value'] }}</span>
+                                    style="font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;"><?php echo e($card['value']); ?></span>
                                 <span
-                                    style="font-size: 13px; color: var(--muted); margin-left: 6px;">{{ $card['label'] }}</span>
+                                    style="font-size: 13px; color: var(--muted); margin-left: 6px;"><?php echo e($card['label']); ?></span>
                             </div>
-                            @if($card['sub'])
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($card['sub']): ?>
                                 <div>
                                     <span class="mono"
-                                        style="font-size: 16px; font-weight: 600; color: var(--muted);">{{ $card['sub']['value'] }}</span>
+                                        style="font-size: 16px; font-weight: 600; color: var(--muted);"><?php echo e($card['sub']['value']); ?></span>
                                     <span
-                                        style="font-size: 12px; color: var(--muted); margin-left: 4px;">{{ $card['sub']['label'] }}</span>
+                                        style="font-size: 12px; color: var(--muted); margin-left: 4px;"><?php echo e($card['sub']['label']); ?></span>
                                 </div>
-                            @endif
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </a>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </div>
     </section>
 
-    {{-- Visualisasi Data Section --}}
+    
     <section style="padding: 20px 0 80px;">
         <div class="container">
             <div style="margin-bottom: 28px;">
@@ -193,9 +192,9 @@
                             Statistik</h3>
                         <select onchange="window.location.href='?tahun=' + this.value"
                             style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') - 4; $y <= date('Y') + 2; $y++): ?>
+                                <option value="<?php echo e($y); ?>" <?php echo e($tahun == $y ? 'selected' : ''); ?>><?php echo e($y); ?></option>
+                            <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
                     </div>
                     <div id="bar-chart" style="flex: 1; width: 100%;"></div>
@@ -214,9 +213,9 @@
                             (Romantik)</h3>
                         <select onchange="window.location.href='?tahun=' + this.value"
                             style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') - 4; $y <= date('Y') + 2; $y++): ?>
+                                <option value="<?php echo e($y); ?>" <?php echo e($tahun == $y ? 'selected' : ''); ?>><?php echo e($y); ?></option>
+                            <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
                     </div>
                     <div id="donut-romantik"
@@ -226,10 +225,10 @@
                         style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
                         <div style="display: flex; align-items: center; gap: 6px;"><span
                                 style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
-                            diajukan {{ $romantikDiajukan }}</div>
+                            diajukan <?php echo e($romantikDiajukan); ?></div>
                         <div style="display: flex; align-items: center; gap: 6px;"><span
                                 style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
-                            diajukan {{ $romantikBelum }}</div>
+                            diajukan <?php echo e($romantikBelum); ?></div>
                     </div>
                 </div>
 
@@ -240,9 +239,9 @@
                         </h3>
                         <select onchange="window.location.href='?tahun=' + this.value"
                             style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') - 4; $y <= date('Y') + 2; $y++): ?>
+                                <option value="<?php echo e($y); ?>" <?php echo e($tahun == $y ? 'selected' : ''); ?>><?php echo e($y); ?></option>
+                            <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
                     </div>
                     <div id="donut-metadata"
@@ -252,10 +251,10 @@
                         style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
                         <div style="display: flex; align-items: center; gap: 6px;"><span
                                 style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
-                            menyusun {{ $metaKegiatanDone }}</div>
+                            menyusun <?php echo e($metaKegiatanDone); ?></div>
                         <div style="display: flex; align-items: center; gap: 6px;"><span
                                 style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
-                            menyusun {{ $metaKegiatanTotal - $metaKegiatanDone }}</div>
+                            menyusun <?php echo e($metaKegiatanTotal - $metaKegiatanDone); ?></div>
                     </div>
                 </div>
 
@@ -266,9 +265,9 @@
                             Sebantul)</h3>
                         <select onchange="window.location.href='?tahun=' + this.value"
                             style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') - 4; $y <= date('Y') + 2; $y++): ?>
+                                <option value="<?php echo e($y); ?>" <?php echo e($tahun == $y ? 'selected' : ''); ?>><?php echo e($y); ?></option>
+                            <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </select>
                     </div>
                     <div id="donut-aliran"
@@ -278,25 +277,45 @@
                         style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
                         <div style="display: flex; align-items: center; gap: 6px;"><span
                                 style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
-                            tayang {{ $aliranTayang }}</div>
+                            tayang <?php echo e($aliranTayang); ?></div>
                         <div style="display: flex; align-items: center; gap: 6px;"><span
                                 style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
-                            tayang {{ $aliranBelum }}</div>
+                            tayang <?php echo e($aliranBelum); ?></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- Monitoring & Evaluasi Section --}}
+    
     <section
         style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
         <div class="container">
-            <livewire:monev-calendar :tahun-awal="$tahun" />
+            <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('monev-calendar', ['tahunAwal' => $tahun]);
+
+$__key = null;
+
+$__key ??= \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::generateKey('lw-3295371926-0', $__key);
+
+$__html = app('livewire')->mount($__name, $__params, $__key);
+
+echo $__html;
+
+unset($__html);
+unset($__key);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
         </div>
     </section>
 
-    {{-- Pembinaan Section --}}
+    
     <section style="padding: 72px 0;">
         <div class="container">
             <div
@@ -324,7 +343,7 @@
                         Materi dan dokumentasi pembinaan kegiatan statistik sektoral — akses panduan teknis, regulasi, dan
                         modul pelatihan untuk seluruh OPD se-Kabupaten Bantul.
                     </p>
-                    <a href="{{ config('paseban.pedoman_url') }}" target="_blank" rel="noopener noreferrer"
+                    <a href="<?php echo e(config('paseban.pedoman_url')); ?>" target="_blank" rel="noopener noreferrer"
                         style="display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(245,130,32,.4); text-decoration: none; transition: transform .15s ease;">
                         Masuk Modul Pembinaan <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -350,24 +369,24 @@
                         </div>
                         <div
                             style="font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: .5px; text-transform: uppercase;">
-                            Tahun {{ $tahun }}</div>
+                            Tahun <?php echo e($tahun); ?></div>
                         <div
                             style="font-size: 14px; font-weight: 700; color: var(--navy); margin-top: 4px; line-height: 1.3;">
                             Penyusunan Metadata Kegiatan</div>
                         <div
                             style="margin-top: 14px; height: 4px; background: #eef0f4; border-radius: 2px; overflow: hidden;">
-                            <div style="width: {{ $pctMetadata }}%; height: 100%; background: var(--orange);"></div>
+                            <div style="width: <?php echo e($pctMetadata); ?>%; height: 100%; background: var(--orange);"></div>
                         </div>
                         <div class="mono"
                             style="font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: .5px;">
-                            {{ $metaKegiatanDone }} / {{ $metaKegiatanTotal }} kegiatan selesai</div>
+                            <?php echo e($metaKegiatanDone); ?> / <?php echo e($metaKegiatanTotal); ?> kegiatan selesai</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- Berita Acara Section --}}
+    
     <section style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line);">
         <div class="container">
             <div style="margin-bottom: 28px;">
@@ -378,41 +397,41 @@
                     Acara Kegiatan</h2>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                @foreach($beritaAcara as $berita)
-                    <a href="{{ route('berita-acara.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $beritaAcara; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <a href="<?php echo e(route('berita-acara.show', $berita)); ?>" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
                         <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--orange)); position: relative;">
-                            @php
+                            <?php
                                 $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
                                 if (!$coverImage && $berita->narasi) {
                                     preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $berita->narasi, $image);
                                     $coverImage = $image['src'] ?? null;
                                 }
-                            @endphp
-                            @if($coverImage)
-                                <img src="{{ $coverImage }}" alt="{{ $berita->judul }}" style="width: 100%; height: 100%; object-fit: cover;">
-                            @endif
+                            ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($coverImage): ?>
+                                <img src="<?php echo e($coverImage); ?>" alt="<?php echo e($berita->judul); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px; z-index: 10;">
-                                {{ ucfirst($berita->kategori) }}</div>
+                                <?php echo e(ucfirst($berita->kategori)); ?></div>
                         </div>
                         <div style="padding: 22px; flex: 1; display: flex; flex-direction: column;">
                             <div class="mono"
                                 style="font-size: 11px; color: var(--muted); letter-spacing: .8px; margin-bottom: 10px;">
-                                {{ $berita->tanggal->format('d M Y') }}</div>
+                                <?php echo e($berita->tanggal->format('d M Y')); ?></div>
                             <h3
                                 style="margin: 0; font-size: 16.5px; line-height: 1.35; font-weight: 700; color: var(--navy); letter-spacing: -.2px;">
-                                {{ $berita->judul }}</h3>
+                                <?php echo e($berita->judul); ?></h3>
                             <p style="margin: 10px 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1;">
-                                {{ Str::limit($berita->ringkasan, 150) }}</p>
+                                <?php echo e(Str::limit($berita->ringkasan, 150)); ?></p>
                             <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--orange-600); margin-top: auto;">
                                 Lihat Detail
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                             </div>
                         </div>
                     </a>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
             <div style="margin-top: 36px; text-align: center;">
-                <a href="{{ route('berita-acara.index') }}" class="btn-outline-orange">
+                <a href="<?php echo e(route('berita-acara.index')); ?>" class="btn-outline-orange">
                     Lihat Semua Berita Acara
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -423,22 +442,22 @@
             </div>
         </div>
     </section>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.0"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Bar Chart — uses real data from controller
             new ApexCharts(document.querySelector("#bar-chart"), {
                 series: [
-                    { name: 'Jumlah Kegiatan', data: @json($chartValues) }
+                    { name: 'Jumlah Kegiatan', data: <?php echo json_encode($chartValues, 15, 512) ?> }
                 ],
                 chart: { type: 'bar', height: 220, toolbar: { show: false } },
                 colors: ['#F58220'],
                 plotOptions: { bar: { horizontal: false, columnWidth: '50%', borderRadius: 4 } },
                 dataLabels: { enabled: true, style: { fontFamily: 'JetBrains Mono', fontSize: '11px', colors: ['#fff'] } },
-                xaxis: { categories: @json($chartYears), axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { fontFamily: 'JetBrains Mono', colors: '#6B6560' } } },
+                xaxis: { categories: <?php echo json_encode($chartYears, 15, 512) ?>, axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { fontFamily: 'JetBrains Mono', colors: '#6B6560' } } },
                 yaxis: { show: false },
                 grid: { show: false },
                 legend: { show: false }
@@ -456,9 +475,9 @@
                 }).render();
             }
 
-            donut('#donut-romantik', {{ $pctRomantik }}, 'SUDAH DIAJUKAN', '#F58220');
-            donut('#donut-metadata', {{ $pctMetadata }}, 'SUDAH MENYUSUN', '#F58220');
-            donut('#donut-aliran', {{ $pctAliran }}, 'SUDAH TAYANG', '#F58220');
+            donut('#donut-romantik', <?php echo e($pctRomantik); ?>, 'SUDAH DIAJUKAN', '#F58220');
+            donut('#donut-metadata', <?php echo e($pctMetadata); ?>, 'SUDAH MENYUSUN', '#F58220');
+            donut('#donut-aliran', <?php echo e($pctAliran); ?>, 'SUDAH TAYANG', '#F58220');
 
         });
 
@@ -471,26 +490,26 @@
                     { 
                         title: 'ROMANTIK', 
                         cardTitle: 'Romantik Disetujui',
-                        cardValue: {{ $romantikDiajukan }},
-                        cardTotal: {{ $totalKegiatan }},
-                        cardPct: {{ $pctRomantik }},
-                        chartData: @json($heroMonthlyRomantik)
+                        cardValue: <?php echo e($romantikDiajukan); ?>,
+                        cardTotal: <?php echo e($totalKegiatan); ?>,
+                        cardPct: <?php echo e($pctRomantik); ?>,
+                        chartData: <?php echo json_encode($heroMonthlyRomantik, 15, 512) ?>
                     },
                     { 
                         title: 'METADATA', 
                         cardTitle: 'Metadata Terisi',
-                        cardValue: {{ $metaKegiatanDone }},
-                        cardTotal: {{ $metaKegiatanTotal ?: 1 }},
-                        cardPct: {{ $pctMetadata }},
-                        chartData: @json($heroMonthlyMetadata)
+                        cardValue: <?php echo e($metaKegiatanDone); ?>,
+                        cardTotal: <?php echo e($metaKegiatanTotal ?: 1); ?>,
+                        cardPct: <?php echo e($pctMetadata); ?>,
+                        chartData: <?php echo json_encode($heroMonthlyMetadata, 15, 512) ?>
                     },
                     { 
                         title: 'ALIRAN DATA', 
                         cardTitle: 'Data Sudah Tayang',
-                        cardValue: {{ $aliranTayang }},
-                        cardTotal: {{ $aliranTotal ?: 1 }},
-                        cardPct: {{ $pctAliran }},
-                        chartData: @json($heroMonthlyAliran)
+                        cardValue: <?php echo e($aliranTayang); ?>,
+                        cardTotal: <?php echo e($aliranTotal ?: 1); ?>,
+                        cardPct: <?php echo e($pctAliran); ?>,
+                        chartData: <?php echo json_encode($heroMonthlyAliran, 15, 512) ?>
                     }
                 ],
                 start() {
@@ -545,4 +564,5 @@
             }));
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\PASEBAN APP\resources\views/home.blade.php ENDPATH**/ ?>

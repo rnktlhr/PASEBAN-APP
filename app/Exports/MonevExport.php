@@ -43,7 +43,7 @@ class MonevExport implements FromView, ShouldAutoSize
 
         $monevItems = $monevQuery->get();
 
-        return view('exports.monev_pdf', [
+        return view('exports.monev_excel', [
             'monevItems' => $monevItems,
             'tahun' => $this->tahun,
         ]);

@@ -28,7 +28,7 @@
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $monev->kegiatanStatistik->nama ?? '-' }}</td>
                 <td>{{ $monev->kegiatanStatistik->dinas->nama ?? '-' }}</td>
-                <td>{{ ucfirst(str_replace('_', ' ', $monev->status)) }}</td>
+                <td>{{ $monev->status?->label() ?? '-' }}</td>
                 @for($m = 1; $m <= 12; $m++)
                     @php
                         $isRencana = $m >= $monev->bulan_rencana_mulai && $m <= $monev->bulan_rencana_selesai;
