@@ -1,0 +1,1 @@
+<style>.fi-ta-cell .fi-badge { min-width: 140px; justify-content: center; }</style><?php /**PATH D:\PASEBAN APP\storage\framework\views/321a8271734b6086b3775f9d1da715a4.blade.php ENDPATH**/ ?>

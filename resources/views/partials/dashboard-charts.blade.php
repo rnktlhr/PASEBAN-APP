@@ -125,8 +125,8 @@ document.addEventListener('alpine:init', () => {
                                 size: '75%', 
                                 labels: { 
                                     show: true, 
-                                    name: { show: true, color: '#6B6560', fontSize: '11px', fontWeight: 600, fontFamily: 'Inter', offsetY: 25 }, 
-                                    value: { show: true, color: '#F58220', fontSize: '32px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -10 },
+                                    name: { show: true, color: '#6B6560', fontSize: '10px', fontWeight: 600, fontFamily: 'Inter', offsetY: 20 }, 
+                                    value: { show: true, color: '#F58220', fontSize: '28px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -10 },
                                     total: {
                                         show: true,
                                         showAlways: true,
@@ -142,7 +142,7 @@ document.addEventListener('alpine:init', () => {
                     dataLabels: { enabled: false },
                     stroke: { width: 3, colors: ['#fff'] },
                     legend: { show: false },
-                    tooltip: { enabled: true, theme: 'light' }
+                    tooltip: { enabled: true, theme: 'dark', fillSeriesColor: false }
                 });
                 
                 window.chartInstances[type].render();

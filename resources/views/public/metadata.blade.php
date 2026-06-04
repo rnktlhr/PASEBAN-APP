@@ -32,7 +32,7 @@
                         @php
                             $stKominfo = $item->status_kominfo instanceof \App\Enums\StatusKominfo ? $item->status_kominfo : \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
                         @endphp
-                        <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stKominfo?->cssColor() ?? '#F58220' }}; background: {{ $stKominfo?->cssBgColor() ?? 'rgba(245,130,32,.1)' }};">
+                        <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stKominfo?->cssColor() ?? '#F58220' }}; background: {{ $stKominfo?->cssBgColor() ?? 'rgba(245,130,32,.1)' }};">
                             {{ $stKominfo?->label() ?? ucwords(str_replace('_', ' ', $item->status_kominfo)) }}
                         </span>
                     </td>
@@ -40,7 +40,7 @@
                         @php
                             $stBps = $item->status_bps instanceof \App\Enums\StatusBps ? $item->status_bps : \App\Enums\StatusBps::tryFrom($item->status_bps);
                         @endphp
-                        <span style="display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stBps?->cssColor() ?? '#F58220' }}; background: {{ $stBps?->cssBgColor() ?? 'rgba(245,130,32,.1)' }};">
+                        <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stBps?->cssColor() ?? '#F58220' }}; background: {{ $stBps?->cssBgColor() ?? 'rgba(245,130,32,.1)' }};">
                             {{ $stBps?->label() ?? ucwords(str_replace('_', ' ', $item->status_bps)) }}
                         </span>
                     </td>

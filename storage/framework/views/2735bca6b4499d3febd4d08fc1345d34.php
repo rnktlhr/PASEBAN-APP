@@ -15,7 +15,7 @@
                     <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 60px;">No</th>
                     <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 220px;">OPD</th>
                     <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy);">Nama Kegiatan</th>
-                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 260px;">Jenis</th>
+                    <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 360px;">Jenis</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +28,7 @@
                         <?php
                             $jenisEnum = $keg->jenis instanceof \App\Enums\JenisKegiatan ? $keg->jenis : \App\Enums\JenisKegiatan::tryFrom($keg->jenis);
                         ?>
-                        <span style="display: inline-block; width: 145px; text-align: center; padding: 5px 0; border-radius: 999px; font-size: 11.5px; font-weight: 600; color: <?php echo e($jenisEnum?->cssColor() ?? 'var(--muted)'); ?>; background: <?php echo e($jenisEnum?->cssBgColor() ?? '#f5f5f5'); ?>;">
+                        <span style="display: inline-block; width: 310px; text-align: center; padding: 6px 0; border-radius: 999px; font-size: 11.5px; font-weight: 600; color: <?php echo e($jenisEnum?->cssColor() ?? 'var(--muted)'); ?>; background: <?php echo e($jenisEnum?->cssBgColor() ?? '#f5f5f5'); ?>;">
                             <?php echo e($jenisEnum?->label() ?? ucfirst(str_replace('_', ' ', $keg->jenis))); ?>
 
                         </span>

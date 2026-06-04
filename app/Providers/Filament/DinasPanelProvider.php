@@ -60,6 +60,10 @@ class DinasPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                \Filament\View\PanelsRenderHook::HEAD_END,
+                fn (): string => \Illuminate\Support\Facades\Blade::render('<style>.fi-ta-cell .fi-badge { min-width: 140px; justify-content: center; }</style>')
+            );
     }
 }
