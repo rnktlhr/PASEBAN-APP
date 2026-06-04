@@ -70,26 +70,18 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return match ($panel->getId()) {
             'admin' => $this->isAdmin(),
-            'dinas' => true, // Everyone valid can access Dinas panel, restricted by tenants
+            'dinas' => $this->isDinas() || $this->isKominfo() || $this->isBappeda(),
             default => false,
         };
     }
 
     public function getTenants(Panel $panel): array|Collection
     {
-        if ($this->isAdmin() || $this->isKominfo() || $this->isBappeda()) {
-            return \App\Models\Dinas::all();
-        }
-
         return $this->dinas ? [$this->dinas] : [];
     }
 
     public function canAccessTenant(Model $tenant): bool
     {
-        if ($this->isAdmin() || $this->isKominfo() || $this->isBappeda()) {
-            return true;
-        }
-
         return $this->dinas_id === $tenant->id;
     }
 }
