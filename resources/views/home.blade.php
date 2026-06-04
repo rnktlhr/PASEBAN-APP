@@ -191,8 +191,12 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                         <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Identifikasi Kegiatan
                             Statistik</h3>
-                        <span
-                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                        <select onchange="window.location.href='?tahun=' + this.value"
+                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
+                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
+                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
+                            @endfor
+                        </select>
                     </div>
                     <div id="bar-chart" style="flex: 1; width: 100%;"></div>
                     <div
@@ -208,8 +212,12 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                         <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Rekomendasi Statistik
                             (Romantik)</h3>
-                        <span
-                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                        <select onchange="window.location.href='?tahun=' + this.value"
+                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
+                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
+                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
+                            @endfor
+                        </select>
                     </div>
                     <div id="donut-romantik"
                         style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
@@ -230,8 +238,12 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                         <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Metadata Statistik
                         </h3>
-                        <span
-                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                        <select onchange="window.location.href='?tahun=' + this.value"
+                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
+                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
+                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
+                            @endfor
+                        </select>
                     </div>
                     <div id="donut-metadata"
                         style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
@@ -252,8 +264,12 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                         <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Aliran Data (Sedata
                             Sebantul)</h3>
-                        <span
-                            style="display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff;">{{ $tahun }}</span>
+                        <select onchange="window.location.href='?tahun=' + this.value"
+                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
+                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
+                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
+                            @endfor
+                        </select>
                     </div>
                     <div id="donut-aliran"
                         style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
