@@ -25,8 +25,8 @@
         </div>
         <div id="donut-romantik" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px; cursor: pointer;"></div>
         <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'done', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah diajukan <span x-text="counts.romantik.done"></span></div>
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'belum', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum diajukan <span x-text="counts.romantik.belum"></span></div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'done', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah diajukan</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'belum', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum diajukan</div>
         </div>
     </div>
 
@@ -41,9 +41,9 @@
         </div>
         <div id="donut-metadata" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px; cursor: pointer;"></div>
         <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'done', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah menyusun <span x-text="counts.metadata.done"></span></div>
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'draft', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #94a3b8;"></span>Draft <span x-text="counts.metadata.draft"></span></div>
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'belum', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum menyusun <span x-text="counts.metadata.belum"></span></div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'done', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah menyusun</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'draft', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #94a3b8;"></span>Draft</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'belum', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum menyusun</div>
         </div>
     </div>
 
@@ -58,8 +58,8 @@
         </div>
         <div id="donut-aliran" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px; cursor: pointer;"></div>
         <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'done', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah tayang <span x-text="counts.aliran.done"></span></div>
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'belum', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum tayang <span x-text="counts.aliran.belum"></span></div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'done', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah tayang</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'belum', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum tayang</div>
         </div>
     </div>
 
@@ -112,6 +112,7 @@ document.addEventListener('alpine:init', () => {
                 series: [{ name: 'Jumlah Kegiatan', data: <?php echo json_encode($chartValues, 15, 512) ?> }],
                 chart: { 
                     type: 'bar', height: 220, toolbar: { show: false },
+                    animations: { enabled: true, dynamicAnimation: { speed: 800 } },
                     events: {
                         dataPointSelection: function(event, chartContext, config) {
                             const year = chartContext.w.globals.labels[config.dataPointIndex];
@@ -129,14 +130,20 @@ document.addEventListener('alpine:init', () => {
             });
             window.chartInstances.kegiatan.render();
 
-            function initDonutChart(el, type, series, labels, colors, centerLabel, pct) {
+            window.chartPcts = window.chartPcts || {};
+            window.chartPcts['romantik'] = <?php echo e($pctRomantik); ?>;
+            window.chartPcts['metadata'] = <?php echo e($pctMetadata); ?>;
+            window.chartPcts['aliran'] = <?php echo e($pctAliran); ?>;
+
+            function initDonutChart(el, type, series, labels, colors, centerLabel) {
                 window.chartInstances[type] = new ApexCharts(document.querySelector(el), {
                     series: series,
                     labels: labels,
                     colors: colors,
                     chart: { 
                         type: 'donut', 
-                        height: 260 
+                        height: 260,
+                        animations: { enabled: true, dynamicAnimation: { speed: 800 } }
                     },
                     plotOptions: { 
                         pie: { 
@@ -151,7 +158,7 @@ document.addEventListener('alpine:init', () => {
                                         showAlways: true,
                                         label: centerLabel,
                                         formatter: function (w) {
-                                            return pct + "%"
+                                            return window.chartPcts[type] + "%"
                                         }
                                     }
                                 } 
@@ -167,9 +174,9 @@ document.addEventListener('alpine:init', () => {
                 window.chartInstances[type].render();
             }
 
-            initDonutChart('#donut-romantik', 'romantik', [this.counts.romantik.done, this.counts.romantik.belum], ['Sudah diajukan', 'Belum diajukan'], ['#05529F', '#F58220'], 'SUDAH DIAJUKAN', <?php echo e($pctRomantik); ?>);
-            initDonutChart('#donut-metadata', 'metadata', [this.counts.metadata.done, this.counts.metadata.draft, this.counts.metadata.belum], ['Sudah menyusun', 'Draft', 'Belum menyusun'], ['#05529F', '#94a3b8', '#F58220'], 'SUDAH MENYUSUN', <?php echo e($pctMetadata); ?>);
-            initDonutChart('#donut-aliran', 'aliran', [this.counts.aliran.done, this.counts.aliran.belum], ['Sudah tayang', 'Belum tayang'], ['#05529F', '#F58220'], 'SUDAH TAYANG', <?php echo e($pctAliran); ?>);
+            initDonutChart('#donut-romantik', 'romantik', [this.counts.romantik.done, this.counts.romantik.belum], ['Sudah diajukan', 'Belum diajukan'], ['#05529F', '#F58220'], 'SUDAH DIAJUKAN');
+            initDonutChart('#donut-metadata', 'metadata', [this.counts.metadata.done, this.counts.metadata.draft, this.counts.metadata.belum], ['Sudah menyusun', 'Draft', 'Belum menyusun'], ['#05529F', '#94a3b8', '#F58220'], 'SUDAH MENYUSUN');
+            initDonutChart('#donut-aliran', 'aliran', [this.counts.aliran.done, this.counts.aliran.belum], ['Sudah tayang', 'Belum tayang'], ['#05529F', '#F58220'], 'SUDAH TAYANG');
         },
 
         async updateChart(type) {
@@ -180,8 +187,14 @@ document.addEventListener('alpine:init', () => {
                 
                 if (type === 'kegiatan') {
                     window.chartInstances.kegiatan.updateSeries([{ data: data.data }]);
-                    window.chartInstances.kegiatan.updateOptions({ xaxis: { categories: data.categories }});
                 } else {
+                    let currentTotal = 0;
+                    if (type === 'metadata') {
+                        currentTotal = this.counts[type].done + (this.counts[type].draft || 0) + this.counts[type].belum;
+                    } else {
+                        currentTotal = this.counts[type].done + this.counts[type].belum;
+                    }
+
                     this.counts[type].done = data.done;
                     this.counts[type].belum = data.belum;
                     if (data.draft !== undefined) this.counts[type].draft = data.draft;
@@ -192,20 +205,17 @@ document.addEventListener('alpine:init', () => {
                     } else {
                         newSeries = [data.done, data.belum];
                     }
-                    window.chartInstances[type].updateSeries(newSeries);
-                    window.chartInstances[type].updateOptions({
-                        plotOptions: {
-                            pie: {
-                                donut: {
-                                    labels: {
-                                        total: {
-                                            formatter: function() { return data.pct + "%" }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
+                    
+                    // Update global pct before series update so the formatter uses the new value
+                    window.chartPcts[type] = data.pct;
+                    
+                    if (currentTotal === 0) {
+                        // If chart was empty, use updateOptions to trigger the initial load animation
+                        window.chartInstances[type].updateOptions({ series: newSeries });
+                    } else {
+                        // Smoothly animate the chart slices
+                        window.chartInstances[type].updateSeries(newSeries);
+                    }
                 }
             } catch (e) { console.error(e); }
         },

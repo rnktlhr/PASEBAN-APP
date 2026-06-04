@@ -41,6 +41,7 @@ class BeritaAcaraResource extends Resource
                         ->label('Gambar Utama / Cover (Opsional)')
                         ->helperText('Hanya jika ingin cover berbeda. Jika dikosongkan, foto pertama di kotak Narasi bawah akan otomatis dijadikan cover.')
                         ->image()
+                        ->maxSize(2048)
                         ->disk('public')
                         ->directory('berita-acara')
                         ->columnSpanFull(),

@@ -56,12 +56,19 @@ class DatabaseSeeder extends Seeder
         }
 
         // ──────────────────────────────────────────────
-        // 2. Users (4 roles)
+        // 2. Users (4 roles) — with random secure passwords
         // ──────────────────────────────────────────────
+        $defaultPassword = \Illuminate\Support\Str::random(16);
+        $this->command->warn('════════════════════════════════════════════');
+        $this->command->warn('  DEFAULT PASSWORD FOR ALL SEEDED USERS:');
+        $this->command->info("  {$defaultPassword}");
+        $this->command->warn('  ⚠ CHANGE THESE PASSWORDS IMMEDIATELY!');
+        $this->command->warn('════════════════════════════════════════════');
+
         User::create([
             'name'     => 'Admin BPS Bantul',
             'email'    => 'admin@bps.go.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make($defaultPassword),
             'role'     => 'admin_bps',
         ]);
 
@@ -70,7 +77,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name'     => 'Operator Kominfo',
             'email'    => 'kominfo@bantulkab.go.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make($defaultPassword),
             'role'     => 'kominfo',
             'dinas_id' => $kominfoDinas->id,
         ]);
@@ -80,7 +87,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name'     => 'Viewer Bappeda',
             'email'    => 'bappeda@bantulkab.go.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make($defaultPassword),
             'role'     => 'bappeda',
             'dinas_id' => $bappedaDinas->id,
         ]);
@@ -89,7 +96,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name'     => 'Operator Dinas Sosial',
             'email'    => 'dinsos@bantulkab.go.id',
-            'password' => Hash::make('password'),
+            'password' => Hash::make($defaultPassword),
             'role'     => 'dinas',
             'dinas_id' => $dinasList[0]->id,
         ]);

@@ -29,6 +29,8 @@ class PembinaanResource extends Resource
                 ->label('Upload Absensi (CSV/Spreadsheet)')
                 ->acceptedFileTypes(['text/csv', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                 ->helperText('Kolom CSV: nama_dinas, hadir (ya/tidak). Contoh: "Dinas Sosial, ya"')
+                ->maxSize(5120)
+                ->disk('local')
                 ->directory('absensi')
                 ->columnSpanFull(),
         ]);

@@ -16,6 +16,11 @@ class DashboardApiController extends Controller
 {
     public function getChartData(Request $request)
     {
+        $request->validate([
+            'year' => 'nullable|integer|min:2020|max:2099',
+            'type' => 'required|string|in:kegiatan,romantik,metadata,aliran',
+        ]);
+
         $year = (int) $request->input('year', date('Y'));
         $type = $request->input('type');
 
@@ -69,9 +74,15 @@ class DashboardApiController extends Controller
 
     public function getChartDetails(Request $request)
     {
+        $request->validate([
+            'year' => 'nullable|integer|min:2020|max:2099',
+            'type' => 'required|string|in:kegiatan,romantik,metadata,aliran',
+            'status' => 'required|string|max:50',
+        ]);
+
         $year = (int) $request->input('year', date('Y'));
-        $type = $request->input('type'); // romantik, metadata, aliran, kegiatan
-        $status = $request->input('status'); // done, belum, or year (for kegiatan)
+        $type = $request->input('type');
+        $status = $request->input('status');
 
         $items = [];
         $title = "Rincian Data";

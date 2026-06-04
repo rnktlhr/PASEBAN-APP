@@ -29,14 +29,9 @@ Route::get('/metadata', [PublicController::class, 'metadata'])->name('public.met
 Route::get('/aliran-data', [PublicController::class, 'aliranData'])->name('public.aliran_data');
 Route::get('/monitoring-evaluasi', [PublicController::class, 'monev'])->name('public.monev');
 
-// API Routes for Dashboard
-Route::get('/api/dashboard/chart-data', [DashboardApiController::class, 'getChartData'])->name('api.dashboard.chart-data');
-Route::get('/api/dashboard/chart-details', [DashboardApiController::class, 'getChartDetails'])->name('api.dashboard.chart-details');
-
-// Temporary route to clear stuck sessions
-Route::get('/force-logout', function () {
-    auth()->logout();
-    session()->invalidate();
-    session()->regenerateToken();
-    return redirect('/admin');
+// API Routes for Dashboard (Used on public home page, so no auth middleware)
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('/api/dashboard/chart-data', [DashboardApiController::class, 'getChartData'])->name('api.dashboard.chart-data');
+    Route::get('/api/dashboard/chart-details', [DashboardApiController::class, 'getChartDetails'])->name('api.dashboard.chart-details');
 });
+

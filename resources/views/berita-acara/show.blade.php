@@ -31,7 +31,7 @@
             </div>
             @if($beritaAcara->narasi)
                 <div class="prose" style="font-size: 16px; line-height: 1.8; color: var(--ink); margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--line);">
-                    {!! $beritaAcara->narasi !!}
+                    {!! \App\Helpers\HtmlSanitizer::clean($beritaAcara->narasi) !!}
                 </div>
             @endif
         </div>
