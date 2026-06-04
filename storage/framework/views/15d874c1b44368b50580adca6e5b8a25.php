@@ -3,7 +3,7 @@
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 28px;">
         <div>
             <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">◆ Monitoring & Evaluasi</div>
-            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Gantt Chart Kegiatan Statistik Sektoral</h2>
+            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Kegiatan Statistik Sektoral</h2>
         </div>
         <div style="display: flex; align-items: center; gap: 16px;">
             <a href="<?php echo e(route('monev.export.excel', ['tahun' => $tahun, 'dinas_id' => $dinas_id, 'status' => $status, 'search' => $search])); ?>" style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 6px; background: #2e7d32; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: .2px; box-shadow: var(--shadow-sm); transition: background .15s;">
