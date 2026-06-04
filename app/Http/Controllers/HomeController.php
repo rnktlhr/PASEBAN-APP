@@ -48,6 +48,7 @@ class HomeController extends Controller
         // Metadata (per jenis)
         $metaKegiatan = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::KEGIATAN->value);
         $metaKegiatanDone = (clone $metaKegiatan)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
+        $metaKegiatanDraft = (clone $metaKegiatan)->where('status_kominfo', StatusKominfo::DRAFT->value)->count();
         $metaKegiatanTotal = $metaKegiatan->count();
 
         $metaVariabel = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::VARIABEL->value);
@@ -63,21 +64,16 @@ class HomeController extends Controller
         $aliranBelum  = AliranData::where('tahun', $tahun)->where('sudah_tayang', false)->count();
         $aliranTotal  = $aliranTayang + $aliranBelum;
 
-        // --- Bar Chart (kegiatan per tahun) — single optimized query ---
-        $yearRange = config('paseban.chart_year_range', 5);
-        $startYear = $tahun - ($yearRange - 1);
+        // --- Bar Chart (kegiatan per bulan untuk tahun ini) ---
+        $chartData = KegiatanStatistik::select(DB::raw('MONTH(created_at) as bulan'), DB::raw('COUNT(*) as total'))
+            ->where('tahun', $tahun)
+            ->groupBy('bulan')
+            ->pluck('total', 'bulan');
 
-        $chartData = KegiatanStatistik::select('tahun', DB::raw('COUNT(*) as total'))
-            ->whereBetween('tahun', [$startYear, $tahun])
-            ->groupBy('tahun')
-            ->orderBy('tahun')
-            ->pluck('total', 'tahun');
-
-        $chartYears = [];
+        $chartYears = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
         $chartValues = [];
-        for ($y = $startYear; $y <= $tahun; $y++) {
-            $chartYears[] = (string) $y;
-            $chartValues[] = $chartData->get($y, 0);
+        for ($m = 1; $m <= 12; $m++) {
+            $chartValues[] = $chartData->get($m, 0);
         }
 
         // --- Donut percentages ---
@@ -109,7 +105,7 @@ class HomeController extends Controller
         return view('home', compact(
             'tahun', 'totalKegiatan', 'totalDinas', 'tingkatRespon',
             'romantikDiajukan', 'romantikBelum',
-            'metaKegiatanDone', 'metaKegiatanTotal',
+            'metaKegiatanDone', 'metaKegiatanDraft', 'metaKegiatanTotal',
             'metaVariabelDone', 'metaVariabelTotal',
             'metaIndikatorDone', 'metaIndikatorTotal',
             'aliranTayang', 'aliranBelum', 'aliranTotal',

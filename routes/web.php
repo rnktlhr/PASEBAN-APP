@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardApiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,10 @@ Route::get('/romantik', [PublicController::class, 'romantik'])->name('public.rom
 Route::get('/metadata', [PublicController::class, 'metadata'])->name('public.metadata');
 Route::get('/aliran-data', [PublicController::class, 'aliranData'])->name('public.aliran_data');
 Route::get('/monitoring-evaluasi', [PublicController::class, 'monev'])->name('public.monev');
+
+// API Routes for Dashboard
+Route::get('/api/dashboard/chart-data', [DashboardApiController::class, 'getChartData'])->name('api.dashboard.chart-data');
+Route::get('/api/dashboard/chart-details', [DashboardApiController::class, 'getChartDetails'])->name('api.dashboard.chart-details');
 
 // Temporary route to clear stuck sessions
 Route::get('/force-logout', function () {

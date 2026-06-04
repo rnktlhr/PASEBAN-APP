@@ -35,8 +35,8 @@ enum StatusDinas: string
     public function cssColor(): string
     {
         return match ($this) {
-            self::SUDAH_DIAJUKAN, self::SUDAH_DIPERBAIKI => 'var(--green)',
-            default => 'var(--muted)',
+            self::SUDAH_DIAJUKAN, self::SUDAH_DIPERBAIKI => '#05529F',
+            default => '#F58220',
         };
     }
 
@@ -46,8 +46,8 @@ enum StatusDinas: string
     public function cssBgColor(): string
     {
         return match ($this) {
-            self::SUDAH_DIAJUKAN, self::SUDAH_DIPERBAIKI => '#e6f4ea',
-            default => 'var(--line)',
+            self::SUDAH_DIAJUKAN, self::SUDAH_DIPERBAIKI => '#eef2f6',
+            default => 'rgba(245,130,32,.1)',
         };
     }
 

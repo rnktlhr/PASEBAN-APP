@@ -185,105 +185,7 @@
                 <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Klik diagram untuk melihat rincian per
                     dinas.</p>
             </div>
-            <div class="charts-grid">
-                <div
-                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Identifikasi Kegiatan
-                            Statistik</h3>
-                        <select onchange="window.location.href='?tahun=' + this.value"
-                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div id="bar-chart" style="flex: 1; width: 100%;"></div>
-                    <div
-                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                        <div style="display: flex; align-items: center; gap: 6px;"><span
-                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Jumlah
-                            kegiatan</div>
-                    </div>
-                </div>
-
-                <div
-                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Rekomendasi Statistik
-                            (Romantik)</h3>
-                        <select onchange="window.location.href='?tahun=' + this.value"
-                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div id="donut-romantik"
-                        style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
-                    </div>
-                    <div
-                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                        <div style="display: flex; align-items: center; gap: 6px;"><span
-                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
-                            diajukan {{ $romantikDiajukan }}</div>
-                        <div style="display: flex; align-items: center; gap: 6px;"><span
-                                style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
-                            diajukan {{ $romantikBelum }}</div>
-                    </div>
-                </div>
-
-                <div
-                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Metadata Statistik
-                        </h3>
-                        <select onchange="window.location.href='?tahun=' + this.value"
-                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div id="donut-metadata"
-                        style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
-                    </div>
-                    <div
-                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                        <div style="display: flex; align-items: center; gap: 6px;"><span
-                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
-                            menyusun {{ $metaKegiatanDone }}</div>
-                        <div style="display: flex; align-items: center; gap: 6px;"><span
-                                style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
-                            menyusun {{ $metaKegiatanTotal - $metaKegiatanDone }}</div>
-                    </div>
-                </div>
-
-                <div
-                    style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Aliran Data (Sedata
-                            Sebantul)</h3>
-                        <select onchange="window.location.href='?tahun=' + this.value"
-                            style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
-                            @for($y = date('Y') - 4; $y <= date('Y') + 2; $y++)
-                                <option value="{{ $y }}" {{ $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <div id="donut-aliran"
-                        style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px;">
-                    </div>
-                    <div
-                        style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-                        <div style="display: flex; align-items: center; gap: 6px;"><span
-                                style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Sudah
-                            tayang {{ $aliranTayang }}</div>
-                        <div style="display: flex; align-items: center; gap: 6px;"><span
-                                style="width: 12px; height: 12px; border-radius: 3px; background: #f1f3f5;"></span>Belum
-                            tayang {{ $aliranBelum }}</div>
-                    </div>
-                </div>
+            @include('partials.dashboard-charts')
             </div>
         </div>
     </section>
@@ -429,36 +331,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.0"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Bar Chart — uses real data from controller
-            new ApexCharts(document.querySelector("#bar-chart"), {
-                series: [
-                    { name: 'Jumlah Kegiatan', data: @json($chartValues) }
-                ],
-                chart: { type: 'bar', height: 220, toolbar: { show: false } },
-                colors: ['#F58220'],
-                plotOptions: { bar: { horizontal: false, columnWidth: '50%', borderRadius: 4 } },
-                dataLabels: { enabled: true, style: { fontFamily: 'JetBrains Mono', fontSize: '11px', colors: ['#fff'] } },
-                xaxis: { categories: @json($chartYears), axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { fontFamily: 'JetBrains Mono', colors: '#6B6560' } } },
-                yaxis: { show: false },
-                grid: { show: false },
-                legend: { show: false }
-            }).render();
-
-            // Donut config
-            function donut(el, val, label, color) {
-                new ApexCharts(document.querySelector(el), {
-                    series: [val],
-                    chart: { type: 'radialBar', height: 260 },
-                    plotOptions: { radialBar: { hollow: { size: '65%' }, track: { background: '#f1f3f5', strokeWidth: '100%' }, dataLabels: { name: { show: true, color: '#6B6560', fontSize: '11px', fontWeight: 600, fontFamily: 'Inter', offsetY: 25 }, value: { show: true, color: '#05529F', fontSize: '32px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -10, formatter: function (v) { return v + "%" } } } } },
-                    fill: { colors: [color] },
-                    stroke: { lineCap: 'round' },
-                    labels: [label]
-                }).render();
-            }
-
-            donut('#donut-romantik', {{ $pctRomantik }}, 'SUDAH DIAJUKAN', '#F58220');
-            donut('#donut-metadata', {{ $pctMetadata }}, 'SUDAH MENYUSUN', '#F58220');
-            donut('#donut-aliran', {{ $pctAliran }}, 'SUDAH TAYANG', '#F58220');
+            
 
         });
 
