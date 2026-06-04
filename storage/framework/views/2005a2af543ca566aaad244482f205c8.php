@@ -26,6 +26,7 @@
     <?php echo \Livewire\Mechanisms\FrontendAssets\FrontendAssets::scripts(); ?>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
+    <script src="https://cdn.jsdelivr.net/npm/sienna-accessibility/dist/sienna-accessibility.umd.js" defer></script>
 </body>
 </html>
 <?php /**PATH D:\PASEBAN APP\resources\views/layouts/app.blade.php ENDPATH**/ ?>

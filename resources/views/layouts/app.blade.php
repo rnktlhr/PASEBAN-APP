@@ -24,5 +24,6 @@
 
     @livewireScripts
     @stack('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sienna-accessibility/dist/sienna-accessibility.umd.js" defer></script>
 </body>
 </html>
