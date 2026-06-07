@@ -62,7 +62,7 @@
                     }, 400);
                 ">
                     <span x-text="text1" style="color: #fff;"></span><span
-                        style="background: linear-gradient(120deg, #fff 0%, #e0a87a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" x-text="text2"></span><span class="typing-cursor" style="display: inline-block; width: 4px; height: 0.8em; background: #e0a87a; margin-left: 6px; animation: cursor-blink 1s step-end infinite; transform: translateY(4px);"></span>
+                        style="background: linear-gradient(120deg, #fff 0%, #e0a87a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" x-text="text2"></span>
                 </h1>
                 <p class="anim-fade-up delay-3"
                     style="margin: 20px 0 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.78); font-weight: 400;">
