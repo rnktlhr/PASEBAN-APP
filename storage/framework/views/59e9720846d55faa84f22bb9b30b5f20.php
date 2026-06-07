@@ -24,6 +24,7 @@
 
         <nav class="nav-links" :class="{ 'open': mobileOpen }" style="justify-content: flex-end; margin-left: auto;">
             <a href="<?php echo e(route('home')); ?>" class="navbar-link <?php echo e(request()->routeIs('home') ? 'active' : ''); ?>">Home</a>
+            <a href="<?php echo e(route('public.pembinaan')); ?>" class="navbar-link <?php echo e(request()->routeIs('public.pembinaan') ? 'active' : ''); ?>">Pembinaan</a>
             <div class="dropdown" x-data="{ dropOpen: false }">
                 <a href="#" class="navbar-link <?php echo e(request()->routeIs(['public.kegiatan', 'public.romantik', 'public.metadata', 'public.aliran_data']) ? 'active' : ''); ?>" @click.prevent="dropOpen = !dropOpen">Pemantauan <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><path d="m6 9 6 6 6-6"/></svg></a>
                 <div class="dropdown-menu" :class="{ 'open': dropOpen }" x-show="dropOpen || $el.closest('.dropdown').matches(':hover')" x-cloak>
@@ -34,7 +35,6 @@
                 </div>
             </div>
             <a href="<?php echo e(route('public.monev')); ?>" class="navbar-link <?php echo e(request()->routeIs('public.monev') ? 'active' : ''); ?>">Monitoring Evaluasi</a>
-            <a href="<?php echo e(route('berita-acara.index')); ?>" class="navbar-link <?php echo e(request()->routeIs('berita-acara.*') ? 'active' : ''); ?>">Berita Acara</a>
         </nav>
     </div>
 </header>

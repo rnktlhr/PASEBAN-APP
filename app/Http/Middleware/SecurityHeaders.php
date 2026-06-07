@@ -40,15 +40,13 @@ class SecurityHeaders
             "frame-ancestors 'self'",
         ];
 
-        if (app()->environment('local')) {
-            // Allow Vite dev server
-            $viteHosts = "http://localhost:5173 http://127.0.0.1:5173";
-            $viteWs = "ws://localhost:5173 ws://127.0.0.1:5173";
-            $csp[1] .= " " . $viteHosts;
-            $csp[2] .= " " . $viteHosts;
-            $csp[4] .= " " . $viteHosts;
-            $csp[5] .= " " . $viteHosts . " " . $viteWs;
-        }
+        // Allow Vite dev server (often needed locally even if APP_ENV is production)
+        $viteHosts = "http://localhost:5173 http://127.0.0.1:5173";
+        $viteWs = "ws://localhost:5173 ws://127.0.0.1:5173";
+        $csp[1] .= " " . $viteHosts;
+        $csp[2] .= " " . $viteHosts;
+        $csp[4] .= " " . $viteHosts;
+        $csp[5] .= " " . $viteHosts . " " . $viteWs;
 
         $response->headers->set('Content-Security-Policy', implode('; ', $csp));
 

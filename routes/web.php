@@ -27,6 +27,7 @@ Route::get('/kegiatan', [PublicController::class, 'kegiatan'])->name('public.keg
 Route::get('/romantik', [PublicController::class, 'romantik'])->name('public.romantik');
 Route::get('/metadata', [PublicController::class, 'metadata'])->name('public.metadata');
 Route::get('/aliran-data', [PublicController::class, 'aliranData'])->name('public.aliran_data');
+Route::get('/pembinaan', [PublicController::class, 'pembinaan'])->name('public.pembinaan');
 Route::get('/monitoring-evaluasi', [PublicController::class, 'monev'])->name('public.monev');
 
 // API Routes for Dashboard (Used on public home page, so no auth middleware)

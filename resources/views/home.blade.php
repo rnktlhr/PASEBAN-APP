@@ -178,9 +178,6 @@
     <section style="padding: 72px 0 40px;">
         <div class="container">
             <div class="scroll-reveal" style="margin-bottom: 28px;">
-                <div
-                    style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
-                    ◆ Ringkasan Statistik</div>
                 <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
                     Ringkasan Kegiatan Statistik</h2>
                 <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Capaian kegiatan statistik sektoral
@@ -240,9 +237,6 @@
     <section style="padding: 20px 0 80px;">
         <div class="container">
             <div class="scroll-reveal" style="margin-bottom: 28px;">
-                <div
-                    style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
-                    ◆ Visualisasi Data</div>
                 <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
                     Visualisasi Progress Pemantauan</h2>
                 <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Klik diagram untuk melihat rincian per
@@ -319,14 +313,14 @@
                             Tahun {{ $tahun }}</div>
                         <div
                             style="font-size: 14px; font-weight: 700; color: var(--navy); margin-top: 4px; line-height: 1.3;">
-                            Penyusunan Metadata Kegiatan</div>
+                            Tingkat Kehadiran Pembinaan</div>
                         <div
                             style="margin-top: 14px; height: 4px; background: #eef0f4; border-radius: 2px; overflow: hidden;">
-                            <div style="width: {{ $pctMetadata }}%; height: 100%; background: var(--orange);"></div>
+                            <div style="width: {{ $pctKehadiran }}%; height: 100%; background: var(--orange);"></div>
                         </div>
                         <div class="mono"
                             style="font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: .5px;">
-                            {{ $metaKegiatanDone }} / {{ $metaKegiatanTotal }} kegiatan selesai</div>
+                            {{ $totalKehadiran }} / {{ $maxKehadiran }} kehadiran OPD</div>
                     </div>
                 </div>
             </div>

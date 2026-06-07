@@ -105,6 +105,14 @@ class HomeController extends Controller
         $heroMonthlyMetadata = $getMonthly(Metadata::where('jenis', JenisMetadata::KEGIATAN->value)->whereIn('status_kominfo', StatusKominfo::completedValues()));
         $heroMonthlyAliran = $getMonthly(AliranData::where('sudah_tayang', true));
 
+        // --- Pembinaan Kehadiran ---
+        $totalSesiPembinaan = \App\Models\Pembinaan::whereYear('tanggal', $tahun)->count();
+        $totalKehadiran = \App\Models\PresensiPembinaan::whereHas('pembinaan', function($q) use ($tahun) {
+            $q->whereYear('tanggal', $tahun);
+        })->where('hadir', true)->count();
+        $maxKehadiran = $totalSesiPembinaan * $totalDinas;
+        $pctKehadiran = $maxKehadiran > 0 ? round(($totalKehadiran / $maxKehadiran) * 100) : 0;
+
         return view('home', compact(
             'tahun', 'totalKegiatan', 'totalDinas', 'tingkatRespon',
             'romantikDiajukan', 'romantikBelum',
@@ -115,6 +123,7 @@ class HomeController extends Controller
             'chartYears', 'chartValues',
             'heroMonthlyRomantik', 'heroMonthlyMetadata', 'heroMonthlyAliran',
             'pctRomantik', 'pctMetadata', 'pctAliran',
+            'totalSesiPembinaan', 'totalKehadiran', 'maxKehadiran', 'pctKehadiran',
             'beritaAcara'
         ));
     }

@@ -50,6 +50,13 @@ class PembinaanResource extends Resource
             Tables\Columns\TextColumn::make('file_absensi')->label('File')->limit(20),
         ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }
+    public static function getRelations(): array
+    {
+        return [
+            \App\Filament\Resources\PembinaanResource\RelationManagers\PresensiRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return ['index' => Pages\ListPembinaan::route('/'), 'create' => Pages\CreatePembinaan::route('/create'), 'edit' => Pages\EditPembinaan::route('/{record}/edit')];

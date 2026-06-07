@@ -68,7 +68,19 @@
     </div>
 
     {{-- Table --}}
-    <div class="table-responsive" style="position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+    <div class="table-responsive" style="position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm);" x-data="{ perPage: 10, page: 1 }">
+        <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 13.5px; color: var(--muted);">Tampilkan</span>
+                <select x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span style="font-size: 13.5px; color: var(--muted);">entri</span>
+            </div>
+        </div>
         {{-- Loading overlay — uses CSS class from style.css --}}
         <div wire:loading class="loading-overlay">
             <div class="spinner"></div>
@@ -91,7 +103,7 @@
                 @php
                     $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                 @endphp
-                <tr style="border-bottom: 1px solid var(--line);">
+                <tr style="border-bottom: 1px solid var(--line);" x-show="page === Math.ceil({{ $idx + 1 }} / perPage)">
                     <td style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1;">{{ $idx + 1 }}</td>
                     <td style="padding: 14px 16px; font-weight: 600; color: var(--navy); position: sticky; left: 50px; background: #fff; z-index: 1;">{{ $monev->kegiatanStatistik->nama ?? '-' }}</td>
                     <td style="padding: 14px 16px; color: var(--ink);">{{ $monev->kegiatanStatistik->dinas->singkatan ?? '-' }}</td>
@@ -124,6 +136,16 @@
                 @endforelse
             </tbody>
         </table>
+        
+        <div style="padding: 16px 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div style="font-size: 13.5px; color: var(--muted);">
+                Menampilkan entri dari total {{ count($monevItems) }}
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" @click="if(page > 1) page--" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page === 1 ? 'opacity: 0.5; cursor: not-allowed;' : ''">Sebelumnya</button>
+                <button type="button" @click="if(page < Math.ceil({{ count($monevItems) }} / perPage)) page++" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page >= Math.ceil({{ count($monevItems) }} / perPage) ? 'opacity: 0.5; cursor: not-allowed;' : ''">Selanjutnya</button>
+            </div>
+        </div>
     </div>
 
     {{-- Legend --}}
