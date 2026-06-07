@@ -89,18 +89,21 @@ class HomeController extends Controller
         $beritaAcara = BeritaAcara::orderBy('tanggal', 'desc')->take(10)->get();
 
         // --- Monthly data for hero chart ---
-        $getMonthly = function($model) use ($tahun) {
-            $data = $model::select(DB::raw('MONTH(created_at) as m'), DB::raw('COUNT(*) as c'))
-                ->where('tahun', $tahun)->groupBy('m')->pluck('c', 'm');
+        $getMonthly = function($query) use ($tahun) {
+            $data = $query->select(DB::raw('MONTH(created_at) as m'), DB::raw('COUNT(*) as c'))
+                ->where('tahun', $tahun)
+                ->groupBy(DB::raw('MONTH(created_at)'))
+                ->pluck('c', 'm');
             $arr = [];
             for ($i = 1; $i <= 12; $i++) {
                 $arr[] = $data->get($i, 0);
             }
             return $arr;
         };
-        $heroMonthlyRomantik = $getMonthly(new Romantik);
-        $heroMonthlyMetadata = $getMonthly(new Metadata);
-        $heroMonthlyAliran = $getMonthly(new AliranData);
+
+        $heroMonthlyRomantik = $getMonthly(Romantik::whereIn('status_dinas', StatusDinas::submittedValues()));
+        $heroMonthlyMetadata = $getMonthly(Metadata::where('jenis', JenisMetadata::KEGIATAN->value)->whereIn('status_kominfo', StatusKominfo::completedValues()));
+        $heroMonthlyAliran = $getMonthly(AliranData::where('sudah_tayang', true));
 
         return view('home', compact(
             'tahun', 'totalKegiatan', 'totalDinas', 'tingkatRespon',

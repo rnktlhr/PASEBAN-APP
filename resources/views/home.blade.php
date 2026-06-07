@@ -16,7 +16,7 @@
         <div class="container hero-grid" style="padding-top: 72px; padding-bottom: 88px; position: relative;">
             <div style="min-width: 0;">
                 <div class="anim-fade-up delay-1"
-                    style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(235,137,27,.18); border: 1px solid rgba(235,137,27,.4); font-size: 12px; font-weight: 600; color: #e0a87a; margin-bottom: 24px;">
+                    style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(235,137,27,.18); border: 1px solid rgba(235,137,27,.4); font-size: 12px; font-weight: 600; color: var(--orange); margin-bottom: 24px;">
                     <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--orange);"></span>
                     Periode Pelaporan &middot; Tahun {{ $tahun }}
                 </div>
@@ -63,7 +63,7 @@
                     }, 400);
                 ">
                     <span x-text="text1" style="color: #fff;"></span><span
-                        style="background: linear-gradient(120deg, #fff 0%, #e0a87a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" x-text="text2"></span>
+                        style="background: linear-gradient(120deg, #fff 0%, var(--orange) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" x-text="text2"></span>
                 </h1>
                 <p class="anim-fade-up delay-3"
                     style="margin: 20px 0 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.78); font-weight: 400;">
@@ -281,7 +281,7 @@
 
                 <div style="position: relative; color: #fff;">
                     <div
-                        style="font-size: 12px; letter-spacing: 1.5px; color: #e0a87a; text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
+                        style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange); text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
                         ◆ Pembinaan Statistik</div>
                     <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">
                         Pembinaan Statistik Sektoral Kabupaten Bantul</h2>
@@ -521,7 +521,8 @@
                                 colors: { 
                                     backgroundBarColors: ['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)', 'rgba(255,255,255,0.06)'], 
                                     backgroundBarRadius: 3 
-                                }
+                                },
+                                dataLabels: { position: 'center' }
                             } 
                         },
                         xaxis: {
@@ -530,9 +531,14 @@
                             axisBorder: { show: false },
                             axisTicks: { show: false }
                         },
-                        yaxis: { show: false },
+                        yaxis: { show: false, min: 0, max: this.slides[this.active].cardTotal },
                         grid: { show: false, padding: { top: 0, right: 0, bottom: 0, left: 10 } },
-                        dataLabels: { enabled: false },
+                        dataLabels: { 
+                            enabled: true,
+                            formatter: function(val) { return val > 0 ? val : ''; },
+                            style: { colors: ['#ffffff'], fontSize: '10px', fontFamily: 'JetBrains Mono', fontWeight: 700 },
+                            offsetY: 0
+                        },
                         tooltip: { enabled: false }
                     };
                     this.chartInstance = new ApexCharts(document.querySelector("#hero-mini-chart"), options);
@@ -540,6 +546,9 @@
                 },
                 updateChart() {
                     if(this.chartInstance) {
+                        this.chartInstance.updateOptions({
+                            yaxis: { min: 0, max: this.slides[this.active].cardTotal, show: false }
+                        }, false, false);
                         this.chartInstance.updateSeries([{
                             data: this.slides[this.active].chartData
                         }]);

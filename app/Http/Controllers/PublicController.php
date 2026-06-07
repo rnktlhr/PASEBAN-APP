@@ -7,6 +7,7 @@ use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
 use App\Models\Monev;
 use App\Models\Romantik;
+use App\Models\Dinas;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
@@ -20,8 +21,10 @@ class PublicController extends Controller
             ->where('tahun', $tahun)
             ->orderBy('dinas_id')
             ->get();
+            
+        $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.kegiatan', compact('kegiatan', 'tahun'));
+        return view('public.kegiatan', compact('kegiatan', 'tahun', 'dinasList'));
     }
 
     public function romantik(Request $request)
@@ -32,8 +35,10 @@ class PublicController extends Controller
         $romantik = Romantik::with('kegiatanStatistik.dinas')
             ->where('tahun', $tahun)
             ->get();
+            
+        $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.romantik', compact('romantik', 'tahun'));
+        return view('public.romantik', compact('romantik', 'tahun', 'dinasList'));
     }
 
     public function metadata(Request $request)
@@ -46,8 +51,10 @@ class PublicController extends Controller
             ->orderBy('kegiatan_id')
             ->orderBy('jenis')
             ->get();
+            
+        $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.metadata', compact('metadata', 'tahun'));
+        return view('public.metadata', compact('metadata', 'tahun', 'dinasList'));
     }
 
     public function aliranData(Request $request)
@@ -58,8 +65,10 @@ class PublicController extends Controller
         $aliranData = AliranData::with('kegiatanStatistik.dinas')
             ->where('tahun', $tahun)
             ->get();
+            
+        $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.aliran_data', compact('aliranData', 'tahun'));
+        return view('public.aliran_data', compact('aliranData', 'tahun', 'dinasList'));
     }
 
     public function monev(Request $request)
