@@ -35,8 +35,8 @@ class SecurityHeaders
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "img-src 'self' data: blob:",
-            "connect-src 'self'",
+            "img-src 'self' data: blob: https://ui-avatars.com",
+            "connect-src 'self' https://cdn.jsdelivr.net",
             "frame-ancestors 'self'",
         ];
 

@@ -1,4 +1,4 @@
-<div class="charts-grid" x-data="dashboardCharts()" x-init="initCharts()">
+<div class="charts-grid" x-data="dashboardCharts()">
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Identifikasi Kegiatan Statistik</h3>
@@ -10,7 +10,7 @@
         </div>
         <div id="bar-chart" style="flex: 1; width: 100%; cursor: pointer;"></div>
         <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Jumlah kegiatan</div>
+            <div style="display: flex; align-items: center; gap: 6px;"><span style="width: 12px; height: 12px; border-radius: 3px; background: #002B6A;"></span>Jumlah kegiatan</div>
         </div>
     </div>
 
@@ -25,8 +25,8 @@
         </div>
         <div id="donut-romantik" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px; cursor: pointer;"></div>
         <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'done', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah diajukan</div>
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'belum', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum diajukan</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'done', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #002B6A;"></span>Sudah diajukan</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('romantik', 'belum', years.romantik)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #EB891B;"></span>Belum diajukan</div>
         </div>
     </div>
 
@@ -41,9 +41,9 @@
         </div>
         <div id="donut-metadata" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px; cursor: pointer;"></div>
         <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'done', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah menyusun</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'done', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #002B6A;"></span>Sudah menyusun</div>
             <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'draft', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #94a3b8;"></span>Draft</div>
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'belum', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum menyusun</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('metadata', 'belum', years.metadata)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #EB891B;"></span>Belum menyusun</div>
         </div>
     </div>
 
@@ -58,8 +58,8 @@
         </div>
         <div id="donut-aliran" style="flex: 1; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 200px; cursor: pointer;"></div>
         <div style="display: flex; justify-content: center; gap: 18px; font-size: 12px; color: var(--muted); margin-top: 8px;">
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'done', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #05529F;"></span>Sudah tayang</div>
-            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'belum', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #F58220;"></span>Belum tayang</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'done', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #002B6A;"></span>Sudah tayang</div>
+            <div style="display: flex; align-items: center; gap: 6px; cursor: pointer;" @click="openModal('aliran', 'belum', years.aliran)"><span style="width: 12px; height: 12px; border-radius: 3px; background: #EB891B;"></span>Belum tayang</div>
         </div>
     </div>
 
@@ -84,6 +84,19 @@ document.addEventListener('alpine:init', () => {
         modalLoading: false,
         modalTitle: '',
         modalItems: [],
+        initialized: false,
+
+        init() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !this.initialized) {
+                        this.initialized = true;
+                        this.initCharts();
+                    }
+                });
+            }, { threshold: 0.1 });
+            observer.observe(this.$el);
+        },
 
         initCharts() {
             window.chartInstances = {};
@@ -101,7 +114,7 @@ document.addEventListener('alpine:init', () => {
                         }
                     }
                 },
-                colors: ['#05529F'],
+                colors: ['#002B6A'],
                 plotOptions: { bar: { horizontal: false, columnWidth: '50%', borderRadius: 4 } },
                 dataLabels: { enabled: true, style: { fontFamily: 'JetBrains Mono', fontSize: '11px', colors: ['#fff'] } },
                 xaxis: { categories: @json($chartYears), axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { fontFamily: 'JetBrains Mono', colors: '#6B6560' } } },
@@ -132,12 +145,15 @@ document.addEventListener('alpine:init', () => {
                                 size: '75%', 
                                 labels: { 
                                     show: true, 
-                                    name: { show: true, color: '#6B6560', fontSize: '10px', fontWeight: 600, fontFamily: 'Inter', offsetY: 20 }, 
-                                    value: { show: true, color: '#F58220', fontSize: '28px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -10 },
+                                    name: { show: true, color: '#6B6560', fontSize: '8.5px', fontWeight: 600, fontFamily: 'Inter', offsetY: 22 }, 
+                                    value: { show: true, color: '#EB891B', fontSize: '28px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -10 },
                                     total: {
                                         show: true,
                                         showAlways: true,
                                         label: centerLabel,
+                                        fontSize: '10px',
+                                        fontWeight: 600,
+                                        color: '#6B6560',
                                         formatter: function (w) {
                                             return window.chartPcts[type] + "%"
                                         }
@@ -155,9 +171,9 @@ document.addEventListener('alpine:init', () => {
                 window.chartInstances[type].render();
             }
 
-            initDonutChart('#donut-romantik', 'romantik', [this.counts.romantik.done, this.counts.romantik.belum], ['Sudah diajukan', 'Belum diajukan'], ['#05529F', '#F58220'], 'SUDAH DIAJUKAN');
-            initDonutChart('#donut-metadata', 'metadata', [this.counts.metadata.done, this.counts.metadata.draft, this.counts.metadata.belum], ['Sudah menyusun', 'Draft', 'Belum menyusun'], ['#05529F', '#94a3b8', '#F58220'], 'SUDAH MENYUSUN');
-            initDonutChart('#donut-aliran', 'aliran', [this.counts.aliran.done, this.counts.aliran.belum], ['Sudah tayang', 'Belum tayang'], ['#05529F', '#F58220'], 'SUDAH TAYANG');
+            initDonutChart('#donut-romantik', 'romantik', [this.counts.romantik.done, this.counts.romantik.belum], ['Sudah diajukan', 'Belum diajukan'], ['#002B6A', '#EB891B'], 'SUDAH DIAJUKAN');
+            initDonutChart('#donut-metadata', 'metadata', [this.counts.metadata.done, this.counts.metadata.draft, this.counts.metadata.belum], ['Sudah menyusun', 'Draft', 'Belum menyusun'], ['#002B6A', '#94a3b8', '#EB891B'], 'SUDAH MENYUSUN');
+            initDonutChart('#donut-aliran', 'aliran', [this.counts.aliran.done, this.counts.aliran.belum], ['Sudah tayang', 'Belum tayang'], ['#002B6A', '#EB891B'], 'SUDAH TAYANG');
         },
 
         async updateChart(type) {

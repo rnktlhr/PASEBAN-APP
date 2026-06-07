@@ -36,7 +36,7 @@
                     <div class="modal-list-item" style="background: #fff; padding: 16px; border-radius: 8px; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; cursor: default;">
                         <div style="padding-right: 16px;">
                             <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;" x-text="item.dinas"></div>
-                            <div style="font-weight: 600; color: #05529F; font-size: 14.5px; line-height: 1.4;" x-text="item.kegiatan"></div>
+                            <div style="font-weight: 600; color: #002B6A; font-size: 14.5px; line-height: 1.4;" x-text="item.kegiatan"></div>
                         </div>
                         <div>
                             <span :style="`background: ${item.status_bg}; color: ${item.status_color}; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; display: inline-block;`" x-text="item.status_label"></span>

@@ -112,7 +112,7 @@ class DashboardApiController extends Controller
                 $query->where('status_dinas', StatusDinas::BELUM_DIAJUKAN->value);
             }
             $items = $query->get()->map(function($item) {
-                $enum = \App\Enums\StatusDinas::tryFrom($item->status_dinas);
+                $enum = StatusDinas::tryFrom($item->status_dinas);
                 return [
                     'kegiatan' => $item->kegiatanStatistik->nama ?? '-',
                     'dinas' => $item->kegiatanStatistik->dinas->nama ?? '-',
@@ -140,7 +140,7 @@ class DashboardApiController extends Controller
                       ->where('status_kominfo', '!=', StatusKominfo::DRAFT->value);
             }
             $items = $query->get()->map(function($item) {
-                $enum = \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
+                $enum = StatusKominfo::tryFrom($item->status_kominfo);
                 return [
                     'kegiatan' => $item->kegiatanStatistik->nama ?? '-',
                     'dinas' => $item->kegiatanStatistik->dinas->nama ?? '-',
@@ -159,8 +159,8 @@ class DashboardApiController extends Controller
             }
             $items = $query->get()->map(function($item) {
                 $label = $item->sudah_tayang ? 'Sudah Tayang' : 'Belum Tayang';
-                $color = $item->sudah_tayang ? '#05529F' : '#F58220';
-                $bg = $item->sudah_tayang ? '#eef2f6' : 'rgba(245,130,32,.1)';
+                $color = $item->sudah_tayang ? '#002B6A' : '#EB891B';
+                $bg = $item->sudah_tayang ? '#eef2f6' : 'rgba(235,137,27,.1)';
                 return [
                     'kegiatan' => $item->kegiatanStatistik->nama ?? '-',
                     'dinas' => $item->kegiatanStatistik->dinas->nama ?? '-',

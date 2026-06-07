@@ -1,9 +1,21 @@
-<header style="position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--line);">
+<header
+    x-data="{ scrolled: false }"
+    x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 50 })"
+    :style="`position: sticky; top: 0; z-index: 50; transition: box-shadow .3s ease; ${scrolled ? 'box-shadow: 0 4px 24px rgba(0,0,0,.3);' : 'box-shadow: none;'}`"
+>
+    
+    <div :style="`position: absolute; inset: 0; z-index: -2; background: linear-gradient(135deg, var(--navy) 0%, var(--navy-900) 100%); transition: opacity .3s ease; opacity: ${scrolled ? '0.95' : '<?php echo e(request()->routeIs('home') ? '0' : '1'); ?>'};`"></div>
+    
+    
+    <div :style="`position: absolute; inset: 0; z-index: -3; ${scrolled ? 'backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);' : ''}`"></div>
+
+
+
     <div class="container" style="height: 74px; display: flex; align-items: center; gap: 32px;" x-data="{ mobileOpen: false }">
-        <a href="<?php echo e(url('/')); ?>" style="font-size: 20px; font-weight: 800; color: var(--navy); letter-spacing: -0.5px; text-decoration: none;">PASEBAN</a>
+        <a href="<?php echo e(url('/')); ?>" style="font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; text-decoration: none;">PASEBAN</a>
 
         
-        <button class="mobile-menu-btn" @click="mobileOpen = !mobileOpen" style="padding: 8px; color: var(--muted); margin-left: auto;" aria-label="Toggle menu">
+        <button class="mobile-menu-btn" @click="mobileOpen = !mobileOpen" style="padding: 8px; color: rgba(255,255,255,.8); margin-left: auto;" aria-label="Toggle menu">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <g x-show="!mobileOpen"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></g>
                 <g x-show="mobileOpen" style="display: none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></g>

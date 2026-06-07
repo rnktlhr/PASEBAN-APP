@@ -86,7 +86,7 @@ class HomeController extends Controller
         $tingkatRespon = $romantikTotal > 0 ? round(($romantikDiajukan / $romantikTotal) * 100) : 0;
 
         // --- Berita Acara (latest 3) ---
-        $beritaAcara = BeritaAcara::orderBy('tanggal', 'desc')->take(3)->get();
+        $beritaAcara = BeritaAcara::orderBy('tanggal', 'desc')->take(10)->get();
 
         // --- Monthly data for hero chart ---
         $getMonthly = function($model) use ($tahun) {

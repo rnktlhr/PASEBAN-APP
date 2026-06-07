@@ -12,7 +12,7 @@ return [
         'nama' => 'BPS Kabupaten Bantul',
         'alamat' => 'Jl. Gatot Subroto No. 3',
         'kota' => 'Bantul, DI Yogyakarta 55711',
-        'telepon' => '(0274) 367-512',
+        'telepon' => '(0274) 367424',
         'email' => 'bps3402@bps.go.id',
     ],
 

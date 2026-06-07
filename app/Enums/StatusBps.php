@@ -32,7 +32,7 @@ enum StatusBps: string
     public function cssColor(): string
     {
         return match ($this) {
-            self::SEDANG_DIPERIKSA => '#F58220',
+            self::SEDANG_DIPERIKSA => '#EB891B',
             self::PERLU_PERBAIKAN => 'var(--red)',
             self::DISETUJUI => 'var(--green)',
         };
@@ -44,7 +44,7 @@ enum StatusBps: string
     public function cssBgColor(): string
     {
         return match ($this) {
-            self::SEDANG_DIPERIKSA => 'rgba(245,130,32,.1)',
+            self::SEDANG_DIPERIKSA => 'rgba(235,137,27,.1)',
             self::PERLU_PERBAIKAN => 'rgba(220,53,69,.1)',
             self::DISETUJUI => '#e6f4ea',
         };

@@ -1,6 +1,6 @@
 <div>
     
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 28px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 28px; flex-wrap: wrap;">
         <div>
             <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">◆ Monitoring & Evaluasi</div>
             <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Kegiatan Statistik Sektoral</h2>
@@ -21,19 +21,19 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
         <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--muted);">Total Kegiatan</div>
-            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;"><?php echo e($totalKegiatan); ?></div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;" x-data="countUp(<?php echo e($totalKegiatan); ?>)" x-text="count">0</div>
         </div>
         <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: #2e7d32;">Tepat Waktu</div>
-            <div class="mono" style="font-size: 24px; font-weight: 800; color: #2e7d32; margin-top: 6px;"><?php echo e($monevTepatWaktu); ?></div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: #2e7d32; margin-top: 6px;" x-data="countUp(<?php echo e($monevTepatWaktu); ?>)" x-text="count">0</div>
         </div>
         <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--red);">Terlambat</div>
-            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--red); margin-top: 6px;"><?php echo e($monevTerlambat); ?></div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--red); margin-top: 6px;" x-data="countUp(<?php echo e($monevTerlambat); ?>)" x-text="count">0</div>
         </div>
         <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--muted);">Keberhasilan</div>
-            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;"><?php echo e($pctKeberhasilan); ?>%</div>
+            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;" x-data="countUp(<?php echo e($pctKeberhasilan); ?>)"><span x-text="count">0</span>%</div>
         </div>
     </div>
 
@@ -109,7 +109,7 @@
                         ?>
                         <td style="padding: 6px; text-align: center;">
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isRealisasi || $isRencana): ?>
-                            <div style="width: 24px; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($isRealisasi ? 1 : 0.25); ?>; margin: auto;" title="<?php echo e($isRealisasi ? 'Realisasi' : 'Rencana'); ?>"></div>
+                            <div class="scroll-reveal anim-fill-down" style="width: 24px; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($isRealisasi ? 1 : 0.25); ?>; margin: auto; --delay: <?php echo e(($idx * 100) + ($m * 500)); ?>ms;" title="<?php echo e($isRealisasi ? 'Realisasi' : 'Rencana'); ?>"></div>
                             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </td>
                     <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>

@@ -4,34 +4,67 @@
 <?php $__env->startSection('content'); ?>
     
     <section
-        style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-900) 60%, #021a3d 100%); color: #fff; position: relative; overflow: hidden;">
-        
-        <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .12;" aria-hidden="true">
-            <defs>
-                <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
-                    <path d="M56 0H0V56" fill="none" stroke="#fff" stroke-width=".5" />
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
+        style="background: linear-gradient(135deg, var(--navy) 0%, var(--navy-900) 60%, #021a3d 100%); color: #fff; position: relative; overflow: hidden; margin-top: -74px; padding-top: 74px;">
+
         
         <div
-            style="position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(245,130,32,.25), transparent 70%); border-radius: 50%;">
+            style="position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(235,137,27,.25), transparent 70%); border-radius: 50%;">
         </div>
 
         <div class="container hero-grid" style="padding-top: 72px; padding-bottom: 88px; position: relative;">
-            <div>
-                <div
-                    style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(245,130,32,.18); border: 1px solid rgba(245,130,32,.4); font-size: 12px; font-weight: 600; color: #fdbd83; margin-bottom: 24px;">
+            <div style="min-width: 0;">
+                <div class="anim-fade-up delay-1"
+                    style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(235,137,27,.18); border: 1px solid rgba(235,137,27,.4); font-size: 12px; font-weight: 600; color: #e0a87a; margin-bottom: 24px;">
                     <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--orange);"></span>
                     Periode Pelaporan &middot; Tahun <?php echo e($tahun); ?>
 
                 </div>
-                <h1 class="hero-title" style="margin: 0;">
-                    Selamat Datang di <span
-                        style="background: linear-gradient(120deg, #fff 0%, #fdbd83 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Paseban</span>
+                <style>
+                    @keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+                </style>
+                <h1 class="hero-title anim-fade-up delay-2" style="margin: 0; min-height: 1.2em;" x-data="{ text1: '', text2: '', full1: 'Selamat Datang di ', full2: 'Paseban' }" x-init="
+                    setTimeout(() => {
+                        let typeLoop = () => {
+                            let i = 0, j = 0;
+                            text1 = '';
+                            text2 = '';
+                            
+                            let typeChar = () => {
+                                if (i < full1.length) {
+                                    text1 += full1.charAt(i);
+                                    i++;
+                                    setTimeout(typeChar, Math.random() * 50 + 30);
+                                } else if (j < full2.length) {
+                                    text2 += full2.charAt(j);
+                                    j++;
+                                    // Make 'Paseban' type slightly slower for dramatic effect
+                                    setTimeout(typeChar, Math.random() * 80 + 50);
+                                } else {
+                                    setTimeout(() => {
+                                        let delChar = () => {
+                                            if (text2.length > 0) {
+                                                text2 = text2.slice(0, -1);
+                                                setTimeout(delChar, 20);
+                                            } else if (text1.length > 0) {
+                                                text1 = text1.slice(0, -1);
+                                                setTimeout(delChar, 20);
+                                            } else {
+                                                setTimeout(typeLoop, 800);
+                                            }
+                                        };
+                                        delChar();
+                                    }, 5000);
+                                }
+                            };
+                            typeChar();
+                        };
+                        typeLoop();
+                    }, 400);
+                ">
+                    <span x-text="text1" style="color: #fff;"></span><span
+                        style="background: linear-gradient(120deg, #fff 0%, #e0a87a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" x-text="text2"></span><span class="typing-cursor" style="display: inline-block; width: 4px; height: 0.8em; background: #e0a87a; margin-left: 6px; animation: cursor-blink 1s step-end infinite; transform: translateY(4px);"></span>
                 </h1>
-                <p
+                <p class="anim-fade-up delay-3"
                     style="margin: 20px 0 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.78); font-weight: 400;">
                     <strong style="color: #fff; font-weight: 600;">Pemantauan Statistik Sektoral Bantul</strong> — platform
                     terpadu BPS Kabupaten Bantul untuk pembinaan, pendampingan, dan monitoring kegiatan statistik sektoral
@@ -39,23 +72,53 @@
                 </p>
 
                 <div class="hero-stats">
-                    <div>
-                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
-                            <?php echo e($totalDinas); ?></div>
+                    <div class="anim-fade-up" style="animation-delay: 400ms;">
+                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;"
+                             x-data="{ 
+                                 count: 0, target: <?php echo e($totalDinas); ?>,
+                                 animate() {
+                                     this.count = 0;
+                                     let step = this.target / 40;
+                                     let int = setInterval(() => { this.count += step; if(this.count >= this.target){ this.count = this.target; clearInterval(int); } }, 30);
+                                 }
+                             }" 
+                             x-init="setTimeout(() => animate(), 600)"
+                             @slider-changed.window="animate()"
+                             x-text="Math.floor(count)">0</div>
                         <div
                             style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
                             OPD Terdaftar</div>
                     </div>
-                    <div>
-                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
-                            <?php echo e($totalKegiatan); ?></div>
+                    <div class="anim-fade-up" style="animation-delay: 550ms;">
+                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;"
+                             x-data="{ 
+                                 count: 0, target: <?php echo e($totalKegiatan); ?>,
+                                 animate() {
+                                     this.count = 0;
+                                     let step = this.target / 40;
+                                     let int = setInterval(() => { this.count += step; if(this.count >= this.target){ this.count = this.target; clearInterval(int); } }, 30);
+                                 }
+                             }" 
+                             x-init="setTimeout(() => animate(), 750)"
+                             @slider-changed.window="setTimeout(() => animate(), 150)"
+                             x-text="Math.floor(count)">0</div>
                         <div
                             style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
                             Kegiatan <?php echo e($tahun); ?></div>
                     </div>
-                    <div>
-                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;">
-                            <?php echo e($tingkatRespon); ?>%</div>
+                    <div class="anim-fade-up" style="animation-delay: 700ms;">
+                        <div class="mono" style="font-size: 28px; font-weight: 700; color: #fff; letter-spacing: -.5px;"
+                             x-data="{ 
+                                 count: 0, target: <?php echo e($tingkatRespon); ?>,
+                                 animate() {
+                                     this.count = 0;
+                                     let step = this.target / 40;
+                                     let int = setInterval(() => { this.count += step; if(this.count >= this.target){ this.count = this.target; clearInterval(int); } }, 30);
+                                 }
+                             }" 
+                             x-init="setTimeout(() => animate(), 900)"
+                             @slider-changed.window="setTimeout(() => animate(), 300)"
+                             ><span x-text="Math.floor(count)">0</span>%</div>
                         <div
                             style="font-size: 11.5px; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-top: 2px;">
                             Tingkat Respon</div>
@@ -64,11 +127,11 @@
             </div>
 
             <div style="position: relative; height: 380px;" x-data="heroSlider" x-init="start()">
-                <div
+                <div class="anim-chart"
                     style="position: absolute; top: 20px; right: 0; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 22px 22px 10px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.25); transform: rotate(2deg);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
                         <span class="mono"
-                            style="letter-spacing: 1.5px; font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.8);" x-html="slides[active].title + ' &middot; <?php echo e($tahun); ?>'">ROMANTIK
+                            :style="`transition: opacity 0.3s ease, transform 0.3s ease; opacity: ${isChanging ? 0 : 1}; transform: translateY(${isChanging ? '4px' : '0'}); letter-spacing: 1.5px; font-size: 10.5px; font-weight: 600; color: rgba(255,255,255,.8); display: inline-block;`" x-html="slides[active].title + ' &middot; <?php echo e($tahun); ?>'">ROMANTIK
                             &middot; <?php echo e($tahun); ?></span>
                         <span
                             style="color: #00B69B; font-weight: 700; letter-spacing: 1px; font-size: 10px; display: flex; align-items: center; gap: 5px;">
@@ -79,7 +142,7 @@
                     </div>
                     <div id="hero-mini-chart" style="height: 140px; width: 100%;"></div>
                 </div>
-                <div
+                <div class="anim-card"
                     style="position: absolute; bottom: 0; left: 20px; width: 220px; background: rgba(255,255,255,.96); color: var(--ink); border-radius: 14px; padding: 16px; box-shadow: 0 24px 60px rgba(0,0,0,.4); transform: rotate(-3deg);">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                         <div
@@ -93,17 +156,17 @@
                             <div
                                 style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
                                 Status</div>
-                            <div style="font-size: 14px; font-weight: 700;" x-text="slides[active].cardTitle">Romantik Disetujui</div>
+                            <div :style="`transition: opacity 0.3s ease, transform 0.3s ease; opacity: ${isChanging ? 0 : 1}; transform: translateY(${isChanging ? '2px' : '0'}); font-size: 14px; font-weight: 700; display: block;`" x-text="slides[active].cardTitle">Romantik Disetujui</div>
                         </div>
                     </div>
                     <div style="height: 6px; background: #eef0f4; border-radius: 3px; overflow: hidden;">
                         <div
-                            :style="`width: ${slides[active].cardPct}%; height: 100%; background: linear-gradient(90deg, #00B69B, #34d399); transition: width 0.5s ease;`">
+                            :style="`width: ${slides[active].cardPct}%; height: 100%; background: linear-gradient(90deg, #00B69B, #34d399); transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);`">
                         </div>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--muted);"
                         class="mono">
-                        <span x-text="slides[active].cardValue + ' / ' + slides[active].cardTotal"><?php echo e($romantikDiajukan); ?> / <?php echo e($totalKegiatan); ?></span><span x-text="slides[active].cardPct + '%'"><?php echo e($pctRomantik); ?>%</span>
+                        <span x-text="animValue + ' / ' + slides[active].cardTotal"><?php echo e($romantikDiajukan); ?> / <?php echo e($totalKegiatan); ?></span><span x-text="animPct + '%'"><?php echo e($pctRomantik); ?>%</span>
                     </div>
                 </div>
             </div>
@@ -113,7 +176,7 @@
     
     <section style="padding: 72px 0 40px;">
         <div class="container">
-            <div style="margin-bottom: 28px;">
+            <div class="scroll-reveal" style="margin-bottom: 28px;">
                 <div
                     style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
                     ◆ Ringkasan Statistik</div>
@@ -133,8 +196,8 @@
                         ['icon' => '<path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2-2.4-3.5-4.4-3.5h-1.2c-.7-3-3.2-5.2-6.2-5.6-3-.3-5.9 1.3-7.3 4-1.2 2.5-1 6.5.5 8.8m8.7-1.6V21"/><path d="M16 16l-4-4-4 4"/>', 'title' => 'Aliran Data Sedata Sebantul', 'value' => $aliranTayang, 'label' => 'sudah tayang', 'sub' => ['value' => $aliranBelum, 'label' => 'belum tayang'], 'url' => route('public.aliran_data')],
                     ];
                 ?>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $cards; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <a href="<?php echo e($card['url']); ?>" class="card-link">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $cards; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <a href="<?php echo e($card['url']); ?>" class="card-link scroll-reveal" style="--delay: <?php echo e($index * 100); ?>ms;">
                         <div
                             style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
                             <div
@@ -152,15 +215,15 @@
                             <?php echo e($card['title']); ?></h3>
                         <div style="display: flex; gap: 20px; align-items: flex-end;">
                             <div>
-                                <span class="mono"
-                                    style="font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;"><?php echo e($card['value']); ?></span>
+                                <span class="mono" x-data="countUp(<?php echo e($card['value']); ?>)" x-text="count"
+                                    style="font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;">0</span>
                                 <span
                                     style="font-size: 13px; color: var(--muted); margin-left: 6px;"><?php echo e($card['label']); ?></span>
                             </div>
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($card['sub']): ?>
                                 <div>
-                                    <span class="mono"
-                                        style="font-size: 16px; font-weight: 600; color: var(--muted);"><?php echo e($card['sub']['value']); ?></span>
+                                    <span class="mono" x-data="countUp(<?php echo e($card['sub']['value']); ?>)" x-text="count"
+                                        style="font-size: 16px; font-weight: 600; color: var(--muted);">0</span>
                                     <span
                                         style="font-size: 12px; color: var(--muted); margin-left: 4px;"><?php echo e($card['sub']['label']); ?></span>
                                 </div>
@@ -175,7 +238,7 @@
     
     <section style="padding: 20px 0 80px;">
         <div class="container">
-            <div style="margin-bottom: 28px;">
+            <div class="scroll-reveal" style="margin-bottom: 28px;">
                 <div
                     style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
                     ◆ Visualisasi Data</div>
@@ -184,7 +247,8 @@
                 <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Klik diagram untuk melihat rincian per
                     dinas.</p>
             </div>
-            <?php echo $__env->make('partials.dashboard-charts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+            <div class="scroll-reveal" style="--delay: 100ms;">
+                <?php echo $__env->make('partials.dashboard-charts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
             </div>
         </div>
     </section>
@@ -192,7 +256,7 @@
     
     <section
         style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
-        <div class="container">
+        <div class="container scroll-reveal">
             <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -221,7 +285,7 @@ if (isset($__slots)) unset($__slots);
     <section style="padding: 72px 0;">
         <div class="container">
             <div
-                style="background: var(--navy); border-radius: 12px; padding: 44px 48px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: center; position: relative; overflow: hidden;">
+                style="background: var(--navy); border-radius: 12px; padding: 44px 48px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: center; position: relative; overflow: hidden;" class="cards-grid">
                 <svg style="position: absolute; inset: 0; width: 100%; height: 100%; opacity: .08;" aria-hidden="true">
                     <defs>
                         <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
@@ -231,12 +295,12 @@ if (isset($__slots)) unset($__slots);
                     <rect width="100%" height="100%" fill="url(#dots)" />
                 </svg>
                 <div
-                    style="position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(245,130,32,.35), transparent 65%); border-radius: 50%;">
+                    style="position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(235,137,27,.35), transparent 65%); border-radius: 50%;">
                 </div>
 
                 <div style="position: relative; color: #fff;">
                     <div
-                        style="font-size: 12px; letter-spacing: 1.5px; color: #fdbd83; text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
+                        style="font-size: 12px; letter-spacing: 1.5px; color: #e0a87a; text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
                         ◆ Pembinaan Statistik</div>
                     <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">
                         Pembinaan Statistik Sektoral Kabupaten Bantul</h2>
@@ -246,7 +310,7 @@ if (isset($__slots)) unset($__slots);
                         modul pelatihan untuk seluruh OPD se-Kabupaten Bantul.
                     </p>
                     <a href="<?php echo e(config('paseban.pedoman_url')); ?>" target="_blank" rel="noopener noreferrer"
-                        style="display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(245,130,32,.4); text-decoration: none; transition: transform .15s ease;">
+                        style="display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(235,137,27,.4); text-decoration: none; transition: transform .15s ease;">
                         Masuk Modul Pembinaan <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -298,39 +362,72 @@ if (isset($__slots)) unset($__slots);
                 <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Berita
                     Acara Kegiatan</h2>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $beritaAcara; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <a href="<?php echo e(route('berita-acara.show', $berita)); ?>" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
-                        <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--orange)); position: relative;">
-                            <?php
-                                $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
-                                if (!$coverImage && $berita->narasi) {
-                                    preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $berita->narasi, $image);
-                                    $coverImage = $image['src'] ?? null;
-                                }
-                            ?>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($coverImage): ?>
-                                <img src="<?php echo e($coverImage); ?>" alt="<?php echo e($berita->judul); ?>" style="width: 100%; height: 100%; object-fit: cover;">
-                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                            <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px; z-index: 10;">
-                                <?php echo e(ucfirst($berita->kategori)); ?></div>
+            <style>
+                .berita-slider::-webkit-scrollbar { display: none; }
+            </style>
+            <div x-data="{
+                    timer: null,
+                    start() {
+                        if (this.$refs.slider.children.length > 3) {
+                            this.timer = setInterval(() => this.next(), 4000);
+                        }
+                    },
+                    pause() { clearInterval(this.timer); },
+                    resume() { 
+                        clearInterval(this.timer);
+                        this.start(); 
+                    },
+                    next() {
+                        const el = this.$refs.slider;
+                        if (!el) return;
+                        if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 10) {
+                            el.scrollTo({ left: 0, behavior: 'smooth' });
+                        } else {
+                            el.scrollBy({ left: el.children[0].offsetWidth + 20, behavior: 'smooth' });
+                        }
+                    }
+                }" 
+                x-init="start()" 
+                @mouseenter="pause()" 
+                @mouseleave="resume()"
+                style="position: relative; margin: 0 -10px;">
+                
+                <div x-ref="slider" class="berita-slider" style="display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px; scrollbar-width: none; -ms-overflow-style: none;">
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $beritaAcara; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <div style="flex: 0 0 calc(33.333% - 14px); min-width: 300px; scroll-snap-align: start; display: flex;">
+                            <a href="<?php echo e(route('berita-acara.show', $berita)); ?>" style="width: 100%; text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+                                <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--orange)); position: relative;">
+                                    <?php
+                                        $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
+                                        if (!$coverImage && $berita->narasi) {
+                                            preg_match('/<img.+src=[\'"](?P<src>.+?)[\'"].*>/i', $berita->narasi, $image);
+                                            $coverImage = $image['src'] ?? null;
+                                        }
+                                    ?>
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($coverImage): ?>
+                                        <img src="<?php echo e($coverImage); ?>" alt="<?php echo e($berita->judul); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                                    <div style="position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 4px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: .3px; z-index: 10;">
+                                        <?php echo e(ucfirst($berita->kategori)); ?></div>
+                                </div>
+                                <div style="padding: 22px; flex: 1; display: flex; flex-direction: column;">
+                                    <div class="mono"
+                                        style="font-size: 11px; color: var(--muted); letter-spacing: .8px; margin-bottom: 10px;">
+                                        <?php echo e($berita->tanggal->format('d M Y')); ?></div>
+                                    <h3
+                                        style="margin: 0; font-size: 16.5px; line-height: 1.35; font-weight: 700; color: var(--navy); letter-spacing: -.2px;">
+                                        <?php echo e($berita->judul); ?></h3>
+                                    <p style="margin: 10px 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1;">
+                                        <?php echo e(Str::limit($berita->ringkasan, 150)); ?></p>
+                                    <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--orange-600); margin-top: auto;">
+                                        Lihat Detail
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                        <div style="padding: 22px; flex: 1; display: flex; flex-direction: column;">
-                            <div class="mono"
-                                style="font-size: 11px; color: var(--muted); letter-spacing: .8px; margin-bottom: 10px;">
-                                <?php echo e($berita->tanggal->format('d M Y')); ?></div>
-                            <h3
-                                style="margin: 0; font-size: 16.5px; line-height: 1.35; font-weight: 700; color: var(--navy); letter-spacing: -.2px;">
-                                <?php echo e($berita->judul); ?></h3>
-                            <p style="margin: 10px 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.55; flex: 1;">
-                                <?php echo e(Str::limit($berita->ringkasan, 150)); ?></p>
-                            <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--orange-600); margin-top: auto;">
-                                Lihat Detail
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                            </div>
-                        </div>
-                    </a>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </div>
             </div>
             <div style="margin-top: 36px; text-align: center;">
                 <a href="<?php echo e(route('berita-acara.index')); ?>" class="btn-outline-orange">
@@ -356,8 +453,12 @@ if (isset($__slots)) unset($__slots);
 
         // Alpine.js component for hero slider
         document.addEventListener('alpine:init', () => {
+
             Alpine.data('heroSlider', () => ({
                 active: 0,
+                animValue: 0,
+                animPct: 0,
+                isChanging: false,
                 chartInstance: null,
                 slides: [
                     { 
@@ -386,11 +487,40 @@ if (isset($__slots)) unset($__slots);
                     }
                 ],
                 start() {
+                    this.animValue = this.slides[0].cardValue;
+                    this.animPct = this.slides[0].cardPct;
                     this.initChart();
                     setInterval(() => {
-                        this.active = (this.active + 1) % this.slides.length;
-                        this.updateChart();
-                    }, 4000); // changes every 4 seconds
+                        this.isChanging = true;
+                        setTimeout(() => {
+                            this.active = (this.active + 1) % this.slides.length;
+                            this.updateChart();
+                            this.animateCardValues();
+                            window.dispatchEvent(new CustomEvent('slider-changed'));
+                            this.isChanging = false;
+                        }, 300);
+                    }, 10000); // changes every 10 seconds
+                },
+                animateCardValues() {
+                    let targetValue = this.slides[this.active].cardValue;
+                    let targetPct = this.slides[this.active].cardPct;
+                    let startValue = this.animValue;
+                    let startPct = this.animPct;
+                    let duration = 800;
+                    let startTime = null;
+                    
+                    let step = (timestamp) => {
+                        if (!startTime) startTime = timestamp;
+                        let progress = Math.min((timestamp - startTime) / duration, 1);
+                        // easeOut cubic
+                        let ease = 1 - Math.pow(1 - progress, 3);
+                        
+                        this.animValue = Math.round(startValue + (targetValue - startValue) * ease);
+                        this.animPct = Math.round(startPct + (targetPct - startPct) * ease);
+                        
+                        if (progress < 1) requestAnimationFrame(step);
+                    };
+                    requestAnimationFrame(step);
                 },
                 initChart() {
                     const options = {

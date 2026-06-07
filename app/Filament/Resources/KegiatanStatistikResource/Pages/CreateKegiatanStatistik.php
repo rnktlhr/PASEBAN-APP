@@ -2,4 +2,5 @@
 namespace App\Filament\Resources\KegiatanStatistikResource\Pages;
 use App\Filament\Resources\KegiatanStatistikResource;
 use Filament\Resources\Pages\CreateRecord;
-class CreateKegiatanStatistik extends CreateRecord { protected static string $resource = KegiatanStatistikResource::class; }
+class CreateKegiatanStatistik extends CreateRecord { protected static string $resource = KegiatanStatistikResource::class;     protected function getRedirectUrl(): string { return $this->getResource()::getUrl('index'); }
+}

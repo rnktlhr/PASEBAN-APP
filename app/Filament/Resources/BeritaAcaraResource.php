@@ -29,7 +29,7 @@ class BeritaAcaraResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->components([
-            Forms\Components\Section::make('Informasi Utama')
+            \Filament\Schemas\Components\Section::make('Informasi Utama')
                 ->schema([
                     Forms\Components\TextInput::make('judul')
                         ->required()->maxLength(255)->columnSpanFull(),
@@ -47,7 +47,7 @@ class BeritaAcaraResource extends Resource
                         ->columnSpanFull(),
                 ])->columns(2),
                 
-            Forms\Components\Section::make('Konten')
+            \Filament\Schemas\Components\Section::make('Konten')
                 ->schema([
                     Forms\Components\Textarea::make('ringkasan')
                         ->helperText('Ringkasan singkat untuk ditampilkan di halaman depan.')

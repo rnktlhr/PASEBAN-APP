@@ -8,9 +8,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        'navy': '#05529F',
-        'navy-50': 'rgba(5, 82, 159, 0.05)',
-        'navy-900': '#043A70',
+        'navy': '#002B6A',
+        'navy-50': 'rgba(0, 43, 106, 0.05)',
+        'navy-900': '#001d49',
         'teal-50': '#e6f6f5',
         'teal-600': '#009999',
         'teal': '#00B3B3',
@@ -19,7 +19,7 @@ export default {
         'line': '#E5E7EB',
         'light-blue': '#8BC53F',
         'red': '#DC2626',
-        'orange-pas': '#F58220',
+        'orange-pas': '#EB891B',
       }
     },
   },

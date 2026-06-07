@@ -73,9 +73,9 @@ enum StatusKominfo: string
     public function cssColor(): string
     {
         return match ($this) {
-            self::DISETUJUI, self::SUBMIT, self::SUDAH_DIPERBAIKI => '#05529F',
+            self::DISETUJUI, self::SUBMIT, self::SUDAH_DIPERBAIKI => '#002B6A',
             self::DRAFT => '#94a3b8',
-            default => '#F58220',
+            default => '#EB891B',
         };
     }
 
@@ -87,7 +87,7 @@ enum StatusKominfo: string
         return match ($this) {
             self::DISETUJUI, self::SUBMIT, self::SUDAH_DIPERBAIKI => '#eef2f6',
             self::DRAFT => 'rgba(148,163,184,.15)',
-            default => 'rgba(245,130,32,.1)',
+            default => 'rgba(235,137,27,.1)',
         };
     }
 
