@@ -32,6 +32,13 @@ class KegiatanStatistikResource extends Resource
         return $form->components([
             Forms\Components\Select::make('dinas_id')
                 ->relationship('dinas', 'nama')
+                ->options(function () {
+                    $user = auth()->user();
+                    if ($user && $user->isDinas()) {
+                        return \App\Models\Dinas::where('id', $user->dinas_id)->pluck('nama', 'id');
+                    }
+                    return \App\Models\Dinas::orderBy('nama')->pluck('nama', 'id');
+                })
                 ->searchable()->preload()->required()
                 ->label('Dinas / OPD'),
             Forms\Components\TextInput::make('nama')

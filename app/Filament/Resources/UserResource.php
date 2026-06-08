@@ -34,6 +34,8 @@ class UserResource extends Resource
                 ->email()->required()->maxLength(255),
             Forms\Components\TextInput::make('password')
                 ->password()
+                ->minLength(8)
+                ->rule(\Illuminate\Validation\Rules\Password::min(8)->mixedCase()->numbers())
                 ->dehydrated(fn ($state) => filled($state))
                 ->required(fn ($livewire) => $livewire instanceof Pages\CreateUser),
             Forms\Components\Select::make('role')

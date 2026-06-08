@@ -40,7 +40,7 @@ class SecurityHeaders
             "frame-ancestors 'self'",
         ];
 
-        // Allow Vite dev server (often needed locally even if APP_ENV is production)
+        // Always allow Vite dev server (localhost) to prevent CSP issues during local development
         $viteHosts = "http://localhost:5173 http://127.0.0.1:5173";
         $viteWs = "ws://localhost:5173 ws://127.0.0.1:5173";
         $csp[1] .= " " . $viteHosts;

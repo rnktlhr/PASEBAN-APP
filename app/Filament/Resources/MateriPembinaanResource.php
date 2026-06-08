@@ -44,7 +44,9 @@ class MateriPembinaanResource extends Resource
                 Forms\Components\FileUpload::make('file_path')
                     ->label('Upload File')
                     ->maxSize(10240)
-                    ->directory('materi-pembinaan'),
+                    ->directory('materi-pembinaan')
+                    ->acceptedFileTypes(['application/pdf', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'video/mp4'])
+                    ->disk('public'),
                 Forms\Components\TextInput::make('link_url')
                     ->label('Link URL (Khusus Video / Eksternal)')
                     ->url()

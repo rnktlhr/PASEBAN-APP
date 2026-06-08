@@ -92,7 +92,7 @@
                                 style="transition: stroke-dasharray 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);" />
                         </svg>
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                            <div style="font-size: 24px; font-weight: 800; color: var(--navy); line-height: 1;"><span x-text="count">0</span>%</div>
+                            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); line-height: 1;"><span x-text="count">0</span>%</div>
                             <div style="font-size: 10px; font-weight: 600; color: var(--muted);">HADIR</div>
                         </div>
                     </div>
@@ -103,14 +103,14 @@
                                 <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--orange);"></div>
                                 <span style="font-size: 13.5px; font-weight: 500; color: var(--ink);">Hadir</span>
                             </div>
-                            <span style="font-size: 14px; font-weight: 700; color: var(--navy);"><?php echo e($totalKehadiran); ?></span>
+                            <span class="mono" style="font-size: 14px; font-weight: 700; color: var(--navy);"><?php echo e($totalKehadiran); ?></span>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--bg);"></div>
                                 <span style="font-size: 13.5px; font-weight: 500; color: var(--ink);">Tidak Hadir</span>
                             </div>
-                            <span style="font-size: 14px; font-weight: 700; color: var(--navy);"><?php echo e(($totalSesi * $totalOPD) - $totalKehadiran); ?></span>
+                            <span class="mono" style="font-size: 14px; font-weight: 700; color: var(--navy);"><?php echo e(($totalSesi * $totalOPD) - $totalKehadiran); ?></span>
                         </div>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $programPembinaan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $program): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <!-- Card <?php echo e($index + 1); ?> -->
             <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;">
-                <div style="position: absolute; top: 24px; right: 24px; font-size: 24px; font-weight: 800; color: var(--bg); z-index: 0; user-select: none;"><?php echo e(str_pad($program->nomor_urut, 2, '0', STR_PAD_LEFT)); ?></div>
+                <div class="mono" style="position: absolute; top: 24px; right: 24px; font-size: 24px; font-weight: 800; color: var(--bg); z-index: 0; user-select: none;"><?php echo e(str_pad($program->nomor_urut, 2, '0', STR_PAD_LEFT)); ?></div>
                 <div style="width: 48px; height: 48px; background: var(--orange-50); color: var(--orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative; z-index: 1;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
                 </div>
