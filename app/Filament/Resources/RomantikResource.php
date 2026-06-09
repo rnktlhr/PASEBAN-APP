@@ -68,7 +68,7 @@ class RomantikResource extends Resource
                 ->label('Dinas')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
                 ->label('Kegiatan')->limit(30)->searchable(),
-            Tables\Columns\TextColumn::make('tahun')->sortable(),
+            Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
             Tables\Columns\SelectColumn::make('status_dinas')
                 ->options(StatusDinas::options())
                 ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas()))

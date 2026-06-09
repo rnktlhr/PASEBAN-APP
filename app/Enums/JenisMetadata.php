@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum JenisMetadata: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum JenisMetadata: string implements HasLabel, HasColor
 {
     case KEGIATAN = 'kegiatan';
     case VARIABEL = 'variabel';
@@ -31,5 +34,15 @@ enum JenisMetadata: string
             self::VARIABEL => 'warning',
             self::INDIKATOR => 'success',
         };
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 }

@@ -59,9 +59,11 @@ class ProgramPembinaanResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('tahun')
+                    ->alignCenter()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nomor_urut')
                     ->sortable()
+                    ->alignCenter()
                     ->label('No'),
                 Tables\Columns\TextColumn::make('nama')
                     ->searchable(),

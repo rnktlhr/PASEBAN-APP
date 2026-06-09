@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-enum FrekuensiData: string
+use Filament\Support\Contracts\HasLabel;
+
+enum FrekuensiData: string implements HasLabel
 {
     case TRIWULANAN = 'triwulanan';
     case TAHUNAN = 'tahunan';
@@ -20,5 +22,10 @@ enum FrekuensiData: string
         return collect(self::cases())->mapWithKeys(
             fn (self $case) => [$case->value => $case->label()]
         )->toArray();
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
     }
 }

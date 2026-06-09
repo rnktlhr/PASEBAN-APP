@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum JenisKegiatan: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum JenisKegiatan: string implements HasLabel, HasColor
 {
     case SURVEI = 'survei';
     case PENDATAAN_LENGKAP = 'pendataan_lengkap';
@@ -55,5 +58,15 @@ enum JenisKegiatan: string
             self::PENDATAAN_LENGKAP => '#e6f4ea',
             self::KOMPROMIN => 'var(--orange-50)',
         };
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 }

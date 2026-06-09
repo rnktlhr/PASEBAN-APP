@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum Role: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum Role: string implements HasLabel, HasColor
 {
     case ADMIN_BPS = 'admin_bps';
     case KOMINFO = 'kominfo';
@@ -42,5 +45,15 @@ enum Role: string
     public static function values(): array
     {
         return array_column(self::cases(), 'value');
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 }

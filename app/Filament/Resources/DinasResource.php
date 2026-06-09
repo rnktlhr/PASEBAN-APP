@@ -42,11 +42,12 @@ class DinasResource extends Resource
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
+                Tables\Columns\TextColumn::make('id')->label('ID')->alignCenter()->sortable(),
                 Tables\Columns\TextColumn::make('nama')->searchable()->sortable()->wrap(),
                 Tables\Columns\TextColumn::make('singkatan')->searchable(),
                 Tables\Columns\TextColumn::make('kategori')
                     ->badge()
+                    ->alignCenter()
                     ->color(function (?string $state): string {
                         if (!$state) return 'gray';
                         $colors = ['primary', 'success', 'warning', 'danger', 'info'];
@@ -55,6 +56,7 @@ class DinasResource extends Resource
                 Tables\Columns\TextColumn::make('kegiatan_statistik_count')
                     ->counts('kegiatanStatistik')
                     ->label('Jumlah Kegiatan')
+                    ->alignCenter()
                     ->sortable(),
             ])
             ->filters([])

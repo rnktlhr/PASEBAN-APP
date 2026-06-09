@@ -63,10 +63,11 @@ class MonevResource extends Resource
             Tables\Columns\TextColumn::make('bulan_rencana_mulai')
                 ->label('Bulan Mulai')
                 ->formatStateUsing(fn ($state) => config("paseban.bulan.{$state}") ?? $state)
-                ->sortable()
-                ,
+                ->alignCenter()
+                ->sortable(),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
+                ->alignCenter()
                 ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray'),
         ])->filters([        
         ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);

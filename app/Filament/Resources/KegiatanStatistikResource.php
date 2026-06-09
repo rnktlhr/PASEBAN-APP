@@ -66,7 +66,7 @@ class KegiatanStatistikResource extends Resource
                 ->badge()
                 ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray')
                 ,
-            Tables\Columns\TextColumn::make('tahun')->sortable(),
+            Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
         ])->filters([
             Tables\Filters\SelectFilter::make('tahun')
                 ->options(fn () => KegiatanStatistik::distinct()->pluck('tahun', 'tahun')->toArray()),

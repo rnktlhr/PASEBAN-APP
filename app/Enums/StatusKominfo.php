@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum StatusKominfo: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum StatusKominfo: string implements HasLabel, HasColor
 {
     case BELUM_DIAJUKAN = 'belum_diajukan';
     case DRAFT = 'draft';
@@ -101,6 +104,16 @@ enum StatusKominfo: string
             self::SUDAH_DIPERBAIKI->value,
             self::DISETUJUI->value,
         ];
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 
     public static function values(): array

@@ -310,7 +310,7 @@
                             <th style="padding: 16px 20px; text-align: left; font-weight: 700; color: var(--navy);">Judul Materi</th>
                             <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 120px;">Jenis</th>
                             <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 160px;">Tanggal</th>
-                            <th style="padding: 16px; text-align: right; font-weight: 700; color: var(--navy); width: 160px; padding-right: 20px;">Unduh</th>
+                            <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 160px;">Unduh</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -345,7 +345,7 @@
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </td>
                             <td style="padding: 20px; text-align: center; color: var(--muted);"><?php echo e($materi->tanggal ? $materi->tanggal->format('M Y') : '-'); ?></td>
-                            <td style="padding: 20px; text-align: right;">
+                            <td style="padding: 20px; text-align: center;">
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($materi->jenis == 'VIDEO' && $materi->link_url): ?>
                                 <a href="<?php echo e($materi->link_url); ?>" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1px solid var(--ink); color: var(--ink); border-radius: 6px; font-weight: 600; font-size: 13px; text-decoration: none; background: transparent; transition: all 0.2s; cursor: pointer;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>

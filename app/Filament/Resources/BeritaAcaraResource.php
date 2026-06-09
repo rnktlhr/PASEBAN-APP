@@ -69,13 +69,8 @@ class BeritaAcaraResource extends Resource
                     ->label('Judul')->searchable()->sortable()->limit(50),
                 Tables\Columns\TextColumn::make('kategori')
                     ->label('Kategori')->searchable()->sortable()
-                    ->formatStateUsing(fn (string $state): string => ucfirst($state))
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'pendampingan' => 'info',
-                        'pembinaan' => 'warning',
-                        default => 'gray',
-                    }),
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('tanggal')->date('d M Y')->sortable(),
             ])->filters([
                 //

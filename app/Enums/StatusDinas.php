@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum StatusDinas: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum StatusDinas: string implements HasLabel, HasColor
 {
     case BELUM_DIAJUKAN = 'belum_diajukan';
     case SUDAH_DIAJUKAN = 'sudah_diajukan';
@@ -67,6 +70,16 @@ enum StatusDinas: string
         return collect(self::cases())->mapWithKeys(
             fn (self $case) => [$case->value => $case->label()]
         )->toArray();
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 
     public static function values(): array

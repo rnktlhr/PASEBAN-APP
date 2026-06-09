@@ -56,7 +56,7 @@ class AliranDataResource extends Resource
                 Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
                     ->label('Kegiatan')->limit(20)->searchable(),
                 Tables\Columns\TextColumn::make('nama_data')->limit(20)->searchable(),
-                Tables\Columns\TextColumn::make('tahun')->sortable(),
+                Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
                 Tables\Columns\IconColumn::make('sudah_tayang')
                     ->boolean()
                     ->size(\Filament\Support\Enums\IconSize::Large),

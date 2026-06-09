@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum KategoriBeritaAcara: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum KategoriBeritaAcara: string implements HasLabel, HasColor
 {
     case PENDAMPINGAN = 'pendampingan';
     case PEMBINAAN = 'pembinaan';
@@ -28,5 +31,15 @@ enum KategoriBeritaAcara: string
             self::PENDAMPINGAN => 'success',
             self::PEMBINAAN => 'primary',
         };
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 }

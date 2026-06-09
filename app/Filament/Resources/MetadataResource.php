@@ -68,13 +68,14 @@ class MetadataResource extends Resource
                 ->label('Kegiatan')->limit(30)->searchable(),
             Tables\Columns\TextColumn::make('jenis')
                 ->badge()
+                ->alignCenter()
                 ->color(fn ($state) => match (is_object($state) ? $state->value : $state) {
                     'kegiatan' => 'primary',
                     'variabel' => 'info',
                     'indikator' => 'success',
                     default => 'gray',
                 }),
-            Tables\Columns\TextColumn::make('tahun')->sortable(),
+            Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
             Tables\Columns\SelectColumn::make('status_kominfo')
                 ->options(StatusKominfo::metadataOptions())
                 ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo()))

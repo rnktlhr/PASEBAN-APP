@@ -57,10 +57,8 @@ class UserResource extends Resource
             Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('email')->searchable(),
             Tables\Columns\TextColumn::make('role')
-                
                 ->badge()
-                ->color(fn ($state) => $state instanceof Role ? $state->color() : (Role::tryFrom($state)?->color() ?? 'gray'))
-                ->formatStateUsing(fn ($state) => $state instanceof Role ? $state->label() : (Role::tryFrom($state)?->label() ?? $state)),
+                ->alignCenter(),
             Tables\Columns\TextColumn::make('dinas.singkatan')->label('Dinas'),
         ])->actions([
             \Filament\Actions\EditAction::make(),

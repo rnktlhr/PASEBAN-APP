@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum StatusMonev: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum StatusMonev: string implements HasLabel, HasColor
 {
     case BELUM_MULAI = 'belum_mulai';
     case SEDANG_BERJALAN = 'sedang_berjalan';
@@ -60,6 +63,16 @@ enum StatusMonev: string
             self::SEDANG_BERJALAN => '#fff8e1',
             default => '#f5f5f5',
         };
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 
     public static function values(): array

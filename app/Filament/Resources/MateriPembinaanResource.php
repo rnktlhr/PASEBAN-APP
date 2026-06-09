@@ -64,11 +64,14 @@ class MateriPembinaanResource extends Resource
                 Tables\Columns\TextColumn::make('judul')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('jenis')
+                    ->badge()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tanggal')
                     ->date('M Y')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ukuran_file'),
+                Tables\Columns\TextColumn::make('ukuran_file')
+                    ->alignCenter(),
             ])
             ->filters([
                 //

@@ -2,7 +2,10 @@
 
 namespace App\Enums;
 
-enum StatusBps: string
+use Filament\Support\Contracts\HasLabel;
+use Filament\Support\Contracts\HasColor;
+
+enum StatusBps: string implements HasLabel, HasColor
 {
     case SEDANG_DIPERIKSA = 'sedang_diperiksa';
     case PERLU_PERBAIKAN = 'perlu_perbaikan';
@@ -55,6 +58,16 @@ enum StatusBps: string
         return collect(self::cases())->mapWithKeys(
             fn (self $case) => [$case->value => $case->label()]
         )->toArray();
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label();
+    }
+
+    public function getColor(): string | array | null
+    {
+        return $this->color();
     }
 
     public static function values(): array
