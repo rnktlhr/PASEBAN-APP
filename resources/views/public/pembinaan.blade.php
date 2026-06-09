@@ -27,9 +27,7 @@
         </div>
 
         <div style="position: relative; color: #fff;">
-            <div style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange); text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
-                ◆ Pembinaan Statistik
-            </div>
+
             <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">
                 Pembinaan Statistik Sektoral Kabupaten Bantul
             </h2>
