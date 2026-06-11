@@ -23,7 +23,7 @@
     </div>
 
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
-        <div class="table-responsive">
+        <div class="table-responsive desktop-only">
             <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
                 <thead>
                 <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
@@ -56,6 +56,33 @@
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
         </table>
+        </div>
+
+        
+        <div class="mobile-only">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $kegiatan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $idx => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php
+                    $jenisEnum = $item->jenis instanceof \App\Enums\JenisKegiatan ? $item->jenis : \App\Enums\JenisKegiatan::tryFrom($item->jenis);
+                ?>
+                <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 10px;" x-show="(dinasFilter === '' || '<?php echo e($item->dinas_id); ?>' === dinasFilter) && (search === '' || $el.dataset.search.toLowerCase().includes(search.toLowerCase()))" data-search="<?php echo e(addslashes(strtolower($item->dinas->singkatan ?? ''))); ?> <?php echo e(addslashes(strtolower($item->nama))); ?>">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <div style="font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; display: flex; gap: 6px;">
+                                <span>#<?php echo e($idx + 1); ?></span> &middot; <span><?php echo e($item->dinas->singkatan ?? '-'); ?></span>
+                            </div>
+                            <div style="font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.35;"><?php echo e($item->nama); ?></div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 4px;">
+                        <span style="display: inline-block; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; color: <?php echo e($jenisEnum?->cssColor() ?? 'var(--muted)'); ?>; background: <?php echo e($jenisEnum?->cssBgColor() ?? '#f5f5f5'); ?>;">
+                            <?php echo e($jenisEnum?->label() ?? ucfirst(str_replace('_', ' ', $item->jenis))); ?>
+
+                        </span>
+                    </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div style="padding: 32px; text-align: center; color: var(--muted);">Belum ada data kegiatan untuk tahun ini.</div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 </div>

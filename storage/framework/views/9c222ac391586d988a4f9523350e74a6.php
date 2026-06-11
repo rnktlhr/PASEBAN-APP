@@ -21,7 +21,7 @@
     </div>
 
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
-        <div class="table-responsive">
+        <div class="table-responsive desktop-only">
             <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
                 <thead>
                     <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
@@ -68,6 +68,47 @@
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
         </table>
+        </div>
+
+        
+        <div class="mobile-only">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $metadata; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php
+                    $stKominfo = $item->status_kominfo instanceof \App\Enums\StatusKominfo ? $item->status_kominfo : \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
+                    $stBps = $item->status_bps instanceof \App\Enums\StatusBps ? $item->status_bps : \App\Enums\StatusBps::tryFrom($item->status_bps);
+                ?>
+                <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;" x-show="(dinasFilter === '' || '<?php echo e($item->kegiatanStatistik->dinas_id); ?>' === dinasFilter) && (search === '' || $el.dataset.search.toLowerCase().includes(search.toLowerCase()))" data-search="<?php echo e(addslashes(strtolower($item->kegiatanStatistik->dinas->singkatan ?? ''))); ?> <?php echo e(addslashes(strtolower($item->kegiatanStatistik->nama))); ?>">
+                    <div>
+                        <div style="font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;">
+                            <span><?php echo e($item->kegiatanStatistik->dinas->singkatan ?? '-'); ?></span>
+                            <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; background: var(--navy-50); color: var(--navy);">
+                                <?php echo e($item->jenis instanceof \App\Enums\JenisMetadata ? $item->jenis->label() : ucfirst($item->jenis)); ?>
+
+                            </span>
+                        </div>
+                        <div style="font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.35;"><?php echo e($item->kegiatanStatistik->nama); ?></div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 4px; background: var(--navy-50); padding: 12px; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Status Kominfo</span>
+                            <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: <?php echo e($stKominfo?->cssColor() ?? '#EB891B'); ?>; background: <?php echo e($stKominfo?->cssBgColor() ?? 'rgba(235,137,27,.1)'); ?>;">
+                                <?php echo e($stKominfo?->label() ?? ucwords(str_replace('_', ' ', $item->status_kominfo))); ?>
+
+                            </span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Status BPS</span>
+                            <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: <?php echo e($stBps?->cssColor() ?? '#EB891B'); ?>; background: <?php echo e($stBps?->cssBgColor() ?? 'rgba(235,137,27,.1)'); ?>;">
+                                <?php echo e($stBps?->label() ?? ucwords(str_replace('_', ' ', $item->status_bps))); ?>
+
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div style="padding: 32px; text-align: center; color: var(--muted);">Belum ada pelaporan Metadata untuk tahun ini.</div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 </div>

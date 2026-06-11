@@ -2,7 +2,7 @@
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--navy);">Identifikasi Kegiatan Statistik</h3>
-            <select x-model="years.kegiatan" @change="updateChart('kegiatan')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
+            <select class="styled-select" x-model="years.kegiatan" @change="updateChart('kegiatan')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--muted); background: #fff; cursor: pointer; outline: none;">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') - 4; $y <= date('Y') + 2; $y++): ?>
                     <option value="<?php echo e($y); ?>"><?php echo e($y); ?></option>
                 <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -17,7 +17,7 @@
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h3 style="font-size: 14px; font-weight: 700; color: var(--navy); m-0">Rekomendasi Statistik (Romantik)</h3>
-            <select x-model="years.romantik" @change="updateChart('romantik')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; color: var(--muted); background: #f8fafc; outline: none; cursor: pointer;">
+            <select class="styled-select" x-model="years.romantik" @change="updateChart('romantik')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; color: var(--muted); background: #f8fafc; outline: none; cursor: pointer;">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') + 2; $y >= 2022; $y--): ?>
                     <option value="<?php echo e($y); ?>"><?php echo e($y); ?></option>
                 <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -33,7 +33,7 @@
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h3 style="font-size: 14px; font-weight: 700; color: var(--navy); m-0">Metadata Statistik</h3>
-            <select x-model="years.metadata" @change="updateChart('metadata')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; color: var(--muted); background: #f8fafc; outline: none; cursor: pointer;">
+            <select class="styled-select" x-model="years.metadata" @change="updateChart('metadata')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; color: var(--muted); background: #f8fafc; outline: none; cursor: pointer;">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') + 2; $y >= 2022; $y--): ?>
                     <option value="<?php echo e($y); ?>"><?php echo e($y); ?></option>
                 <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -50,7 +50,7 @@
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h3 style="font-size: 14px; font-weight: 700; color: var(--navy); m-0">Aliran Data (Sedata Sebantul)</h3>
-            <select x-model="years.aliran" @change="updateChart('aliran')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; color: var(--muted); background: #f8fafc; outline: none; cursor: pointer;">
+            <select class="styled-select" x-model="years.aliran" @change="updateChart('aliran')" style="padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; color: var(--muted); background: #f8fafc; outline: none; cursor: pointer;">
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($y = date('Y') + 2; $y >= 2022; $y--): ?>
                     <option value="<?php echo e($y); ?>"><?php echo e($y); ?></option>
                 <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>

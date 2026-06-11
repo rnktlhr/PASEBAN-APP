@@ -108,6 +108,74 @@
                 }
             }));
         });
+        // Make Accessibility Widget Draggable on Mobile
+        document.addEventListener('DOMContentLoaded', () => {
+            setInterval(() => {
+                const els = document.querySelectorAll('body > div, body > button, body > sienna-wrapper, body > sienna-accessibility');
+                let siennaWrapper = null;
+                els.forEach(el => {
+                    const id = el.id || '';
+                    const cls = (typeof el.className === 'string') ? el.className : '';
+                    const tag = el.tagName || '';
+                    if (id.toLowerCase().includes('sienna') || cls.toLowerCase().includes('sienna') || tag.toLowerCase().includes('SIENNA')) {
+                        siennaWrapper = el;
+                    }
+                });
+
+                if (siennaWrapper && !siennaWrapper.dataset.dragBinded) {
+                    siennaWrapper.dataset.dragBinded = 'true';
+                    
+                    let isDragging = false;
+                    let hasDragged = false;
+                    let startX, startY, initialLeft, initialTop;
+
+                    // Support Shadow DOM by listening to document if necessary, 
+                    // but usually attaching to the wrapper works because events bubble up.
+                    siennaWrapper.addEventListener('touchstart', (e) => {
+                        if (window.innerWidth > 768) return;
+                        isDragging = true;
+                        hasDragged = false;
+                        const rect = siennaWrapper.getBoundingClientRect();
+                        initialLeft = rect.left;
+                        initialTop = rect.top;
+                        startX = e.touches[0].clientX;
+                        startY = e.touches[0].clientY;
+                    }, { passive: true });
+
+                    siennaWrapper.addEventListener('touchmove', (e) => {
+                        if (!isDragging) return;
+                        const dx = e.touches[0].clientX - startX;
+                        const dy = e.touches[0].clientY - startY;
+                        
+                        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+                            hasDragged = true;
+                            siennaWrapper.style.setProperty('position', 'fixed', 'important');
+                            siennaWrapper.style.setProperty('margin', '0', 'important');
+                            siennaWrapper.style.setProperty('bottom', 'auto', 'important');
+                            siennaWrapper.style.setProperty('right', 'auto', 'important');
+                            siennaWrapper.style.setProperty('left', (initialLeft + dx) + 'px', 'important');
+                            siennaWrapper.style.setProperty('top', (initialTop + dy) + 'px', 'important');
+                            siennaWrapper.style.setProperty('transform', 'none', 'important');
+                            siennaWrapper.style.setProperty('z-index', '999999', 'important');
+                            if(e.cancelable) e.preventDefault(); 
+                        }
+                    }, { passive: false });
+
+                    siennaWrapper.addEventListener('touchend', (e) => {
+                        isDragging = false;
+                    });
+                    
+                    // Prevent click if we were dragging
+                    siennaWrapper.addEventListener('click', (e) => {
+                        if (hasDragged) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            hasDragged = false;
+                        }
+                    }, true);
+                }
+            }, 1500);
+        });
     </script>
 </body>
 </html>

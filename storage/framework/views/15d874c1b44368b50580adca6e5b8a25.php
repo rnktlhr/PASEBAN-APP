@@ -50,14 +50,14 @@
             </button>
         </div>
 
-        <select wire:model.live="dinas_id" style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 180px; height: 38px; color: var(--ink);">
+        <select class="styled-select" wire:model.live="dinas_id" style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 180px; height: 38px; color: var(--ink);">
             <option value="">Semua OPD</option>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $dinasList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($d->id); ?>"><?php echo e($d->singkatan); ?></option>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </select>
 
-        <select wire:model.live="status" style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 160px; height: 38px; color: var(--ink);">
+        <select class="styled-select" wire:model.live="status" style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 160px; height: 38px; color: var(--ink);">
             <option value="">Semua Status</option>
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = \App\Enums\StatusMonev::options(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $val => $lbl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($val); ?>"><?php echo e($lbl); ?></option>
@@ -68,11 +68,11 @@
     </div>
 
     
-    <div class="table-responsive" style="position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm);" x-data="{ perPage: 10, page: 1 }">
+    <div style="position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm);" x-data="{ perPage: 10, page: 1 }">
         <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; gap: 8px;">
                 <span style="font-size: 13.5px; color: var(--muted);">Tampilkan</span>
-                <select x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
+                <select class="styled-select" x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -86,7 +86,8 @@
             <div class="spinner"></div>
         </div>
 
-        <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px;">
+        <div class="table-responsive desktop-only">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px;">
             <thead>
                 <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
                     <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 0; background: var(--navy-50); z-index: 2; min-width: 50px;">No</th>
@@ -137,8 +138,59 @@
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
         </table>
+        </div>
+
         
-        <div style="padding: 16px 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div class="mobile-only">
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $monevItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $idx => $monev): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php
+                    $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
+                ?>
+                <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;" x-show="page === Math.ceil(<?php echo e($idx + 1); ?> / perPage)">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                        <div>
+                            <div style="font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; display: flex; gap: 6px;">
+                                <span>#<?php echo e($idx + 1); ?></span> &middot; <span><?php echo e($monev->kegiatanStatistik->dinas->singkatan ?? '-'); ?></span>
+                            </div>
+                            <div style="font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.35;"><?php echo e($monev->kegiatanStatistik->nama ?? '-'); ?></div>
+                        </div>
+                        <div style="flex-shrink: 0;">
+                            <span style="display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: <?php echo e($statusEnum?->cssColor() ?? 'var(--muted)'); ?>; background: <?php echo e($statusEnum?->cssBgColor() ?? '#f5f5f5'); ?>;">
+                                <?php echo e($statusEnum?->label() ?? ucfirst(str_replace('_', ' ', $monev->status))); ?>
+
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div style="font-size: 11px; color: var(--muted); margin-bottom: 8px; font-weight: 600;">Jadwal Rencana vs Realisasi:</div>
+                        <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px;">
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = config('paseban.bulan'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m => $namaBulan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
+                                    $isRencana = $m >= $monev->bulan_rencana_mulai && $m <= $monev->bulan_rencana_selesai;
+                                    $isRealisasi = $monev->bulan_realisasi_mulai && $monev->bulan_realisasi_selesai && $m >= $monev->bulan_realisasi_mulai && $m <= $monev->bulan_realisasi_selesai;
+                                    $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'rgba(0,0,0,0.03)');
+                                    $opacity = $isRealisasi ? 1 : ($isRencana ? 0.3 : 1);
+                                    $border = (!$isRealisasi && !$isRencana) ? '1px solid rgba(0,0,0,0.06)' : 'none';
+                                ?>
+                                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;" title="<?php echo e($namaBulan); ?> - <?php echo e($isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-')); ?>">
+                                    <div class="mono" style="font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: -0.5px;"><?php echo e(substr($namaBulan, 0, 1)); ?></div>
+                                    <div style="width: 100%; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; border: <?php echo e($border); ?>;"></div>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                <div style="padding: 40px; text-align: center; color: var(--muted);">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px; opacity: .4;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <div style="font-weight: 600;">Belum ada data Monev</div>
+                    <div style="font-size: 13px; margin-top: 6px;">Tidak ditemukan kegiatan untuk filter yang dipilih.</div>
+                </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        </div>
+        
+        <div style="padding: 16px 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-bottom: 30px;">
             <div style="font-size: 13.5px; color: var(--muted);">
                 Menampilkan entri dari total <?php echo e(count($monevItems)); ?>
 

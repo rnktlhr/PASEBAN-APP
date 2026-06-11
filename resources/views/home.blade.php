@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <div style="position: relative; height: 380px;" x-data="heroSlider" x-init="start()">
+            <div class="hero-chart-container" style="position: relative; height: 380px;" x-data="heroSlider" x-init="start()">
                 <div class="anim-chart"
                     style="position: absolute; top: 20px; right: 0; width: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 100%); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 22px 22px 10px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.25); transform: rotate(2deg);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0px;">
@@ -284,8 +284,7 @@
                         Materi dan dokumentasi pembinaan kegiatan statistik sektoral — akses panduan teknis, regulasi, dan
                         modul pelatihan untuk seluruh OPD se-Kabupaten Bantul.
                     </p>
-                    <a href="{{ config('paseban.pedoman_url') }}" target="_blank" rel="noopener noreferrer"
-                        style="display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(235,137,27,.4); text-decoration: none; transition: transform .15s ease;">
+                    <a href="https://bpsbantul.my.canva.site/pss2026" target="_blank" rel="noopener noreferrer" class="w-full-mobile" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; text-decoration: none; box-shadow: 0 6px 18px rgba(235, 137, 27, 0.3); transition: all 0.2s;">
                         Masuk Modul Pembinaan <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />

@@ -33,8 +33,8 @@
             <!-- Table Body / List -->
             <div x-show="!modalLoading && modalItems.length > 0" style="display: flex; flex-direction: column; gap: 8px; display: none;">
                 <template x-for="(item, index) in modalItems" :key="index">
-                    <div class="modal-list-item" style="background: #fff; padding: 16px; border-radius: 8px; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; cursor: default;">
-                        <div style="padding-right: 16px;">
+                    <div class="modal-list-item flex-col-mobile" style="background: #fff; padding: 16px; border-radius: 8px; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease; cursor: default;">
+                        <div style="padding-right: 16px; width: 100%;">
                             <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;" x-text="item.dinas"></div>
                             <div style="font-weight: 600; color: #002B6A; font-size: 14.5px; line-height: 1.4;" x-text="item.kegiatan"></div>
                         </div>
