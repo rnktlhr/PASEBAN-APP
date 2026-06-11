@@ -43,5 +43,4 @@ Pastikan konfigurasi di file `.env` di server telah disesuaikan:
    php artisan storage:link
    ```
 
----
-*Dikembangkan oleh Badan Pusat Statistik Kabupaten Bantul.*
+
