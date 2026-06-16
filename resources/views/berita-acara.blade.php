@@ -7,8 +7,8 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
             Kembali ke Beranda
         </a>
-        <h1 style="margin: 0 0 10px; font-size: 32px; font-weight: 800; letter-spacing: -.5px;">Semua Berita Acara</h1>
-        <p style="margin: 0; color: rgba(255,255,255,.7); font-size: 15px; max-width: 600px;">Arsip seluruh berita acara, pendampingan, dan sesi pembinaan statistik sektoral.</p>
+        <h1 style="margin: 0 0 10px; font-size: 32px; font-weight: 800; letter-spacing: -.5px;">Semua Kegiatan Pendampingan</h1>
+        <p style="margin: 0; color: rgba(255,255,255,.7); font-size: 15px; max-width: 600px;">Arsip seluruh kegiatan pendampingan, pembinaan, dan sesi pendampingan statistik sektoral.</p>
     </div>
 </section>
 

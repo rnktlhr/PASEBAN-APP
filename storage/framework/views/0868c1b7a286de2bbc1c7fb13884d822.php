@@ -155,8 +155,8 @@
     <div style="margin-bottom: 60px;">
         <div class="flex-col-mobile" style="margin-bottom: 24px;">
             <div>
-                <h2 style="font-size: 24px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Berita Acara Terkini</h2>
-                <p style="color: var(--muted); font-size: 15px; margin: 0;">Dokumentasi dan laporan hasil kegiatan pembinaan sektoral.</p>
+                <h2 style="font-size: 24px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Kegiatan Pendampingan Terkini</h2>
+                <p style="color: var(--muted); font-size: 15px; margin: 0;">Dokumentasi dan laporan hasil kegiatan pendampingan sektoral.</p>
             </div>
             <a href="<?php echo e(route('berita-acara.index')); ?>" class="align-end-mobile" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #fff; color: var(--orange); border: 1px solid var(--line); border-radius: 30px; font-size: 13px; font-weight: 700; text-decoration: none; box-shadow: var(--shadow-sm); transition: all 0.2s;">
                 Lihat Semua
@@ -211,7 +211,7 @@
                 <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-size: 13.5px; color: var(--muted);">Tampilkan</span>
-                        <select x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
+                        <select class="styled-select" x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
                             <option value="10">10</option>
                             <option value="25">25</option>
                             <option value="50">50</option>
@@ -328,7 +328,7 @@
             <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 13.5px; color: var(--muted);">Tampilkan</span>
-                    <select x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
+                    <select class="styled-select" x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>

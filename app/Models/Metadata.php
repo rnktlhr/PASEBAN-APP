@@ -16,6 +16,7 @@ class Metadata extends Model
         'kegiatan_id',
         'jenis',
         'tahun',
+        'status_dinas',
         'status_kominfo',
         'status_bps',
         'catatan',

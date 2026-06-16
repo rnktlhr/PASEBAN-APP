@@ -18,7 +18,7 @@
     </div>
 
     
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+    <div wire:key="stats-<?php echo e($tahun); ?>-<?php echo e($dinas_id); ?>-<?php echo e($status); ?>-<?php echo e(md5($search)); ?>" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
         <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--muted);">Total Kegiatan</div>
             <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;" x-data="countUp(<?php echo e($totalKegiatan); ?>)" x-text="count">0</div>
@@ -64,6 +64,12 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </select>
 
+        <select class="styled-select" wire:model.live="jenis_laporan" style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 140px; height: 38px; color: var(--ink);">
+            <option value="kegiatan">Kalender Kegiatan</option>
+            <option value="metadata">Kalender Metadata</option>
+            <option value="romantik">Kalender Romantik</option>
+        </select>
+
         <input type="text" wire:model.live.debounce.400ms="search" placeholder="Cari kegiatan..." style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; width: 220px; height: 38px; color: var(--ink); outline: none;">
     </div>
 
@@ -81,11 +87,6 @@
                 <span style="font-size: 13.5px; color: var(--muted);">entri</span>
             </div>
         </div>
-        
-        <div wire:loading class="loading-overlay">
-            <div class="spinner"></div>
-        </div>
-
         <div class="table-responsive desktop-only">
             <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px;">
             <thead>
@@ -116,14 +117,32 @@
                     </td>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($m = 1; $m <= 12; $m++): ?>
                         <?php
-                            $isRencana = $m >= $monev->bulan_rencana_mulai && $m <= $monev->bulan_rencana_selesai;
-                            $isRealisasi = $monev->bulan_realisasi_mulai && $monev->bulan_realisasi_selesai && $m >= $monev->bulan_realisasi_mulai && $m <= $monev->bulan_realisasi_selesai;
+                            $b_renc_m = null; $b_renc_s = null; $b_real_m = null; $b_real_s = null;
+                            if ($jenis_laporan === 'kegiatan') {
+                                $b_renc_m = $monev->bulan_rencana_mulai;
+                                $b_renc_s = $monev->bulan_rencana_selesai;
+                                $b_real_m = $monev->bulan_realisasi_mulai;
+                                $b_real_s = $monev->bulan_realisasi_selesai;
+                            } elseif ($jenis_laporan === 'metadata') {
+                                $b_renc_m = $monev->metadata_bulan_rencana_mulai ?? null;
+                                $b_renc_s = $monev->metadata_bulan_rencana_selesai ?? null;
+                                $b_real_m = $monev->metadata_bulan_realisasi_mulai ?? null;
+                                $b_real_s = $monev->metadata_bulan_realisasi_selesai ?? null;
+                            } elseif ($jenis_laporan === 'romantik') {
+                                $b_renc_m = $monev->romantik_bulan_rencana_mulai ?? null;
+                                $b_renc_s = $monev->romantik_bulan_rencana_selesai ?? null;
+                                $b_real_m = $monev->romantik_bulan_realisasi_mulai ?? null;
+                                $b_real_s = $monev->romantik_bulan_realisasi_selesai ?? null;
+                            }
+
+                            $isRencana = $b_renc_m && $m >= $b_renc_m && $m <= $b_renc_s;
+                            $isRealisasi = $b_real_m && $b_real_s && $m >= $b_real_m && $m <= $b_real_s;
                             $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'transparent');
+                            $opacity = $isRealisasi ? 1 : ($isRencana ? 0.25 : 0);
+                            $scale = ($isRealisasi || $isRencana) ? 1 : 0.4;
                         ?>
                         <td style="padding: 6px; text-align: center;">
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isRealisasi || $isRencana): ?>
-                            <div class="scroll-reveal anim-fill-down" style="width: 24px; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($isRealisasi ? 1 : 0.25); ?>; margin: auto; --delay: <?php echo e(($idx * 100) + ($m * 500)); ?>ms;" title="<?php echo e($isRealisasi ? 'Realisasi' : 'Rencana'); ?>"></div>
-                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            <div style="width: 24px; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; transform: scale(<?php echo e($scale); ?>); margin: auto; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);" title="<?php echo e($isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-')); ?>"></div>
                         </td>
                     <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tr>
@@ -154,7 +173,7 @@
                             </div>
                             <div style="font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.35;"><?php echo e($monev->kegiatanStatistik->nama ?? '-'); ?></div>
                         </div>
-                        <div style="flex-shrink: 0;">
+                        <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; align-items: flex-end;">
                             <span style="display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: <?php echo e($statusEnum?->cssColor() ?? 'var(--muted)'); ?>; background: <?php echo e($statusEnum?->cssBgColor() ?? '#f5f5f5'); ?>;">
                                 <?php echo e($statusEnum?->label() ?? ucfirst(str_replace('_', ' ', $monev->status))); ?>
 
@@ -167,15 +186,33 @@
                         <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px;">
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = config('paseban.bulan'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m => $namaBulan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php
-                                    $isRencana = $m >= $monev->bulan_rencana_mulai && $m <= $monev->bulan_rencana_selesai;
-                                    $isRealisasi = $monev->bulan_realisasi_mulai && $monev->bulan_realisasi_selesai && $m >= $monev->bulan_realisasi_mulai && $m <= $monev->bulan_realisasi_selesai;
+                                    $b_renc_m = null; $b_renc_s = null; $b_real_m = null; $b_real_s = null;
+                                    if ($jenis_laporan === 'kegiatan') {
+                                        $b_renc_m = $monev->bulan_rencana_mulai;
+                                        $b_renc_s = $monev->bulan_rencana_selesai;
+                                        $b_real_m = $monev->bulan_realisasi_mulai;
+                                        $b_real_s = $monev->bulan_realisasi_selesai;
+                                    } elseif ($jenis_laporan === 'metadata') {
+                                        $b_renc_m = $monev->metadata_bulan_rencana_mulai ?? null;
+                                        $b_renc_s = $monev->metadata_bulan_rencana_selesai ?? null;
+                                        $b_real_m = $monev->metadata_bulan_realisasi_mulai ?? null;
+                                        $b_real_s = $monev->metadata_bulan_realisasi_selesai ?? null;
+                                    } elseif ($jenis_laporan === 'romantik') {
+                                        $b_renc_m = $monev->romantik_bulan_rencana_mulai ?? null;
+                                        $b_renc_s = $monev->romantik_bulan_rencana_selesai ?? null;
+                                        $b_real_m = $monev->romantik_bulan_realisasi_mulai ?? null;
+                                        $b_real_s = $monev->romantik_bulan_realisasi_selesai ?? null;
+                                    }
+
+                                    $isRencana = $b_renc_m && $m >= $b_renc_m && $m <= $b_renc_s;
+                                    $isRealisasi = $b_real_m && $b_real_s && $m >= $b_real_m && $m <= $b_real_s;
                                     $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'rgba(0,0,0,0.03)');
                                     $opacity = $isRealisasi ? 1 : ($isRencana ? 0.3 : 1);
                                     $border = (!$isRealisasi && !$isRencana) ? '1px solid rgba(0,0,0,0.06)' : 'none';
                                 ?>
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;" title="<?php echo e($namaBulan); ?> - <?php echo e($isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-')); ?>">
-                                    <div class="mono" style="font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: -0.5px;"><?php echo e(substr($namaBulan, 0, 1)); ?></div>
-                                    <div style="width: 100%; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; border: <?php echo e($border); ?>;"></div>
+                                    <div class="mono" style="font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: -0.5px; transition: color 0.3s ease;"><?php echo e(substr($namaBulan, 0, 1)); ?></div>
+                                    <div style="width: 100%; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; border: <?php echo e($border); ?>; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
                                 </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>

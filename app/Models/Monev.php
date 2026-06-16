@@ -21,6 +21,8 @@ class Monev extends Model
         'bulan_realisasi_mulai',
         'bulan_realisasi_selesai',
         'status',
+        'status_metadata',
+        'status_romantik',
     ];
 
     protected $casts = [

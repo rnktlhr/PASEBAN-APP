@@ -23,6 +23,9 @@ class MonevCalendar extends Component
     #[Url(except: '')]
     public $search = '';
 
+    #[Url]
+    public $jenis_laporan = 'kegiatan';
+
     public function mount($tahunAwal)
     {
         $this->tahun = $this->tahun ?: $tahunAwal;

@@ -41,7 +41,7 @@
                     const target = link.getAttribute("href");
                     if (!target || target.startsWith("#") || target.startsWith("javascript:") || link.target === "_blank" || e.ctrlKey || e.metaKey) return;
                     if (target.startsWith("http") && !target.includes(window.location.host)) return;
-                    if (target.includes('/export/')) return;
+                    if (target.includes('/export') || target.includes('export')) return;
                     
                     e.preventDefault();
                     body.classList.remove("page-entered");

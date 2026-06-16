@@ -47,6 +47,18 @@ class MonevResource extends Resource
             Forms\Components\Select::make('status')
                 ->options(StatusMonev::options())
                 ->required(),
+            Forms\Components\Select::make('status_metadata')
+                ->label('Status Metadata')
+                ->options([
+                    'Ada' => 'Ada',
+                    'Tidak Ada' => 'Tidak Ada',
+                ])->nullable(),
+            Forms\Components\Select::make('status_romantik')
+                ->label('Status Romantik')
+                ->options([
+                    'Ada' => 'Ada',
+                    'Tidak Ada' => 'Tidak Ada',
+                ])->nullable(),
         ]);
     }
 
@@ -69,6 +81,24 @@ class MonevResource extends Resource
                 ->badge()
                 ->alignCenter()
                 ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray'),
+            Tables\Columns\TextColumn::make('status_metadata')
+                ->label('Metadata')
+                ->badge()
+                ->alignCenter()
+                ->color(fn (string $state): string => match ($state) {
+                    'Ada' => 'success',
+                    'Tidak Ada' => 'danger',
+                    default => 'gray',
+                }),
+            Tables\Columns\TextColumn::make('status_romantik')
+                ->label('Romantik')
+                ->badge()
+                ->alignCenter()
+                ->color(fn (string $state): string => match ($state) {
+                    'Ada' => 'success',
+                    'Tidak Ada' => 'danger',
+                    default => 'gray',
+                }),
         ])->filters([        
         ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }

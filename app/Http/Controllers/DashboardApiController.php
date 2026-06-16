@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JenisKegiatan;
 use App\Enums\JenisMetadata;
 use App\Enums\StatusDinas;
 use App\Enums\StatusKominfo;
@@ -10,7 +11,6 @@ use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
 use App\Models\Romantik;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DashboardApiController extends Controller
 {
@@ -21,24 +21,28 @@ class DashboardApiController extends Controller
             'type' => 'required|string|in:kegiatan,romantik,metadata,aliran',
         ]);
 
-        $year = (int) $request->input('year', date('Y'));
+        $defaultYear = KegiatanStatistik::max('tahun') ?? (int) date('Y');
+        $year = (int) $request->input('year', $defaultYear);
         $type = $request->input('type');
 
         if ($type === 'kegiatan') {
-            $chartData = KegiatanStatistik::select(DB::raw('MONTH(created_at) as bulan'), DB::raw('COUNT(*) as total'))
-                ->where('tahun', $year)
-                ->groupBy('bulan')
-                ->pluck('total', 'bulan');
-
-            $chartYears = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
-            $chartValues = [];
-            for ($m = 1; $m <= 12; $m++) {
-                $chartValues[] = $chartData->get($m, 0);
+            $labels = [];
+            $data = [];
+            $colors = [];
+            foreach (JenisKegiatan::cases() as $jenis) {
+                $labels[] = $jenis->label();
+                $data[] = KegiatanStatistik::where('tahun', $year)->where('jenis', $jenis->value)->count();
+                $colors[] = match($jenis) {
+                    JenisKegiatan::SURVEI => '#002B6A',
+                    JenisKegiatan::PENDATAAN_LENGKAP => '#00B69B',
+                    JenisKegiatan::KOMPROMIN => '#EB891B',
+                };
             }
 
             return response()->json([
-                'categories' => $chartYears,
-                'data' => $chartValues,
+                'labels' => $labels,
+                'data' => $data,
+                'colors' => $colors,
             ]);
         }
 
@@ -80,7 +84,8 @@ class DashboardApiController extends Controller
             'status' => 'required|string|max:50',
         ]);
 
-        $year = (int) $request->input('year', date('Y'));
+        $defaultYear = KegiatanStatistik::max('tahun') ?? (int) date('Y');
+        $year = (int) $request->input('year', $defaultYear);
         $type = $request->input('type');
         $status = $request->input('status');
 
@@ -88,17 +93,15 @@ class DashboardApiController extends Controller
         $title = "Rincian Data";
 
         if ($type === 'kegiatan') {
-            $months = ['Jan' => 1, 'Feb' => 2, 'Mar' => 3, 'Apr' => 4, 'Mei' => 5, 'Jun' => 6, 'Jul' => 7, 'Agt' => 8, 'Sep' => 9, 'Okt' => 10, 'Nov' => 11, 'Des' => 12];
-            $monthNames = array_flip($months);
-            $monthNum = $months[$status] ?? 1;
-            $fullMonthName = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][$monthNum - 1];
+            $jenisCase = JenisKegiatan::tryFrom($status);
+            $jenisLabel = $jenisCase ? $jenisCase->label() : ucfirst($status);
 
-            $title = "Daftar Kegiatan Statistik ($fullMonthName $year)";
-            $items = KegiatanStatistik::with('dinas')->where('tahun', $year)->whereMonth('created_at', $monthNum)->get()->map(function($item) {
+            $title = "Daftar Kegiatan Statistik ($jenisLabel - $year)";
+            $items = KegiatanStatistik::with('dinas')->where('tahun', $year)->where('jenis', $status)->get()->map(function($item) {
                 return [
                     'kegiatan' => $item->nama,
                     'dinas' => $item->dinas->nama ?? '-',
-                    'status_label' => 'Terdaftar',
+                    'status_label' => $item->jenis instanceof JenisKegiatan ? $item->jenis->label() : ucfirst($item->jenis),
                     'status_color' => 'var(--navy)',
                     'status_bg' => '#eef2f6'
                 ];

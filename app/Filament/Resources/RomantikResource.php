@@ -61,6 +61,7 @@ class RomantikResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('id', 'desc')
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([

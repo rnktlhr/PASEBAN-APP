@@ -16,7 +16,7 @@ class StatsOverviewWidget extends BaseWidget
 {
     protected function getStats(): array
     {
-        $tahun = (int) date('Y');
+        $tahun = (int) (KegiatanStatistik::max('tahun') ?? date('Y'));
 
         $totalKegiatan = KegiatanStatistik::where('tahun', $tahun)->count();
         $romantikDisetujui = Romantik::where('tahun', $tahun)->where('status_bps', StatusBps::DISETUJUI)->count();

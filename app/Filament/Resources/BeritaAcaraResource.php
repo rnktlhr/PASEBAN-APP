@@ -15,9 +15,9 @@ class BeritaAcaraResource extends Resource
 {
     protected static ?string $model = BeritaAcara::class;
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-newspaper';
-    protected static ?string $pluralModelLabel = 'Berita Acara';
+    protected static ?string $pluralModelLabel = 'Kegiatan Pendampingan';
     protected static string | \UnitEnum | null $navigationGroup = 'Konten';
-    protected static ?string $navigationLabel = 'Berita Acara';
+    protected static ?string $navigationLabel = 'Kegiatan Pendampingan';
     protected static ?int $navigationSort = 1;
     protected static bool $isScopedToTenant = false;
 

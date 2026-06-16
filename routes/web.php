@@ -20,6 +20,11 @@ Route::get('/kegiatan/berita-acara/{beritaAcara}', [\App\Http\Controllers\Berita
 Route::middleware(['throttle:exports'])->group(function () {
     Route::get('/monev/export/excel', [HomeController::class, 'exportExcel'])->name('monev.export.excel');
     Route::get('/monev/export/pdf', [HomeController::class, 'exportPdf'])->name('monev.export.pdf');
+    
+    Route::get('/kegiatan/export', [HomeController::class, 'exportKegiatanStatistik'])->name('kegiatan.export');
+    Route::get('/metadata/export', [HomeController::class, 'exportMetadata'])->name('metadata.export');
+    Route::get('/romantik/export', [HomeController::class, 'exportRomantik'])->name('romantik.export');
+    Route::get('/aliran-data/export', [HomeController::class, 'exportAliranData'])->name('aliran-data.export');
 });
 
 // Public data views

@@ -332,9 +332,9 @@
             <div style="margin-bottom: 28px;">
                 <div
                     style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
-                    ◆ Berita Acara</div>
-                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Berita
-                    Acara Kegiatan</h2>
+                    ◆ Kegiatan Pendampingan</div>
+                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Kegiatan
+                    Pendampingan</h2>
             </div>
             <style>
                 .berita-slider::-webkit-scrollbar { display: none; }
@@ -405,7 +405,7 @@
             </div>
             <div style="margin-top: 36px; text-align: center;">
                 <a href="{{ route('berita-acara.index') }}" class="btn-outline-orange">
-                    Lihat Semua Berita Acara
+                    Lihat Semua Kegiatan Pendampingan
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"></line>

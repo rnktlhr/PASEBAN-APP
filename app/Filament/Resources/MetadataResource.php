@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\JenisMetadata;
 use App\Enums\StatusBps;
+use App\Enums\StatusDinas;
 use App\Enums\StatusKominfo;
 use App\Filament\Resources\MetadataResource\Pages;
 use App\Models\Metadata;
@@ -26,7 +27,7 @@ class MetadataResource extends Resource
     public static function canAccess(): bool
     {
         $u = auth()->user();
-        return $u && ($u->isAdmin() || $u->isKominfo());
+        return $u && ($u->isAdmin() || $u->isKominfo() || $u->isDinas());
     }
 
     public static function form(Schema $form): Schema
@@ -44,6 +45,10 @@ class MetadataResource extends Resource
             Forms\Components\TextInput::make('tahun')
                 ->numeric()->required()
                 ->disabled(fn () => !$user?->isAdmin()),
+            Forms\Components\Select::make('status_dinas')
+                ->options(StatusDinas::options())
+                ->required()
+                ->disabled(fn () => !($user?->isAdmin() || $user?->isDinas())),
             Forms\Components\Select::make('status_kominfo')
                 ->options(StatusKominfo::metadataOptions())
                 ->required()
@@ -59,6 +64,7 @@ class MetadataResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('id', 'desc')
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
@@ -76,6 +82,10 @@ class MetadataResource extends Resource
                     default => 'gray',
                 }),
             Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
+            Tables\Columns\SelectColumn::make('status_dinas')
+                ->options(StatusDinas::options())
+                ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas()))
+                ,
             Tables\Columns\SelectColumn::make('status_kominfo')
                 ->options(StatusKominfo::metadataOptions())
                 ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isKominfo()))
