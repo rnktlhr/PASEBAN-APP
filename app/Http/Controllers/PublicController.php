@@ -30,7 +30,7 @@ class PublicController extends Controller
             $query->where('jenis', $request->jenis);
         }
         if ($request->filled('search')) {
-            $search = $request->search;
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->search);
             $query->where(function($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
                   ->orWhereHas('dinas', function($q2) use ($search) {
@@ -65,7 +65,7 @@ class PublicController extends Controller
             }
         }
         if ($request->filled('search')) {
-            $search = $request->search;
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->search);
             $query->whereHas('kegiatanStatistik', function($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
                   ->orWhereHas('dinas', function($q2) use ($search) {
@@ -96,7 +96,7 @@ class PublicController extends Controller
             $query->where('jenis', $request->jenis);
         }
         if ($request->filled('search')) {
-            $search = $request->search;
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->search);
             $query->whereHas('kegiatanStatistik', function($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
                   ->orWhereHas('dinas', function($q2) use ($search) {
@@ -127,7 +127,7 @@ class PublicController extends Controller
             $query->where('sudah_tayang', $request->status == '1');
         }
         if ($request->filled('search')) {
-            $search = $request->search;
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $request->search);
             $query->where(function($q) use ($search) {
                 $q->where('nama_data', 'like', "%{$search}%")
                   ->orWhereHas('kegiatanStatistik', function($q2) use ($search) {

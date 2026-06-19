@@ -35,7 +35,7 @@ class MonevExport implements FromView, ShouldAutoSize
             $monevQuery->where('status', $this->status);
         }
         if ($this->search) {
-            $escapedSearch = str_replace(['%', '_'], ['\%', '\_'], $this->search);
+            $escapedSearch = str_replace(['%', '_'], ['\\%', '\\_'], $this->search);
             $monevQuery->whereHas('kegiatanStatistik', function ($q) use ($escapedSearch) {
                 $q->where('nama', 'like', '%' . $escapedSearch . '%');
             });

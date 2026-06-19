@@ -51,7 +51,7 @@ class PublicAliranDataTable extends Component
             $query->where('sudah_tayang', $this->status == '1');
         }
         if (!empty($this->search)) {
-            $search = $this->search;
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $this->search);
             $query->where(function($q) use ($search) {
                 $q->where('nama_data', 'like', "%{$search}%")
                   ->orWhereHas('kegiatanStatistik', function($q2) use ($search) {

@@ -35,11 +35,12 @@ class KegiatanStatistikExport implements FromView
         }
 
         if ($this->search) {
-            $query->where(function ($q) {
-                $q->where('nama', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('dinas', function ($q2) {
-                      $q2->where('nama', 'like', '%' . $this->search . '%')
-                         ->orWhere('singkatan', 'like', '%' . $this->search . '%');
+            $escapedSearch = str_replace(['%', '_'], ['\\%', '\\_'], $this->search);
+            $query->where(function ($q) use ($escapedSearch) {
+                $q->where('nama', 'like', '%' . $escapedSearch . '%')
+                  ->orWhereHas('dinas', function ($q2) use ($escapedSearch) {
+                      $q2->where('nama', 'like', '%' . $escapedSearch . '%')
+                         ->orWhere('singkatan', 'like', '%' . $escapedSearch . '%');
                   });
             });
         }

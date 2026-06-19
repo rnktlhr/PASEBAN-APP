@@ -51,7 +51,7 @@ class PublicMetadataTable extends Component
             $query->where('jenis', $this->jenis);
         }
         if (!empty($this->search)) {
-            $search = $this->search;
+            $search = str_replace(['%', '_'], ['\\%', '\\_'], $this->search);
             $query->whereHas('kegiatanStatistik', function($q) use ($search) {
                 $q->where('nama', 'like', "%{$search}%")
                   ->orWhereHas('dinas', function($q2) use ($search) {

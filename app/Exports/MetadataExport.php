@@ -37,10 +37,11 @@ class MetadataExport implements FromView
         }
 
         if ($this->search) {
-            $query->whereHas('kegiatanStatistik', function ($q) {
-                $q->where('nama', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('dinas', function ($q2) {
-                      $q2->where('nama', 'like', '%' . $this->search . '%');
+            $escapedSearch = str_replace(['%', '_'], ['\\%', '\\_'], $this->search);
+            $query->whereHas('kegiatanStatistik', function ($q) use ($escapedSearch) {
+                $q->where('nama', 'like', '%' . $escapedSearch . '%')
+                  ->orWhereHas('dinas', function ($q2) use ($escapedSearch) {
+                      $q2->where('nama', 'like', '%' . $escapedSearch . '%');
                   });
             });
         }
