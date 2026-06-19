@@ -1,4 +1,4 @@
-<div>
+<div class="container" style="padding: 40px 32px; min-height: calc(100vh - 74px);">
     <div class="flex-col-mobile" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
         <div>
             <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Aliran Data <?php echo e($tahun); ?></h1>

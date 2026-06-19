@@ -77,7 +77,28 @@ class PublicController extends Controller
         $romantik = $query->paginate(10)->withQueryString();
         $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.romantik', compact('romantik', 'tahun', 'dinasList'));
+        // Summary Calculations
+        $totalKegiatan = KegiatanStatistik::where('tahun', $tahun)->count();
+        $disetujui = Romantik::where('tahun', $tahun)->where('status_bps', \App\Enums\StatusBps::DISETUJUI->value)->count();
+        $diperiksa = Romantik::where('tahun', $tahun)->where('status_bps', \App\Enums\StatusBps::SEDANG_DIPERIKSA->value)->count();
+        $perbaikan = Romantik::where('tahun', $tahun)->where('status_bps', \App\Enums\StatusBps::PERLU_PERBAIKAN->value)->count();
+        
+        $dalamProses = $diperiksa + $perbaikan;
+        $diajukan = $disetujui + $dalamProses;
+        $belumDiajukan = max(0, $totalKegiatan - $diajukan);
+
+        $pctDisetujui = $totalKegiatan > 0 ? round(($disetujui / $totalKegiatan) * 100) : 0;
+        $pctDiperiksa = $totalKegiatan > 0 ? round(($diperiksa / $totalKegiatan) * 100) : 0;
+        $pctPerbaikan = $totalKegiatan > 0 ? round(($perbaikan / $totalKegiatan) * 100) : 0;
+        $pctDalamProses = $totalKegiatan > 0 ? round(($dalamProses / $totalKegiatan) * 100) : 0;
+        $pctBelum = $totalKegiatan > 0 ? round(($belumDiajukan / $totalKegiatan) * 100) : 0;
+        $pctDiajukan = $totalKegiatan > 0 ? round(($diajukan / $totalKegiatan) * 100) : 0;
+
+        return view('public.romantik', compact(
+            'romantik', 'tahun', 'dinasList',
+            'totalKegiatan', 'disetujui', 'diperiksa', 'perbaikan', 'dalamProses', 'diajukan', 'belumDiajukan',
+            'pctDisetujui', 'pctDiperiksa', 'pctPerbaikan', 'pctDalamProses', 'pctBelum', 'pctDiajukan'
+        ));
     }
 
     public function metadata(Request $request)
@@ -108,7 +129,42 @@ class PublicController extends Controller
         $metadata = $query->orderBy('kegiatan_id')->orderBy('jenis')->paginate(10)->withQueryString();
         $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.metadata', compact('metadata', 'tahun', 'dinasList'));
+        // Summary Calculations
+        $totalKegiatan = KegiatanStatistik::where('tahun', $tahun)->count();
+
+        // Kegiatan
+        $metaKegiatanDone = Metadata::where('tahun', $tahun)->where('jenis', 'kegiatan')
+            ->whereIn('status_kominfo', \App\Enums\StatusKominfo::completedValues())->count();
+        $metaKegiatanDraft = Metadata::where('tahun', $tahun)->where('jenis', 'kegiatan')
+            ->where('status_kominfo', \App\Enums\StatusKominfo::DRAFT->value)->count();
+        $metaKegiatanBelum = max(0, $totalKegiatan - $metaKegiatanDone - $metaKegiatanDraft);
+
+        // Variabel
+        $metaVariabelDone = Metadata::where('tahun', $tahun)->where('jenis', 'variabel')
+            ->whereIn('status_kominfo', \App\Enums\StatusKominfo::completedValues())->count();
+        $metaVariabelDraft = Metadata::where('tahun', $tahun)->where('jenis', 'variabel')
+            ->where('status_kominfo', \App\Enums\StatusKominfo::DRAFT->value)->count();
+        $metaVariabelBelum = max(0, $totalKegiatan - $metaVariabelDone - $metaVariabelDraft);
+
+        // Indikator
+        $metaIndikatorDone = Metadata::where('tahun', $tahun)->where('jenis', 'indikator')
+            ->whereIn('status_kominfo', \App\Enums\StatusKominfo::completedValues())->count();
+        $metaIndikatorDraft = Metadata::where('tahun', $tahun)->where('jenis', 'indikator')
+            ->where('status_kominfo', \App\Enums\StatusKominfo::DRAFT->value)->count();
+        $metaIndikatorBelum = max(0, $totalKegiatan - $metaIndikatorDone - $metaIndikatorDraft);
+
+        $pctKegiatan = $totalKegiatan > 0 ? round(($metaKegiatanDone / $totalKegiatan) * 100) : 0;
+        $pctVariabel = $totalKegiatan > 0 ? round(($metaVariabelDone / $totalKegiatan) * 100) : 0;
+        $pctIndikator = $totalKegiatan > 0 ? round(($metaIndikatorDone / $totalKegiatan) * 100) : 0;
+
+        return view('public.metadata', compact(
+            'metadata', 'tahun', 'dinasList', 
+            'totalKegiatan', 
+            'metaKegiatanDone', 'metaKegiatanDraft', 'metaKegiatanBelum',
+            'metaVariabelDone', 'metaVariabelDraft', 'metaVariabelBelum',
+            'metaIndikatorDone', 'metaIndikatorDraft', 'metaIndikatorBelum',
+            'pctKegiatan', 'pctVariabel', 'pctIndikator'
+        ));
     }
 
     public function aliranData(Request $request)
@@ -142,7 +198,18 @@ class PublicController extends Controller
         $aliranData = $query->paginate(10)->withQueryString();
         $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.aliran_data', compact('aliranData', 'tahun', 'dinasList'));
+        // Summary Calculations
+        $totalData = AliranData::where('tahun', $tahun)->count();
+        $sudahTayang = AliranData::where('tahun', $tahun)->where('sudah_tayang', true)->count();
+        $belumTayang = max(0, $totalData - $sudahTayang);
+
+        $pctTayang = $totalData > 0 ? round(($sudahTayang / $totalData) * 100) : 0;
+        $pctBelum = $totalData > 0 ? round(($belumTayang / $totalData) * 100) : 0;
+
+        return view('public.aliran_data', compact(
+            'aliranData', 'tahun', 'dinasList',
+            'totalData', 'sudahTayang', 'belumTayang', 'pctTayang', 'pctBelum'
+        ));
     }
 
     public function monev(Request $request)

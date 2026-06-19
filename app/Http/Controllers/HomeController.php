@@ -46,19 +46,29 @@ class HomeController extends Controller
             ->whereIn('status_dinas', StatusDinas::submittedValues())->count();
         $romantikBelum = $romantikTotal - $romantikDiajukan;
 
-        // Metadata (per jenis)
+        // Metadata (Gabungan 3 Jenis: Kegiatan, Variabel, Indikator)
         $metaKegiatan = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::KEGIATAN->value);
         $metaKegiatanDone = (clone $metaKegiatan)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
         $metaKegiatanDraft = (clone $metaKegiatan)->where('status_kominfo', StatusKominfo::DRAFT->value)->count();
-        $metaKegiatanTotal = $metaKegiatan->count();
 
         $metaVariabel = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::VARIABEL->value);
         $metaVariabelDone = (clone $metaVariabel)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
-        $metaVariabelTotal = $metaVariabel->count();
+        $metaVariabelDraft = (clone $metaVariabel)->where('status_kominfo', StatusKominfo::DRAFT->value)->count();
 
         $metaIndikator = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::INDIKATOR->value);
         $metaIndikatorDone = (clone $metaIndikator)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
-        $metaIndikatorTotal = $metaIndikator->count();
+        $metaIndikatorDraft = (clone $metaIndikator)->where('status_kominfo', StatusKominfo::DRAFT->value)->count();
+
+        $metaTotalDone = $metaKegiatanDone + $metaVariabelDone + $metaIndikatorDone;
+        $metaTotalDraft = $metaKegiatanDraft + $metaVariabelDraft + $metaIndikatorDraft;
+        
+        $metaTotalTarget = $totalKegiatan * 3; // Karena ada 3 jenis metadata per Kegiatan
+        $metaTotalBelum = max(0, $metaTotalTarget - $metaTotalDone - $metaTotalDraft);
+
+        // Alias for the view to use
+        $metaKegiatanDone = $metaTotalDone;
+        $metaKegiatanDraft = $metaTotalDraft;
+        $metaKegiatanTotal = $metaTotalTarget;
 
         // Aliran Data
         $aliranTotal  = AliranData::where('tahun', $tahun)->count();
