@@ -69,6 +69,8 @@ class HomeController extends Controller
         $metaKegiatanDone = $metaTotalDone;
         $metaKegiatanDraft = $metaTotalDraft;
         $metaKegiatanTotal = $metaTotalTarget;
+        $metaVariabelTotal = $totalKegiatan;
+        $metaIndikatorTotal = $totalKegiatan;
 
         // Aliran Data
         $aliranTotal  = AliranData::where('tahun', $tahun)->count();

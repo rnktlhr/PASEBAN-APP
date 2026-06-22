@@ -34,11 +34,11 @@
                 </div>
             </div>
 
-            <div style="flex: 1; display: grid; grid-template-columns: 240px 1fr; gap: 32px; align-items: center; justify-content: center;">
-                <div style="width: 100%; display: flex; justify-content: center; position: relative;">
+            <div style="flex: 1; display: flex; justify-content: center; align-items: center; gap: 40px; width: 100%;">
+                <div style="width: 220px; display: flex; justify-content: center; position: relative;">
                     <div id="aliran-donut-chart"></div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="display: flex; flex-direction: column; gap: 16px; width: 280px;">
                     <div style="border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; background: #f8f9fb;">
                         <div style="display: flex; gap: 12px; align-items: center;">
                             <span style="width: 12px; height: 12px; border-radius: 3px; background: #002B6A; flex-shrink: 0;"></span>
@@ -65,8 +65,8 @@
         </div>
 
         {{-- Card Kanan: 3 Stacked Cards --}}
-        <div style="display: flex; flex-direction: column; gap: 16px; height: 100%;">
-            <div class="scroll-reveal" style="flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; gap: 16px; align-items: center; --delay: 200ms;">
+        <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div class="scroll-reveal" style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; gap: 16px; align-items: center; --delay: 200ms;">
                 <div style="background: rgba(0, 43, 106, 0.05); width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #002B6A;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
                 </div>
@@ -79,7 +79,7 @@
                 </div>
             </div>
 
-            <div class="scroll-reveal" style="flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; gap: 16px; align-items: center; --delay: 300ms;">
+            <div class="scroll-reveal" style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; gap: 16px; align-items: center; --delay: 300ms;">
                 <div style="background: rgba(0, 43, 106, 0.05); width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #002B6A;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 </div>
@@ -92,7 +92,7 @@
                 </div>
             </div>
 
-            <div class="scroll-reveal" style="flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; gap: 16px; align-items: center; --delay: 400ms;">
+            <div class="scroll-reveal" style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); display: flex; gap: 16px; align-items: center; --delay: 400ms;">
                 <div style="background: rgba(235, 137, 27, 0.05); width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #EB891B;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 </div>
@@ -106,9 +106,9 @@
             </div>
         </div>
     </div>
-
-    <livewire:public-aliran-data-table :tahun="$tahun" />
 </div>
+
+<livewire:public-aliran-data-table :tahun="$tahun" />
 
 <style>
     @media (max-width: 900px) {
@@ -127,7 +127,7 @@
             labels: ['Sudah Tayang', 'Belum Tayang'],
             chart: {
                 type: 'donut',
-                height: 240,
+                height: 200,
                 animations: {
                     enabled: true,
                     easing: 'easeinout',
