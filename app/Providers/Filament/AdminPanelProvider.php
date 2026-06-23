@@ -65,7 +65,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 \Filament\View\PanelsRenderHook::HEAD_END,
-                fn (): string => \Illuminate\Support\Facades\Blade::render('<style>.fi-ta-cell .fi-badge { min-width: 140px; justify-content: center; }</style>')
+                fn (): string => \Illuminate\Support\Facades\Blade::render('
+                <style>
+                    .fi-ta-cell .fi-badge { min-width: 140px; justify-content: center; }
+                    .fi-ta-header-cell-sort-btn svg { transition: all 0.3s ease-in-out; }
+                    .fi-ta-content { transition: opacity 0.3s ease-in-out; }
+                </style>
+                ')
             );
     }
 }

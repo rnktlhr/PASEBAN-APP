@@ -59,23 +59,27 @@ class KegiatanStatistikResource extends Resource
             ->striped()
             ->columns([
             Tables\Columns\TextColumn::make('dinas.singkatan')
-                ->label('Dinas')->searchable()->sortable(),
+                ->label('Dinas')->searchable()->sortable()
+                ->width('15%'),
             Tables\Columns\TextColumn::make('nama')
-                ->searchable()->sortable()->limit(40),
+                ->searchable()->sortable()->wrap()
+                ->width('55%'),
             Tables\Columns\TextColumn::make('jenis')
-                
                 ->badge()
-                ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray')
-                ,
-            Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
+                ->alignCenter()
+                ->width('20%')
+                ->color(fn ($state) => $state instanceof JenisKegiatan ? $state->color() : 'gray'),
+            Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable()->width('10%'),
         ])->filters([
             Tables\Filters\SelectFilter::make('tahun')
                 ->options(fn () => KegiatanStatistik::distinct()->pluck('tahun', 'tahun')->toArray()),
             Tables\Filters\SelectFilter::make('jenis')
                 ->options(JenisKegiatan::options()),
         ])->actions([
-            \Filament\Actions\EditAction::make(),
-            \Filament\Actions\DeleteAction::make(),
+            \Filament\Actions\ActionGroup::make([
+                \Filament\Actions\EditAction::make(),
+                \Filament\Actions\DeleteAction::make(),
+            ])
         ])->bulkActions([
             \Filament\Actions\BulkActionGroup::make([
                 \Filament\Actions\DeleteBulkAction::make(),

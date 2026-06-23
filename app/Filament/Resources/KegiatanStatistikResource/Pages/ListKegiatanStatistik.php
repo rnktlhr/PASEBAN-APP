@@ -29,6 +29,11 @@ class ListKegiatanStatistik extends ListRecords {
                 ->icon('heroicon-o-document-arrow-up')
                 ->color('success')
                 ->form([
+                    \Filament\Forms\Components\TextInput::make('tahun')
+                        ->label('Tahun Data')
+                        ->numeric()
+                        ->default(date('Y'))
+                        ->required(),
                     FileUpload::make('file')
                         ->label('Pilih File Excel')
                         ->disk('local')
@@ -39,7 +44,7 @@ class ListKegiatanStatistik extends ListRecords {
                 ->action(function (array $data) {
                     try {
                         $filePath = Storage::disk('local')->path($data['file']);
-                        Excel::import(new KegiatanStatistikImport, $filePath);
+                        Excel::import(new KegiatanStatistikImport($data['tahun']), $filePath);
                         Storage::disk('local')->delete($data['file']);
                         
                         \Filament\Notifications\Notification::make()

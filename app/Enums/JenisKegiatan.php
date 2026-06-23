@@ -16,7 +16,7 @@ enum JenisKegiatan: string implements HasLabel, HasColor
         return match ($this) {
             self::SURVEI => 'Survei',
             self::PENDATAAN_LENGKAP => 'Pendataan Lengkap',
-            self::KOMPROMIN => 'Kompilasi Produk Administrasi (Kompromin)',
+            self::KOMPROMIN => 'Kompromin',
         };
     }
 
@@ -30,7 +30,7 @@ enum JenisKegiatan: string implements HasLabel, HasColor
     public function color(): string
     {
         return match ($this) {
-            self::SURVEI => 'primary',
+            self::SURVEI => 'info',
             self::PENDATAAN_LENGKAP => 'success',
             self::KOMPROMIN => 'warning',
         };

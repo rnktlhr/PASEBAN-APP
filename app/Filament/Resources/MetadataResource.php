@@ -97,7 +97,12 @@ class MetadataResource extends Resource
         ])->filters([
             Tables\Filters\SelectFilter::make('jenis')
                 ->options(JenisMetadata::options()),
-        ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
+        ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()])
+        ->bulkActions([
+            \Filament\Actions\BulkActionGroup::make([
+                \Filament\Actions\DeleteBulkAction::make(),
+            ]),
+        ]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
