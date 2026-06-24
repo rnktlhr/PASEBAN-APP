@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\BelongsToKegiatan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Romantik extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToKegiatan;
 
     protected $table = 'romantik';
 
@@ -28,9 +28,4 @@ class Romantik extends Model
         'tanggal_pengajuan' => 'date',
         'tanggal_persetujuan' => 'date',
     ];
-
-    public function kegiatanStatistik(): BelongsTo
-    {
-        return $this->belongsTo(KegiatanStatistik::class, 'kegiatan_id');
-    }
 }

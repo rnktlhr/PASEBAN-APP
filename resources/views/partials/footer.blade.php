@@ -23,7 +23,7 @@
                     <li><a href="{{ route('public.kegiatan') }}" style="opacity: .78; transition: opacity .15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.78'">Identifikasi Kegiatan</a></li>
                     <li><a href="{{ route('public.romantik') }}" style="opacity: .78; transition: opacity .15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.78'">Romantik</a></li>
                     <li><a href="{{ route('public.monev') }}" style="opacity: .78; transition: opacity .15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.78'">Monitoring Evaluasi</a></li>
-                    <li><a href="{{ route('berita-acara.index') }}" style="opacity: .78; transition: opacity .15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.78'">Berita Acara</a></li>
+                    <li><a href="{{ route('kegiatan-pendampingan.index') }}" style="opacity: .78; transition: opacity .15s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='.78'">Kegiatan Pendampingan</a></li>
                 </ul>
             </div>
             <div>

@@ -10,10 +10,15 @@ use App\Models\AliranData;
 use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
 use App\Models\Romantik;
+use App\Services\DashboardService;
 use Illuminate\Http\Request;
 
 class DashboardApiController extends Controller
 {
+    public function __construct(
+        protected DashboardService $dashboardService
+    ) {}
+
     public function getChartData(Request $request)
     {
         $request->validate([
@@ -21,28 +26,16 @@ class DashboardApiController extends Controller
             'type' => 'required|string|in:kegiatan,romantik,metadata,aliran',
         ]);
 
-        $defaultYear = KegiatanStatistik::max('tahun') ?? (int) date('Y');
-        $year = (int) $request->input('year', $defaultYear);
+        $year = (int) $request->input('year', $this->dashboardService->getDefaultTahun());
         $type = $request->input('type');
 
         if ($type === 'kegiatan') {
-            $labels = [];
-            $data = [];
-            $colors = [];
-            foreach (JenisKegiatan::cases() as $jenis) {
-                $labels[] = $jenis->label();
-                $data[] = KegiatanStatistik::where('tahun', $year)->where('jenis', $jenis->value)->count();
-                $colors[] = match($jenis) {
-                    JenisKegiatan::SURVEI => '#002B6A',
-                    JenisKegiatan::PENDATAAN_LENGKAP => '#00B69B',
-                    JenisKegiatan::KOMPROMIN => '#EB891B',
-                };
-            }
-
+            // Reuse DashboardService — menghilangkan duplikasi logic
+            $chartData = $this->dashboardService->getChartData($year);
             return response()->json([
-                'labels' => $labels,
-                'data' => $data,
-                'colors' => $colors,
+                'labels' => $chartData['jenisLabels'],
+                'data' => $chartData['jenisValues'],
+                'colors' => $chartData['jenisColors'],
             ]);
         }
 

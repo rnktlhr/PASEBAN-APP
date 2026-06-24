@@ -120,51 +120,21 @@
         </div>
     </div>
 
-    @if(count($programPembinaan) > 0)
-    <!-- Program Tahunan -->
-    <div style="margin-bottom: 60px;">
-        <h2 style="font-size: 24px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Program Pembinaan Tahun 2026</h2>
-        <p style="color: var(--muted); font-size: 15px; margin: 0 0 24px;">Empat program pembinaan utama yang dilaksanakan secara berkala per triwulan.</p>
-        
-        <div class="summary-cards-grid" style="grid-template-columns: repeat(4, 1fr); gap: 20px;">
-            @foreach($programPembinaan as $index => $program)
-            <!-- Card {{ $index + 1 }} -->
-            <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;">
-                <div class="mono" style="position: absolute; top: 24px; right: 24px; font-size: 24px; font-weight: 800; color: var(--bg); z-index: 0; user-select: none;">{{ str_pad($program->nomor_urut, 2, '0', STR_PAD_LEFT) }}</div>
-                <div style="width: 48px; height: 48px; background: var(--orange-50); color: var(--orange); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative; z-index: 1;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
-                </div>
-                <h3 style="font-size: 16px; font-weight: 700; color: var(--navy); margin: 0 0 8px; position: relative; z-index: 1;">{{ $program->nama }}</h3>
-                <p style="color: var(--muted); font-size: 13.5px; line-height: 1.5; margin: 0 0 20px; position: relative; z-index: 1;">{{ $program->deskripsi }}</p>
-                <div style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: var(--bg); border-radius: 6px; font-size: 12px; font-weight: 600; color: var(--ink);">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--orange);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    {{ $program->kuartal }} <span style="color: var(--muted); font-weight: 400; margin-left: 4px;">{{ $program->jadwal }}</span>
-                </div>
-                @if($program->link)
-                <div style="margin-top: 20px;">
-                    <a href="{{ $program->link }}" style="color: var(--orange); font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">Selengkapnya <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
-                </div>
-                @endif
-            </div>
-            @endforeach
-        </div>
-    </div>
-    @endif
 
-    <!-- Berita Acara Section -->
+    <!-- Kegiatan Pendampingan Section -->
     <div style="margin-bottom: 60px;">
         <div class="flex-col-mobile" style="margin-bottom: 24px;">
             <div>
                 <h2 style="font-size: 24px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Kegiatan Pendampingan Terkini</h2>
                 <p style="color: var(--muted); font-size: 15px; margin: 0;">Dokumentasi dan laporan hasil kegiatan pendampingan sektoral.</p>
             </div>
-            <a href="{{ route('berita-acara.index') }}" class="align-end-mobile" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #fff; color: var(--orange); border: 1px solid var(--line); border-radius: 30px; font-size: 13px; font-weight: 700; text-decoration: none; box-shadow: var(--shadow-sm); transition: all 0.2s;">
+            <a href="{{ route('kegiatan-pendampingan.index') }}" class="align-end-mobile" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; background: #fff; color: var(--orange); border: 1px solid var(--line); border-radius: 30px; font-size: 13px; font-weight: 700; text-decoration: none; box-shadow: var(--shadow-sm); transition: all 0.2s;">
                 Lihat Semua
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-            @foreach($latestBeritaAcara as $ba)
+            @foreach($latestKegiatanPendampingan as $ba)
             <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;">
                 @if($ba->gambar)
                 <div style="height: 200px; background-image: url('{{ asset('storage/'.$ba->gambar) }}'); background-size: cover; background-position: center; position: relative;">
@@ -177,7 +147,7 @@
                     <div style="font-size: 12px; font-family: monospace; color: var(--muted); margin-bottom: 8px;">{{ $ba->tanggal->format('d M Y') }}</div>
                     <h3 style="font-size: 16px; font-weight: 800; color: var(--navy); margin: 0 0 12px; line-height: 1.4;">{{ $ba->judul }}</h3>
                     <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6; margin: 0 0 24px; flex: 1;">{{ $ba->ringkasan }}</p>
-                    <a href="{{ route('berita-acara.show', $ba->id) }}" style="color: var(--orange); font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                    <a href="{{ route('kegiatan-pendampingan.show', $ba->id) }}" style="color: var(--orange); font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
                         Lihat Detail
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </a>

@@ -8,10 +8,9 @@ use App\Models\Metadata;
 use App\Models\Monev;
 use App\Models\Romantik;
 use App\Models\Dinas;
-use App\Models\ProgramPembinaan;
 use App\Models\Pembinaan;
 use App\Models\MateriPembinaan;
-use App\Models\BeritaAcara;
+use App\Models\KegiatanPendampingan;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
@@ -79,12 +78,15 @@ class PublicController extends Controller
 
         // Summary Calculations
         $totalKegiatan = KegiatanStatistik::where('tahun', $tahun)->count();
-        $disetujui = Romantik::where('tahun', $tahun)->where('status_bps', \App\Enums\StatusBps::DISETUJUI->value)->count();
-        $diperiksa = Romantik::where('tahun', $tahun)->where('status_bps', \App\Enums\StatusBps::SEDANG_DIPERIKSA->value)->count();
-        $perbaikan = Romantik::where('tahun', $tahun)->where('status_bps', \App\Enums\StatusBps::PERLU_PERBAIKAN->value)->count();
+        
+        $submittedValues = \App\Enums\StatusDinas::submittedValues();
+        
+        $disetujui = Romantik::where('tahun', $tahun)->whereIn('status_dinas', $submittedValues)->where('status_bps', \App\Enums\StatusBps::DISETUJUI->value)->count();
+        $diperiksa = Romantik::where('tahun', $tahun)->whereIn('status_dinas', $submittedValues)->where('status_bps', \App\Enums\StatusBps::SEDANG_DIPERIKSA->value)->count();
+        $perbaikan = Romantik::where('tahun', $tahun)->whereIn('status_dinas', $submittedValues)->where('status_bps', \App\Enums\StatusBps::PERLU_PERBAIKAN->value)->count();
         
         $dalamProses = $diperiksa + $perbaikan;
-        $diajukan = $disetujui + $dalamProses;
+        $diajukan = Romantik::where('tahun', $tahun)->whereIn('status_dinas', $submittedValues)->count();
         $belumDiajukan = max(0, $totalKegiatan - $diajukan);
 
         $pctDisetujui = $totalKegiatan > 0 ? round(($disetujui / $totalKegiatan) * 100) : 0;
@@ -225,9 +227,7 @@ class PublicController extends Controller
         $request->validate(['tahun' => 'nullable|integer|min:2020|max:2099']);
         $tahun = (int) $request->query('tahun', date('Y'));
 
-        $programPembinaan = ProgramPembinaan::where('tahun', $tahun)
-            ->orderBy('nomor_urut')
-            ->get();
+
 
         $sesiPembinaan = Pembinaan::whereYear('tanggal', $tahun)
             ->orderBy('tanggal')
@@ -236,7 +236,7 @@ class PublicController extends Controller
         $materiPembinaan = MateriPembinaan::orderByDesc('tanggal')
             ->get();
 
-        $latestBeritaAcara = BeritaAcara::orderByDesc('tanggal')
+        $latestKegiatanPendampingan = KegiatanPendampingan::orderByDesc('tanggal')
             ->take(3)
             ->get();
 
@@ -274,7 +274,6 @@ class PublicController extends Controller
 
         return view('public.pembinaan', compact(
             'tahun',
-            'programPembinaan',
             'sesiPembinaan',
             'materiPembinaan',
             'rekapKehadiran',
@@ -283,7 +282,7 @@ class PublicController extends Controller
             'totalKehadiran',
             'persentaseKehadiran',
             'dinasList',
-            'latestBeritaAcara'
+            'latestKegiatanPendampingan'
         ));
     }
 }

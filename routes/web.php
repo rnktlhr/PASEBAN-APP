@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/login', fn () => redirect('/dinas/login'))->name('login');
-Route::get('/kegiatan/berita-acara', [HomeController::class, 'beritaAcara'])->name('berita-acara.index');
-Route::get('/kegiatan/berita-acara/{beritaAcara}', [\App\Http\Controllers\BeritaAcaraController::class, 'show'])->name('berita-acara.show');
+Route::get('/login', [HomeController::class, 'loginRedirect'])->name('login');
+Route::get('/kegiatan/pendampingan', [HomeController::class, 'kegiatanPendampingan'])->name('kegiatan-pendampingan.index');
+Route::get('/kegiatan/pendampingan/{kegiatanPendampingan}', [\App\Http\Controllers\KegiatanPendampinganController::class, 'show'])->name('kegiatan-pendampingan.show');
 
 // Export routes
 Route::middleware(['throttle:exports'])->group(function () {

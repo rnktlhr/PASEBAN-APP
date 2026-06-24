@@ -15,6 +15,38 @@ class KegiatanStatistik extends Model
 
     protected $table = 'kegiatan_statistik';
 
+    protected static function booted()
+    {
+        static::created(function ($kegiatan) {
+            // Generate 3 Metadata
+            foreach (['kegiatan', 'variabel', 'indikator'] as $jenis) {
+                $kegiatan->metadata()->firstOrCreate([
+                    'tahun' => $kegiatan->tahun,
+                    'jenis' => $jenis,
+                ], [
+                    'status_kominfo' => 'belum_diajukan',
+                    'status_bps' => 'sedang_diperiksa',
+                ]);
+            }
+            // Generate Romantik
+            $kegiatan->romantik()->firstOrCreate([
+                'tahun' => $kegiatan->tahun,
+            ], [
+                'status_dinas' => 'belum_diajukan',
+                'status_kominfo' => 'sedang_diperiksa',
+                'status_bps' => 'sedang_diperiksa',
+            ]);
+            // Generate Monev
+            $kegiatan->monev()->firstOrCreate([
+                'tahun' => $kegiatan->tahun,
+            ], [
+                'bulan_rencana_mulai' => 1,
+                'bulan_rencana_selesai' => 12,
+                'status' => 'belum_mulai',
+            ]);
+        });
+    }
+
     protected $fillable = [
         'dinas_id',
         'nama',

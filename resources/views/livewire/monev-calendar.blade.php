@@ -88,15 +88,15 @@
             </div>
         </div>
         <div class="table-responsive desktop-only">
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; table-layout: fixed;">
             <thead>
                 <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 0; background: var(--navy-50); z-index: 2; min-width: 50px;">No</th>
-                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 50px; background: var(--navy-50); z-index: 2; min-width: 250px;">Kegiatan</th>
-                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); min-width: 100px;">OPD</th>
-                    <th style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--navy); min-width: 80px;">Status</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 0; background: var(--navy-50); z-index: 2; width: 50px;">No</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 50px; background: var(--navy-50); z-index: 2; width: 35%;">Kegiatan</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); width: 10%;">OPD</th>
+                    <th style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--navy); width: 12%;">Status</th>
                     @foreach(config('paseban.bulan') as $m => $namaBulan)
-                    <th style="padding: 14px 8px; text-align: center; font-weight: 600; color: var(--muted); font-size: 11px; min-width: 36px;">{{ $namaBulan }}</th>
+                    <th style="padding: 14px 8px; text-align: center; font-weight: 600; color: var(--muted); font-size: 11px;">{{ $namaBulan }}</th>
                     @endforeach
                 </tr>
             </thead>
@@ -105,11 +105,11 @@
                 @php
                     $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                 @endphp
-                <tr style="border-bottom: 1px solid var(--line);" x-show="page === Math.ceil({{ $idx + 1 }} / perPage)">
-                    <td style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1;">{{ $idx + 1 }}</td>
-                    <td style="padding: 14px 16px; font-weight: 600; color: var(--navy); position: sticky; left: 50px; background: #fff; z-index: 1;">{{ $monev->kegiatanStatistik->nama ?? '-' }}</td>
-                    <td style="padding: 14px 16px; color: var(--ink);">{{ $monev->kegiatanStatistik->dinas->singkatan ?? '-' }}</td>
-                    <td style="padding: 14px 16px; text-align: center;">
+                <tr wire:key="desk-{{ $monev->kegiatan_id }}" style="border-bottom: 1px solid var(--line);" x-show="page === Math.ceil({{ $idx + 1 }} / perPage)">
+                    <td style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1; vertical-align: middle;">{{ $idx + 1 }}</td>
+                    <td style="padding: 14px 16px; font-weight: 600; color: var(--navy); position: sticky; left: 50px; background: #fff; z-index: 1; vertical-align: middle;">{{ $monev->kegiatanStatistik->nama ?? '-' }}</td>
+                    <td style="padding: 14px 16px; color: var(--ink); vertical-align: middle;">{{ $monev->kegiatanStatistik->dinas->singkatan ?? '-' }}</td>
+                    <td style="padding: 14px 16px; text-align: center; vertical-align: middle;">
                         <span style="display: inline-block; width: 115px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 11px; font-weight: 600; color: {{ $statusEnum?->cssColor() ?? 'var(--muted)' }}; background: {{ $statusEnum?->cssBgColor() ?? '#f5f5f5' }};">
                             {{ $statusEnum?->label() ?? ucfirst(str_replace('_', ' ', $monev->status)) }}
                         </span>
@@ -139,9 +139,11 @@
                             $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'transparent');
                             $opacity = $isRealisasi ? 1 : ($isRencana ? 0.25 : 0);
                             $scale = ($isRealisasi || $isRencana) ? 1 : 0.4;
+                            $localIdx = $idx % 10;
+                            $delayMs = ($localIdx * 12 + $m) * 12;
                         @endphp
-                        <td style="padding: 6px; text-align: center;">
-                            <div style="width: 24px; height: 24px; border-radius: 4px; background: {{ $cellBg }}; opacity: {{ $opacity }}; transform: scale({{ $scale }}); margin: auto; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);" title="{{ $isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-') }}"></div>
+                        <td style="padding: 6px; text-align: center; vertical-align: middle;">
+                            <div style="width: 24px; height: 24px; border-radius: 4px; background: {{ $cellBg }}; opacity: {{ $opacity }}; transform: scale({{ $scale }}); margin: auto; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) {{ $delayMs }}ms;" title="{{ $isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-') }}"></div>
                         </td>
                     @endfor
                 </tr>
@@ -164,7 +166,7 @@
                 @php
                     $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                 @endphp
-                <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;" x-show="page === Math.ceil({{ $idx + 1 }} / perPage)">
+                <div wire:key="mob-{{ $monev->kegiatan_id }}" style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;" x-show="page === Math.ceil({{ $idx + 1 }} / perPage)">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
                         <div>
                             <div style="font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; display: flex; gap: 6px;">
@@ -207,10 +209,12 @@
                                     $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'rgba(0,0,0,0.03)');
                                     $opacity = $isRealisasi ? 1 : ($isRencana ? 0.3 : 1);
                                     $border = (!$isRealisasi && !$isRencana) ? '1px solid rgba(0,0,0,0.06)' : 'none';
+                                    $localIdx = $idx % 10;
+                                    $delayMs = ($localIdx * 12 + $m) * 12;
                                 @endphp
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;" title="{{ $namaBulan }} - {{ $isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-') }}">
-                                    <div class="mono" style="font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: -0.5px; transition: color 0.3s ease;">{{ substr($namaBulan, 0, 1) }}</div>
-                                    <div style="width: 100%; height: 24px; border-radius: 4px; background: {{ $cellBg }}; opacity: {{ $opacity }}; border: {{ $border }}; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
+                                    <div class="mono" style="font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: -0.5px; transition: color 0.3s ease {{ $delayMs }}ms;">{{ substr($namaBulan, 0, 1) }}</div>
+                                    <div style="width: 100%; height: 24px; border-radius: 4px; background: {{ $cellBg }}; opacity: {{ $opacity }}; border: {{ $border }}; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) {{ $delayMs }}ms;"></div>
                                 </div>
                             @endforeach
                         </div>

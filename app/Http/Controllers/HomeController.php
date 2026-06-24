@@ -2,29 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\JenisMetadata;
-use App\Enums\StatusDinas;
-use App\Enums\StatusKominfo;
 use App\Enums\StatusMonev;
 use App\Exports\MonevExport;
-use App\Models\AliranData;
-use App\Models\BeritaAcara;
-use App\Models\Dinas;
+use App\Models\KegiatanPendampingan;
 use App\Models\KegiatanStatistik;
-use App\Models\Metadata;
 use App\Models\Monev;
-use App\Models\Romantik;
+use App\Services\DashboardService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
-    public function beritaAcara()
+    public function __construct(
+        protected DashboardService $dashboardService
+    ) {}
+
+    public function kegiatanPendampingan()
     {
-        $beritaAcara = BeritaAcara::latest('tanggal')->paginate(9);
-        return view('berita-acara', compact('beritaAcara'));
+        $kegiatanPendampingan = KegiatanPendampingan::latest('tanggal')->paginate(9);
+        return view('kegiatan-pendampingan', compact('kegiatanPendampingan'));
+    }
+
+    public function loginRedirect()
+    {
+        return redirect('/dinas/login');
+    }
+
+    public function apiUser(Request $request)
+    {
+        return $request->user();
     }
 
     public function index(Request $request)
@@ -33,112 +40,23 @@ class HomeController extends Controller
             'tahun' => 'nullable|integer|min:2020|max:2099',
         ]);
 
-        $defaultTahun = KegiatanStatistik::max('tahun') ?? (int) date('Y');
-        $tahun = (int) $request->input('tahun', $defaultTahun);
+        $tahun = (int) $request->input('tahun', $this->dashboardService->getDefaultTahun());
 
-        // --- Summary Cards ---
-        $totalKegiatan = KegiatanStatistik::where('tahun', $tahun)->count();
-        $totalDinas    = Dinas::count();
+        // Delegate business logic ke DashboardService (SRP)
+        $summaryCards = $this->dashboardService->getSummaryCards($tahun);
+        $chartData = $this->dashboardService->getChartData($tahun);
+        $monthlyTrends = $this->dashboardService->getMonthlyTrends($tahun);
+        $pembinaanStats = $this->dashboardService->getPembinaanStats($tahun);
 
-        // Romantik
-        $romantikTotal = Romantik::where('tahun', $tahun)->count();
-        $romantikDiajukan = Romantik::where('tahun', $tahun)
-            ->whereIn('status_dinas', StatusDinas::submittedValues())->count();
-        $romantikBelum = $romantikTotal - $romantikDiajukan;
+        // Kegiatan Pendampingan (latest 10)
+        $kegiatanPendampingan = KegiatanPendampingan::orderBy('tanggal', 'desc')->take(10)->get();
 
-        // Metadata (Gabungan 3 Jenis: Kegiatan, Variabel, Indikator)
-        $metaKegiatan = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::KEGIATAN->value);
-        $metaKegiatanDone = (clone $metaKegiatan)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
-        $metaKegiatanDraft = (clone $metaKegiatan)->where('status_kominfo', StatusKominfo::DRAFT->value)->count();
-
-        $metaVariabel = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::VARIABEL->value);
-        $metaVariabelDone = (clone $metaVariabel)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
-        $metaVariabelDraft = (clone $metaVariabel)->where('status_kominfo', StatusKominfo::DRAFT->value)->count();
-
-        $metaIndikator = Metadata::where('tahun', $tahun)->where('jenis', JenisMetadata::INDIKATOR->value);
-        $metaIndikatorDone = (clone $metaIndikator)->whereIn('status_kominfo', StatusKominfo::completedValues())->count();
-        $metaIndikatorDraft = (clone $metaIndikator)->where('status_kominfo', StatusKominfo::DRAFT->value)->count();
-
-        $metaTotalDone = $metaKegiatanDone + $metaVariabelDone + $metaIndikatorDone;
-        $metaTotalDraft = $metaKegiatanDraft + $metaVariabelDraft + $metaIndikatorDraft;
-        
-        $metaTotalTarget = $totalKegiatan * 3; // Karena ada 3 jenis metadata per Kegiatan
-        $metaTotalBelum = max(0, $metaTotalTarget - $metaTotalDone - $metaTotalDraft);
-
-        // Alias for the view to use
-        $metaKegiatanDone = $metaTotalDone;
-        $metaKegiatanDraft = $metaTotalDraft;
-        $metaKegiatanTotal = $metaTotalTarget;
-        $metaVariabelTotal = $totalKegiatan;
-        $metaIndikatorTotal = $totalKegiatan;
-
-        // Aliran Data
-        $aliranTotal  = AliranData::where('tahun', $tahun)->count();
-        $aliranTayang = AliranData::where('tahun', $tahun)->where('sudah_tayang', true)->count();
-        $aliranBelum  = $aliranTotal - $aliranTayang;
-
-        // --- Pie Chart (kegiatan per jenis) ---
-        $jenisLabels = [];
-        $jenisValues = [];
-        $jenisColors = [];
-        foreach (\App\Enums\JenisKegiatan::cases() as $jenis) {
-            $jenisLabels[] = $jenis->label();
-            $jenisValues[] = KegiatanStatistik::where('tahun', $tahun)->where('jenis', $jenis->value)->count();
-            $jenisColors[] = match($jenis) {
-                \App\Enums\JenisKegiatan::SURVEI => '#002B6A',
-                \App\Enums\JenisKegiatan::PENDATAAN_LENGKAP => '#00B69B',
-                \App\Enums\JenisKegiatan::KOMPROMIN => '#EB891B',
-            };
-        }
-
-        // --- Donut percentages ---
-        $pctRomantik = $totalKegiatan > 0 ? round($romantikDiajukan / $totalKegiatan * 100) : 0;
-        $pctMetadata = $metaKegiatanTotal > 0 ? round($metaKegiatanDone / $metaKegiatanTotal * 100) : 0;
-        $pctAliran   = $aliranTotal > 0 ? round($aliranTayang / $aliranTotal * 100) : 0;
-
-        // --- Tingkat Respon ---
-        $tingkatRespon = $romantikTotal > 0 ? round(($romantikDiajukan / $romantikTotal) * 100) : 0;
-
-        // --- Berita Acara (latest 3) ---
-        $beritaAcara = BeritaAcara::orderBy('tanggal', 'desc')->take(10)->get();
-
-        // --- Monthly data for hero chart ---
-        $getMonthly = function($query) use ($tahun) {
-            $data = $query->select(DB::raw('MONTH(created_at) as m'), DB::raw('COUNT(*) as c'))
-                ->where('tahun', $tahun)
-                ->groupBy(DB::raw('MONTH(created_at)'))
-                ->pluck('c', 'm');
-            $arr = [];
-            for ($i = 1; $i <= 12; $i++) {
-                $arr[] = $data->get($i, 0);
-            }
-            return $arr;
-        };
-
-        $heroMonthlyRomantik = $getMonthly(Romantik::whereIn('status_dinas', StatusDinas::submittedValues()));
-        $heroMonthlyMetadata = $getMonthly(Metadata::where('jenis', JenisMetadata::KEGIATAN->value)->whereIn('status_kominfo', StatusKominfo::completedValues()));
-        $heroMonthlyAliran = $getMonthly(AliranData::where('sudah_tayang', true));
-
-        // --- Pembinaan Kehadiran ---
-        $totalSesiPembinaan = \App\Models\Pembinaan::whereYear('tanggal', $tahun)->count();
-        $totalKehadiran = \App\Models\PresensiPembinaan::whereHas('pembinaan', function($q) use ($tahun) {
-            $q->whereYear('tanggal', $tahun);
-        })->where('hadir', true)->count();
-        $maxKehadiran = $totalSesiPembinaan * $totalDinas;
-        $pctKehadiran = $maxKehadiran > 0 ? round(($totalKehadiran / $maxKehadiran) * 100) : 0;
-
-        return view('home', compact(
-            'tahun', 'totalKegiatan', 'totalDinas', 'tingkatRespon',
-            'romantikDiajukan', 'romantikBelum',
-            'metaKegiatanDone', 'metaKegiatanDraft', 'metaKegiatanTotal',
-            'metaVariabelDone', 'metaVariabelTotal',
-            'metaIndikatorDone', 'metaIndikatorTotal',
-            'aliranTayang', 'aliranBelum', 'aliranTotal',
-            'jenisLabels', 'jenisValues', 'jenisColors',
-            'heroMonthlyRomantik', 'heroMonthlyMetadata', 'heroMonthlyAliran',
-            'pctRomantik', 'pctMetadata', 'pctAliran',
-            'totalSesiPembinaan', 'totalKehadiran', 'maxKehadiran', 'pctKehadiran',
-            'beritaAcara'
+        return view('home', array_merge(
+            $summaryCards,
+            $chartData,
+            $monthlyTrends,
+            $pembinaanStats,
+            compact('kegiatanPendampingan')
         ));
     }
 

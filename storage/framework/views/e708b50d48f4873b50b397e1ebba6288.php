@@ -57,6 +57,7 @@
                     <td style="padding: 16px; text-align: center;">
                         <?php
                             $stDinas = $item->status_dinas instanceof \App\Enums\StatusDinas ? $item->status_dinas : \App\Enums\StatusDinas::tryFrom($item->status_dinas);
+                            $isSubmitted = in_array($stDinas?->value, \App\Enums\StatusDinas::submittedValues());
                         ?>
                         <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: <?php echo e($stDinas?->cssColor() ?? 'var(--muted)'); ?>; background: <?php echo e($stDinas?->cssBgColor() ?? 'var(--line)'); ?>;">
                             <?php echo e($stDinas?->label() ?? ucwords(str_replace('_', ' ', $item->status_dinas))); ?>
@@ -67,19 +68,27 @@
                         <?php
                             $stKominfo = $item->status_kominfo instanceof \App\Enums\StatusKominfo ? $item->status_kominfo : \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
                         ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isSubmitted): ?>
                         <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: <?php echo e($stKominfo?->cssColor() ?? '#EB891B'); ?>; background: <?php echo e($stKominfo?->cssBgColor() ?? 'rgba(235,137,27,.1)'); ?>;">
                             <?php echo e($stKominfo?->label() ?? ucwords(str_replace('_', ' ', $item->status_kominfo))); ?>
 
                         </span>
+                        <?php else: ?>
+                        <span style="color: var(--muted); font-weight: 600;">-</span>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </td>
                     <td style="padding: 16px; text-align: center;">
                         <?php
                             $stBps = $item->status_bps instanceof \App\Enums\StatusBps ? $item->status_bps : \App\Enums\StatusBps::tryFrom($item->status_bps);
                         ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isSubmitted): ?>
                         <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: <?php echo e($stBps?->cssColor() ?? '#EB891B'); ?>; background: <?php echo e($stBps?->cssBgColor() ?? 'rgba(235,137,27,.1)'); ?>;">
                             <?php echo e($stBps?->label() ?? ucwords(str_replace('_', ' ', $item->status_bps))); ?>
 
                         </span>
+                        <?php else: ?>
+                        <span style="color: var(--muted); font-weight: 600;">-</span>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -98,6 +107,7 @@
                     $stDinas = $item->status_dinas instanceof \App\Enums\StatusDinas ? $item->status_dinas : \App\Enums\StatusDinas::tryFrom($item->status_dinas);
                     $stKominfo = $item->status_kominfo instanceof \App\Enums\StatusKominfo ? $item->status_kominfo : \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
                     $stBps = $item->status_bps instanceof \App\Enums\StatusBps ? $item->status_bps : \App\Enums\StatusBps::tryFrom($item->status_bps);
+                    $isSubmitted = in_array($stDinas?->value, \App\Enums\StatusDinas::submittedValues());
                 ?>
                 <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;">
                     <div>
@@ -115,17 +125,25 @@
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Status Kominfo</span>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isSubmitted): ?>
                             <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: <?php echo e($stKominfo?->cssColor() ?? '#EB891B'); ?>; background: <?php echo e($stKominfo?->cssBgColor() ?? 'rgba(235,137,27,.1)'); ?>;">
                                 <?php echo e($stKominfo?->label() ?? ucwords(str_replace('_', ' ', $item->status_kominfo))); ?>
 
                             </span>
+                            <?php else: ?>
+                            <span style="color: var(--muted); font-weight: 600; font-size: 11px;">-</span>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Status BPS</span>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($isSubmitted): ?>
                             <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: <?php echo e($stBps?->cssColor() ?? '#EB891B'); ?>; background: <?php echo e($stBps?->cssBgColor() ?? 'rgba(235,137,27,.1)'); ?>;">
                                 <?php echo e($stBps?->label() ?? ucwords(str_replace('_', ' ', $item->status_bps))); ?>
 
                             </span>
+                            <?php else: ?>
+                            <span style="color: var(--muted); font-weight: 600; font-size: 11px;">-</span>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                     </div>
                 </div>

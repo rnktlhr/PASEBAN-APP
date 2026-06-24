@@ -15,8 +15,8 @@
 <section style="padding: 60px 0; background: #f8fafc; min-height: 50vh;">
     <div class="container">
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-            @foreach($beritaAcara as $berita)
-            <a href="{{ route('berita-acara.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+            @foreach($kegiatanPendampingan as $berita)
+            <a href="{{ route('kegiatan-pendampingan.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
                 <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--teal)); position: relative;">
                     @php
                         $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
@@ -44,7 +44,7 @@
         </div>
 
         <div style="margin-top: 40px; display: flex; justify-content: center;">
-            {{ $beritaAcara->links() }}
+            {{ $kegiatanPendampingan->links() }}
         </div>
     </div>
 </section>

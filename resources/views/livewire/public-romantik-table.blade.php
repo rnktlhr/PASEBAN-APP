@@ -57,6 +57,7 @@
                     <td style="padding: 16px; text-align: center;">
                         @php
                             $stDinas = $item->status_dinas instanceof \App\Enums\StatusDinas ? $item->status_dinas : \App\Enums\StatusDinas::tryFrom($item->status_dinas);
+                            $isSubmitted = in_array($stDinas?->value, \App\Enums\StatusDinas::submittedValues());
                         @endphp
                         <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stDinas?->cssColor() ?? 'var(--muted)' }}; background: {{ $stDinas?->cssBgColor() ?? 'var(--line)' }};">
                             {{ $stDinas?->label() ?? ucwords(str_replace('_', ' ', $item->status_dinas)) }}
@@ -66,17 +67,25 @@
                         @php
                             $stKominfo = $item->status_kominfo instanceof \App\Enums\StatusKominfo ? $item->status_kominfo : \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
                         @endphp
+                        @if($isSubmitted)
                         <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stKominfo?->cssColor() ?? '#EB891B' }}; background: {{ $stKominfo?->cssBgColor() ?? 'rgba(235,137,27,.1)' }};">
                             {{ $stKominfo?->label() ?? ucwords(str_replace('_', ' ', $item->status_kominfo)) }}
                         </span>
+                        @else
+                        <span style="color: var(--muted); font-weight: 600;">-</span>
+                        @endif
                     </td>
                     <td style="padding: 16px; text-align: center;">
                         @php
                             $stBps = $item->status_bps instanceof \App\Enums\StatusBps ? $item->status_bps : \App\Enums\StatusBps::tryFrom($item->status_bps);
                         @endphp
+                        @if($isSubmitted)
                         <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: {{ $stBps?->cssColor() ?? '#EB891B' }}; background: {{ $stBps?->cssBgColor() ?? 'rgba(235,137,27,.1)' }};">
                             {{ $stBps?->label() ?? ucwords(str_replace('_', ' ', $item->status_bps)) }}
                         </span>
+                        @else
+                        <span style="color: var(--muted); font-weight: 600;">-</span>
+                        @endif
                     </td>
                 </tr>
                 @empty
@@ -95,6 +104,7 @@
                     $stDinas = $item->status_dinas instanceof \App\Enums\StatusDinas ? $item->status_dinas : \App\Enums\StatusDinas::tryFrom($item->status_dinas);
                     $stKominfo = $item->status_kominfo instanceof \App\Enums\StatusKominfo ? $item->status_kominfo : \App\Enums\StatusKominfo::tryFrom($item->status_kominfo);
                     $stBps = $item->status_bps instanceof \App\Enums\StatusBps ? $item->status_bps : \App\Enums\StatusBps::tryFrom($item->status_bps);
+                    $isSubmitted = in_array($stDinas?->value, \App\Enums\StatusDinas::submittedValues());
                 @endphp
                 <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;">
                     <div>
@@ -111,15 +121,23 @@
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Status Kominfo</span>
+                            @if($isSubmitted)
                             <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: {{ $stKominfo?->cssColor() ?? '#EB891B' }}; background: {{ $stKominfo?->cssBgColor() ?? 'rgba(235,137,27,.1)' }};">
                                 {{ $stKominfo?->label() ?? ucwords(str_replace('_', ' ', $item->status_kominfo)) }}
                             </span>
+                            @else
+                            <span style="color: var(--muted); font-weight: 600; font-size: 11px;">-</span>
+                            @endif
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Status BPS</span>
+                            @if($isSubmitted)
                             <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: {{ $stBps?->cssColor() ?? '#EB891B' }}; background: {{ $stBps?->cssBgColor() ?? 'rgba(235,137,27,.1)' }};">
                                 {{ $stBps?->label() ?? ucwords(str_replace('_', ' ', $item->status_bps)) }}
                             </span>
+                            @else
+                            <span style="color: var(--muted); font-weight: 600; font-size: 11px;">-</span>
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -326,7 +326,7 @@
         </div>
     </section>
 
-    {{-- Berita Acara Section --}}
+    {{-- Kegiatan Pendampingan Section --}}
     <section style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line);">
         <div class="container">
             <div style="margin-bottom: 28px;">
@@ -367,9 +367,9 @@
                 style="position: relative; margin: 0 -10px;">
                 
                 <div x-ref="slider" class="berita-slider" style="display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px; scrollbar-width: none; -ms-overflow-style: none;">
-                    @foreach($beritaAcara as $berita)
+                    @foreach($kegiatanPendampingan as $berita)
                         <div style="flex: 0 0 calc(33.333% - 14px); min-width: 300px; scroll-snap-align: start; display: flex;">
-                            <a href="{{ route('berita-acara.show', $berita) }}" style="width: 100%; text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+                            <a href="{{ route('kegiatan-pendampingan.show', $berita) }}" style="width: 100%; text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
                                 <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--orange)); position: relative;">
                                     @php
                                         $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
@@ -404,7 +404,7 @@
                 </div>
             </div>
             <div style="margin-top: 36px; text-align: center;">
-                <a href="{{ route('berita-acara.index') }}" class="btn-outline-orange">
+                <a href="{{ route('kegiatan-pendampingan.index') }}" class="btn-outline-orange">
                     Lihat Semua Kegiatan Pendampingan
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">

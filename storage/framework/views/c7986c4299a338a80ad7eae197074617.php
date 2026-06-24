@@ -386,9 +386,9 @@ if (isset($__slots)) unset($__slots);
                 style="position: relative; margin: 0 -10px;">
                 
                 <div x-ref="slider" class="berita-slider" style="display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 10px; scrollbar-width: none; -ms-overflow-style: none;">
-                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $beritaAcara; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $kegiatanPendampingan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $berita): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div style="flex: 0 0 calc(33.333% - 14px); min-width: 300px; scroll-snap-align: start; display: flex;">
-                            <a href="<?php echo e(route('berita-acara.show', $berita)); ?>" style="width: 100%; text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+                            <a href="<?php echo e(route('kegiatan-pendampingan.show', $berita)); ?>" style="width: 100%; text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
                                 <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--orange)); position: relative;">
                                     <?php
                                         $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
@@ -423,7 +423,7 @@ if (isset($__slots)) unset($__slots);
                 </div>
             </div>
             <div style="margin-top: 36px; text-align: center;">
-                <a href="<?php echo e(route('berita-acara.index')); ?>" class="btn-outline-orange">
+                <a href="<?php echo e(route('kegiatan-pendampingan.index')); ?>" class="btn-outline-orange">
                     Lihat Semua Kegiatan Pendampingan
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">

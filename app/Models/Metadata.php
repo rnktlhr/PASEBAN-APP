@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\BelongsToKegiatan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Metadata extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToKegiatan;
 
     protected $table = 'metadata';
 
@@ -25,9 +25,4 @@ class Metadata extends Model
     protected $casts = [
         'tahun' => 'integer',
     ];
-
-    public function kegiatanStatistik(): BelongsTo
-    {
-        return $this->belongsTo(KegiatanStatistik::class, 'kegiatan_id');
-    }
 }

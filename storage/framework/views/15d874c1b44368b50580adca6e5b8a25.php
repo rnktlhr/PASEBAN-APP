@@ -88,15 +88,15 @@
             </div>
         </div>
         <div class="table-responsive desktop-only">
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; table-layout: fixed;">
             <thead>
                 <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 0; background: var(--navy-50); z-index: 2; min-width: 50px;">No</th>
-                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 50px; background: var(--navy-50); z-index: 2; min-width: 250px;">Kegiatan</th>
-                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); min-width: 100px;">OPD</th>
-                    <th style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--navy); min-width: 80px;">Status</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 0; background: var(--navy-50); z-index: 2; width: 50px;">No</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); position: sticky; left: 50px; background: var(--navy-50); z-index: 2; width: 35%;">Kegiatan</th>
+                    <th style="padding: 14px 16px; text-align: left; font-weight: 700; color: var(--navy); width: 10%;">OPD</th>
+                    <th style="padding: 14px 16px; text-align: center; font-weight: 700; color: var(--navy); width: 12%;">Status</th>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = config('paseban.bulan'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m => $namaBulan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <th style="padding: 14px 8px; text-align: center; font-weight: 600; color: var(--muted); font-size: 11px; min-width: 36px;"><?php echo e($namaBulan); ?></th>
+                    <th style="padding: 14px 8px; text-align: center; font-weight: 600; color: var(--muted); font-size: 11px;"><?php echo e($namaBulan); ?></th>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tr>
             </thead>
@@ -105,11 +105,11 @@
                 <?php
                     $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                 ?>
-                <tr style="border-bottom: 1px solid var(--line);" x-show="page === Math.ceil(<?php echo e($idx + 1); ?> / perPage)">
-                    <td style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1;"><?php echo e($idx + 1); ?></td>
-                    <td style="padding: 14px 16px; font-weight: 600; color: var(--navy); position: sticky; left: 50px; background: #fff; z-index: 1;"><?php echo e($monev->kegiatanStatistik->nama ?? '-'); ?></td>
-                    <td style="padding: 14px 16px; color: var(--ink);"><?php echo e($monev->kegiatanStatistik->dinas->singkatan ?? '-'); ?></td>
-                    <td style="padding: 14px 16px; text-align: center;">
+                <tr wire:key="desk-<?php echo e($monev->kegiatan_id); ?>" style="border-bottom: 1px solid var(--line);" x-show="page === Math.ceil(<?php echo e($idx + 1); ?> / perPage)">
+                    <td style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1; vertical-align: middle;"><?php echo e($idx + 1); ?></td>
+                    <td style="padding: 14px 16px; font-weight: 600; color: var(--navy); position: sticky; left: 50px; background: #fff; z-index: 1; vertical-align: middle;"><?php echo e($monev->kegiatanStatistik->nama ?? '-'); ?></td>
+                    <td style="padding: 14px 16px; color: var(--ink); vertical-align: middle;"><?php echo e($monev->kegiatanStatistik->dinas->singkatan ?? '-'); ?></td>
+                    <td style="padding: 14px 16px; text-align: center; vertical-align: middle;">
                         <span style="display: inline-block; width: 115px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 11px; font-weight: 600; color: <?php echo e($statusEnum?->cssColor() ?? 'var(--muted)'); ?>; background: <?php echo e($statusEnum?->cssBgColor() ?? '#f5f5f5'); ?>;">
                             <?php echo e($statusEnum?->label() ?? ucfirst(str_replace('_', ' ', $monev->status))); ?>
 
@@ -140,9 +140,11 @@
                             $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'transparent');
                             $opacity = $isRealisasi ? 1 : ($isRencana ? 0.25 : 0);
                             $scale = ($isRealisasi || $isRencana) ? 1 : 0.4;
+                            $localIdx = $idx % 10;
+                            $delayMs = ($localIdx * 12 + $m) * 12;
                         ?>
-                        <td style="padding: 6px; text-align: center;">
-                            <div style="width: 24px; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; transform: scale(<?php echo e($scale); ?>); margin: auto; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);" title="<?php echo e($isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-')); ?>"></div>
+                        <td style="padding: 6px; text-align: center; vertical-align: middle;">
+                            <div style="width: 24px; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; transform: scale(<?php echo e($scale); ?>); margin: auto; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) <?php echo e($delayMs); ?>ms;" title="<?php echo e($isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-')); ?>"></div>
                         </td>
                     <?php endfor; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                 </tr>
@@ -165,7 +167,7 @@
                 <?php
                     $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                 ?>
-                <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;" x-show="page === Math.ceil(<?php echo e($idx + 1); ?> / perPage)">
+                <div wire:key="mob-<?php echo e($monev->kegiatan_id); ?>" style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;" x-show="page === Math.ceil(<?php echo e($idx + 1); ?> / perPage)">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
                         <div>
                             <div style="font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; display: flex; gap: 6px;">
@@ -209,10 +211,12 @@
                                     $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'rgba(0,0,0,0.03)');
                                     $opacity = $isRealisasi ? 1 : ($isRencana ? 0.3 : 1);
                                     $border = (!$isRealisasi && !$isRencana) ? '1px solid rgba(0,0,0,0.06)' : 'none';
+                                    $localIdx = $idx % 10;
+                                    $delayMs = ($localIdx * 12 + $m) * 12;
                                 ?>
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;" title="<?php echo e($namaBulan); ?> - <?php echo e($isRealisasi ? 'Realisasi' : ($isRencana ? 'Rencana' : '-')); ?>">
-                                    <div class="mono" style="font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: -0.5px; transition: color 0.3s ease;"><?php echo e(substr($namaBulan, 0, 1)); ?></div>
-                                    <div style="width: 100%; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; border: <?php echo e($border); ?>; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
+                                    <div class="mono" style="font-size: 9px; color: var(--muted); font-weight: 600; letter-spacing: -0.5px; transition: color 0.3s ease <?php echo e($delayMs); ?>ms;"><?php echo e(substr($namaBulan, 0, 1)); ?></div>
+                                    <div style="width: 100%; height: 24px; border-radius: 4px; background: <?php echo e($cellBg); ?>; opacity: <?php echo e($opacity); ?>; border: <?php echo e($border); ?>; transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) <?php echo e($delayMs); ?>ms;"></div>
                                 </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>

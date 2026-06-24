@@ -5,7 +5,7 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasLabel;
 use Filament\Support\Contracts\HasColor;
 
-enum KategoriBeritaAcara: string implements HasLabel, HasColor
+enum KategoriKegiatanPendampingan: string implements HasLabel, HasColor
 {
     case PENDAMPINGAN = 'pendampingan';
     case PEMBINAAN = 'pembinaan';

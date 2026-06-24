@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Enums\StatusMonev;
+use App\Models\Traits\BelongsToKegiatan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Monev extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToKegiatan;
 
     protected $table = 'monev';
 
@@ -33,9 +33,4 @@ class Monev extends Model
         'bulan_realisasi_selesai' => 'integer',
         'status' => StatusMonev::class,
     ];
-
-    public function kegiatanStatistik(): BelongsTo
-    {
-        return $this->belongsTo(KegiatanStatistik::class, 'kegiatan_id');
-    }
 }
