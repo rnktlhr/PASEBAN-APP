@@ -1,28 +1,22 @@
-<div class="container" style="padding: 40px 32px; min-height: calc(100vh - 74px);">
-    <div class="flex-col-mobile" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
-        <div>
-            <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Metadata Statistik <?php echo e($tahun); ?></h1>
-            <p style="color: var(--muted); font-size: 15px; margin: 0;">Status pelaporan Metadata (Kegiatan, Variabel, dan Indikator).</p>
+<div class="container" style="padding: 16px 32px 40px; min-height: calc(100vh - 74px);">
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px;">
+        <div style="position: relative;" x-data="{ open: false }">
+            <button type="button" @click="open = !open" style="padding: 10px 16px; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; font-weight: 600; color: var(--navy); cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Export
+            </button>
+            <div x-show="open" @click.away="open = false" style="position: absolute; top: 100%; right: 0; margin-top: 8px; background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow-md); z-index: 50; width: 140px; overflow: hidden; display: none;" :style="{ display: open ? 'block' : 'none' }">
+                <a href="<?php echo e(route('metadata.export', array_merge(request()->query(), ['format' => 'excel']))); ?>" style="display: block; padding: 10px 16px; color: var(--navy); text-decoration: none; font-size: 13px; border-bottom: 1px solid var(--line); transition: background 0.2s;" onmouseover="this.style.background='var(--navy-50)'" onmouseout="this.style.background='transparent'">Excel (.xlsx)</a>
+                <a href="<?php echo e(route('metadata.export', array_merge(request()->query(), ['format' => 'pdf']))); ?>" style="display: block; padding: 10px 16px; color: var(--navy); text-decoration: none; font-size: 13px; transition: background 0.2s;" onmouseover="this.style.background='var(--navy-50)'" onmouseout="this.style.background='transparent'">PDF (.pdf)</a>
+            </div>
         </div>
 
-        <div class="w-full-mobile" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <div style="position: relative;" x-data="{ open: false }">
-                <button type="button" @click="open = !open" style="padding: 10px 16px; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; font-weight: 600; color: var(--navy); cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Export
-                </button>
-                <div x-show="open" @click.away="open = false" style="position: absolute; top: 100%; right: 0; margin-top: 8px; background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow-md); z-index: 50; width: 140px; overflow: hidden; display: none;" :style="{ display: open ? 'block' : 'none' }">
-                    <a href="<?php echo e(route('metadata.export', array_merge(request()->query(), ['format' => 'excel']))); ?>" style="display: block; padding: 10px 16px; color: var(--navy); text-decoration: none; font-size: 13px; border-bottom: 1px solid var(--line); transition: background 0.2s;" onmouseover="this.style.background='var(--navy-50)'" onmouseout="this.style.background='transparent'">Excel (.xlsx)</a>
-                    <a href="<?php echo e(route('metadata.export', array_merge(request()->query(), ['format' => 'pdf']))); ?>" style="display: block; padding: 10px 16px; color: var(--navy); text-decoration: none; font-size: 13px; transition: background 0.2s;" onmouseover="this.style.background='var(--navy-50)'" onmouseout="this.style.background='transparent'">PDF (.pdf)</a>
-                </div>
-            </div>
-
-            <select wire:model.live="jenis" class="w-full-mobile styled-select" style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); cursor: pointer;">
-                <option value="">Semua Jenis</option>
-                <option value="kegiatan">Kegiatan</option>
-                <option value="variabel">Variabel</option>
-                <option value="indikator">Indikator</option>
-            </select>
+        <select wire:model.live="jenis" class="w-full-mobile styled-select" style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); cursor: pointer;">
+            <option value="">Semua Jenis</option>
+            <option value="kegiatan">Kegiatan</option>
+            <option value="variabel">Variabel</option>
+            <option value="indikator">Indikator</option>
+        </select>
 
             <select wire:model.live="dinasFilter" class="w-full-mobile styled-select" style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); max-width: 200px; cursor: pointer;">
                 <option value="">Semua OPD / Dinas</option>
@@ -35,15 +29,15 @@
                 <input type="text" wire:model.live.debounce.400ms="search" class="w-full-mobile" placeholder="Cari kegiatan atau OPD..." style="padding: 10px 14px 10px 36px; border: 1px solid var(--line); border-radius: 8px 0 0 8px; font-size: 13.5px; width: 220px; outline: none; color: var(--ink); background: #fff; box-shadow: var(--shadow-sm);">
             </div>
         </div>
-    </div>
 
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
         <div class="table-responsive desktop-only">
             <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
                 <thead>
                     <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 40%;">Kegiatan / OPD</th>
-                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 20%;">Jenis Metadata</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 15%;">OPD</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 30%;">Nama Kegiatan</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 15%;">Jenis Metadata</th>
                         <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 20%;">Status Kominfo</th>
                         <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 20%;">Status BPS</th>
                     </tr>
@@ -51,9 +45,13 @@
             <tbody>
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $metadata; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr style="border-bottom: 1px solid var(--line);">
-                    <td style="padding: 16px;">
-                        <div style="font-weight: 600; color: var(--navy); margin-bottom: 4px;"><?php echo e($item->kegiatanStatistik->nama); ?></div>
-                        <div style="font-size: 12px; color: var(--muted);"><?php echo e($item->kegiatanStatistik->dinas->singkatan ?? '-'); ?></div>
+                    <td style="padding: 16px; font-weight: 500; color: var(--ink);">
+                        <?php echo e($item->kegiatanStatistik->dinas->singkatan ?? '-'); ?>
+
+                    </td>
+                    <td style="padding: 16px; font-weight: 500; color: var(--ink);">
+                        <?php echo e($item->kegiatanStatistik->nama); ?>
+
                     </td>
                     <td style="padding: 16px; font-weight: 500; color: var(--ink);">
                         <?php echo e($item->jenis instanceof \App\Enums\JenisMetadata ? $item->jenis->label() : ucfirst($item->jenis)); ?>
@@ -80,7 +78,7 @@
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                 <tr>
-                    <td colspan="4" style="padding: 32px; text-align: center; color: var(--muted);">Belum ada pelaporan Metadata untuk filter yang dipilih.</td>
+                    <td colspan="5" style="padding: 32px; text-align: center; color: var(--muted);">Belum ada pelaporan Metadata untuk filter yang dipilih.</td>
                 </tr>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </tbody>
@@ -127,12 +125,13 @@
                 <div style="padding: 32px; text-align: center; color: var(--muted);">Belum ada pelaporan Metadata untuk filter yang dipilih.</div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($metadata->hasPages()): ?>
-        <div style="padding: 20px;">
-            <?php echo e($metadata->links()); ?>
-
-        </div>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
+    
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($metadata->hasPages()): ?>
+    <div style="padding-top: 20px;">
+        <?php echo e($metadata->links('partials.livewire-pagination')); ?>
+
+    </div>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH D:\PASEBAN APP\resources\views/livewire/public-metadata-table.blade.php ENDPATH**/ ?>

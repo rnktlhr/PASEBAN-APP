@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\AliranData;
-use App\Models\BeritaAcara;
+use App\Models\KegiatanPendampingan;
 use App\Models\Dinas;
 use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
@@ -195,21 +194,6 @@ class DatabaseSeeder extends Seeder
         }
 
         // ──────────────────────────────────────────────
-        // 6. Aliran Data (37 data items, 25 sudah tayang, 12 belum)
-        // ──────────────────────────────────────────────
-        for ($a = 0; $a < 37; $a++) {
-            $keg = $allKegiatan[$a % count($allKegiatan)];
-            AliranData::create([
-                'kegiatan_id'   => $keg->id,
-                'nama_data'     => 'Data ' . ($a + 1) . ' — ' . $keg->nama,
-                'tahun'         => 2026,
-                'frekuensi'     => $a % 4 === 0 ? 'triwulanan' : 'tahunan',
-                'sudah_tayang'  => $a < 25,
-                'tanggal_tayang'=> $a < 25 ? now()->subDays(rand(5, 60)) : null,
-            ]);
-        }
-
-        // ──────────────────────────────────────────────
         // 7. Monev (calendar entries for first 10 kegiatan)
         // ──────────────────────────────────────────────
         $statusMonev = ['tepat_waktu', 'terlambat', 'sedang_berjalan', 'belum_mulai'];
@@ -251,21 +235,21 @@ class DatabaseSeeder extends Seeder
         }
 
         // ──────────────────────────────────────────────
-        // 9. Berita Acara
+        // 9. Kegiatan Pendampingan
         // ──────────────────────────────────────────────
-        BeritaAcara::create([
+        KegiatanPendampingan::create([
             'judul'    => 'Pendampingan Kegiatan Statistik Dinsos 2026',
             'tanggal'  => '2026-05-20',
             'kategori' => 'pendampingan',
             'ringkasan'=> 'Tim BPS Bantul memberikan pendampingan teknis kepada Dinas Sosial dalam penyusunan rancangan kegiatan statistik tahun 2026.',
         ]);
-        BeritaAcara::create([
+        KegiatanPendampingan::create([
             'judul'    => 'Pembinaan Statistik Sektoral Lintas OPD Triwulan II',
             'tanggal'  => '2026-05-14',
             'kategori' => 'pembinaan',
             'ringkasan'=> 'Forum pembinaan dihadiri 47 OPD se-Kabupaten Bantul untuk harmonisasi indikator pembangunan daerah.',
         ]);
-        BeritaAcara::create([
+        KegiatanPendampingan::create([
             'judul'    => 'Coaching Clinic Penyusunan Romantik Bappeda',
             'tanggal'  => '2026-05-08',
             'kategori' => 'pendampingan',

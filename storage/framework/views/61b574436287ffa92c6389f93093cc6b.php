@@ -1,135 +1,104 @@
-<div class="container" style="padding: 40px 32px; min-height: calc(100vh - 74px);">
-    <div class="flex-col-mobile" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
-        <div>
-            <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Aliran Data <?php echo e($tahun); ?></h1>
-            <p style="color: var(--muted); font-size: 15px; margin: 0;">Status publikasi data hasil kegiatan statistik pada portal Sedata Sebantul.</p>
-        </div>
-
-        <div class="w-full-mobile" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <div style="position: relative;" x-data="{ open: false }">
-                <button type="button" @click="open = !open" style="padding: 10px 16px; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; font-weight: 600; color: var(--navy); cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Export
-                </button>
-                <div x-show="open" @click.away="open = false" style="position: absolute; top: 100%; right: 0; margin-top: 8px; background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow-md); z-index: 50; width: 140px; overflow: hidden; display: none;" :style="{ display: open ? 'block' : 'none' }">
-                    <a href="<?php echo e(route('aliran-data.export', array_merge(request()->query(), ['format' => 'excel']))); ?>" style="display: block; padding: 10px 16px; color: var(--navy); text-decoration: none; font-size: 13px; border-bottom: 1px solid var(--line); transition: background 0.2s;" onmouseover="this.style.background='var(--navy-50)'" onmouseout="this.style.background='transparent'">Excel (.xlsx)</a>
-                    <a href="<?php echo e(route('aliran-data.export', array_merge(request()->query(), ['format' => 'pdf']))); ?>" style="display: block; padding: 10px 16px; color: var(--navy); text-decoration: none; font-size: 13px; transition: background 0.2s;" onmouseover="this.style.background='var(--navy-50)'" onmouseout="this.style.background='transparent'">PDF (.pdf)</a>
-                </div>
-            </div>
-
-            <select wire:model.live="status" class="w-full-mobile styled-select" style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); cursor: pointer;">
-                <option value="">Semua Status</option>
-                <option value="1">Sudah Tayang</option>
-                <option value="0">Belum Tayang</option>
-            </select>
-
-            <select wire:model.live="dinasFilter" class="w-full-mobile styled-select" style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); max-width: 200px; cursor: pointer;">
-                <option value="">Semua OPD / Dinas</option>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $dinasList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <option value="<?php echo e($d->id); ?>"><?php echo e($d->nama); ?></option>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </select>
-            <div class="w-full-mobile" style="position: relative; display: flex;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                <input type="text" wire:model.live.debounce.400ms="search" class="w-full-mobile" placeholder="Cari kegiatan, data, atau OPD..." style="padding: 10px 14px 10px 36px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; width: 240px; outline: none; color: var(--ink); background: #fff; box-shadow: var(--shadow-sm);">
-            </div>
-        </div>
-    </div>
-
-    <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
-        <div class="table-responsive desktop-only">
-            <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
-                <thead>
-                    <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
-                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 35%;">Kegiatan / OPD</th>
-                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 30%;">Nama Data</th>
-                        <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 15%;">Frekuensi</th>
-                        <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 10%;">Status Tayang</th>
-                        <th style="padding: 16px; text-align: right; font-weight: 700; color: var(--navy); width: 10%;">Tgl Tayang</th>
-                    </tr>
-                </thead>
-            <tbody>
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $aliranData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <tr style="border-bottom: 1px solid var(--line);">
-                    <td style="padding: 16px;">
-                        <div style="font-weight: 600; color: var(--navy); margin-bottom: 4px;"><?php echo e($item->kegiatanStatistik->nama); ?></div>
-                        <div style="font-size: 12px; color: var(--muted);"><?php echo e($item->kegiatanStatistik->dinas->singkatan ?? '-'); ?></div>
-                    </td>
-                    <td style="padding: 16px; color: var(--ink);"><?php echo e($item->nama_data); ?></td>
-                    <td style="padding: 16px; color: var(--muted);"><?php echo e(ucfirst($item->frekuensi)); ?></td>
-                    <td style="padding: 16px; text-align: center;">
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->sudah_tayang): ?>
-                            <span style="display: inline-flex; align-items: center; justify-content: center; gap: 4px; width: 100px; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--green); background: #e6f4ea;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sudah
-                            </span>
-                        <?php else: ?>
-                            <span style="display: inline-block; width: 100px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: var(--red); background: rgba(220,53,69,.1);">
-                                Belum
-                            </span>
-                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                    </td>
-                    <td style="padding: 16px; text-align: right; color: var(--muted); font-size: 13px;">
-                        <?php echo e($item->tanggal_tayang ? \Carbon\Carbon::parse($item->tanggal_tayang)->format('d M Y') : '-'); ?>
-
-                    </td>
-                </tr>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                <tr>
-                    <td colspan="5" style="padding: 32px; text-align: center; color: var(--muted);">Belum ada catatan aliran data untuk filter yang dipilih.</td>
-                </tr>
-                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-            </tbody>
-        </table>
-        </div>
-
+<div class="container" style="padding: 16px 32px 40px;">
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px;">
+        <select wire:model.live="dinasFilter" class="w-full-mobile styled-select" style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); max-width: 250px; cursor: pointer;">
+            <option value="">Semua OPD / Dinas</option>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $dinasList; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $nama): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <option value="<?php echo e($id); ?>"><?php echo e($nama); ?></option>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        </select>
         
-        <div class="mobile-only">
-            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $aliranData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;">
-                    <div>
-                        <div style="font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; text-transform: uppercase;"><?php echo e($item->kegiatanStatistik->dinas->singkatan ?? '-'); ?></div>
-                        <div style="font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.35;"><?php echo e($item->kegiatanStatistik->nama); ?></div>
-                    </div>
-                    
-                    <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px; background: var(--navy-50); padding: 12px; border-radius: 8px;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
-                            <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Nama Data</span>
-                            <span style="font-size: 12px; color: var(--ink); text-align: right; font-weight: 500;"><?php echo e($item->nama_data); ?></span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Frekuensi</span>
-                            <span style="font-size: 12px; color: var(--muted); font-weight: 500;"><?php echo e(ucfirst($item->frekuensi)); ?></span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Status Tayang</span>
-                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->sudah_tayang): ?>
-                                <span style="display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: var(--green); background: #e6f4ea;">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Sudah
-                                </span>
-                            <?php else: ?>
-                                <span style="display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; color: var(--red); background: rgba(220,53,69,.1);">
-                                    Belum
-                                </span>
-                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                        </div>
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->sudah_tayang): ?>
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 11px; font-weight: 600; color: var(--navy);">Tgl Tayang</span>
-                            <span style="font-size: 11px; color: var(--muted); font-weight: 600;"><?php echo e($item->tanggal_tayang ? \Carbon\Carbon::parse($item->tanggal_tayang)->format('d M Y') : '-'); ?></span>
-                        </div>
-                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                    </div>
-                </div>
-            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                <div style="padding: 32px; text-align: center; color: var(--muted);">Belum ada catatan aliran data untuk filter yang dipilih.</div>
-            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+        <div wire:loading wire:target="dinasFilter">
+            <div style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 600;">
+                <svg class="animate-spin" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="animation: spin 1s linear infinite;">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <style>@keyframes spin { 100% { transform: rotate(360deg); } }</style>
+                Memuat data...
+            </div>
         </div>
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($aliranData->hasPages()): ?>
-        <div style="padding: 20px;">
-            <?php echo e($aliranData->links()); ?>
-
-        </div>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
+
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$dinasFilter): ?>
+        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 40px; text-align: center; box-shadow: var(--shadow-sm);">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted); margin: 0 auto 16px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 700; color: var(--navy);">Pilih OPD / Dinas</h3>
+            <p style="margin: 0; font-size: 14px; color: var(--muted);">Pilih dinas pada menu filter di atas untuk melihat data indikator langsung dari API Sedata Sebantul.</p>
+        </div>
+    <?php else: ?>
+        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);" wire:loading.remove wire:target="dinasFilter">
+            <div class="table-responsive desktop-only">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
+                    <thead>
+                        <tr style="background: var(--navy-50); border-bottom: 1px solid var(--line);">
+                            <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 15%;">ID Data</th>
+                            <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 42%;">Nama Data</th>
+                            <th style="padding: 16px; text-align: left; font-weight: 700; color: var(--navy); width: 23%;">Cakupan</th>
+                            <th style="padding: 16px; text-align: center; font-weight: 700; color: var(--navy); width: 20%;">Pemutakhiran</th>
+                        </tr>
+                    </thead>
+                <tbody>
+                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $indikatorData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <tr style="border-bottom: 1px solid var(--line);">
+                        <td style="padding: 16px; font-weight: 600; color: var(--muted);">
+                            <?php echo e($item['id_data'] ?? '-'); ?>
+
+                        </td>
+                        <td style="padding: 16px; font-weight: 500; color: var(--ink);">
+                            <?php echo e($item['nama_data'] ?? '-'); ?>
+
+                        </td>
+                        <td style="padding: 16px; color: var(--muted);">
+                            <?php echo e($item['cakupan'] ?? '-'); ?>
+
+                        </td>
+                        <td style="padding: 16px; text-align: center;">
+                            <span style="display: inline-block; width: 140px; text-align: center; padding: 4px 0; border-radius: 999px; font-size: 12px; font-weight: 600; color: #00B69B; background: rgba(0, 182, 155, 0.1);">
+                                <?php echo e($item['pemutahiran'] ?? '-'); ?>
+
+                            </span>
+                        </td>
+                    </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <tr>
+                        <td colspan="4" style="padding: 40px; text-align: center;">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted); margin: 0 auto 12px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+                            <div style="font-weight: 700; color: var(--navy); margin-bottom: 4px;">Tidak ada data</div>
+                            <div style="color: var(--muted); font-size: 13.5px;">Belum ada indikator yang ditarik dari API Sedata Sebantul untuk instansi ini.</div>
+                        </td>
+                    </tr>
+                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                </tbody>
+            </table>
+            </div>
+
+            
+            <div class="mobile-only">
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $indikatorData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <div style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;">
+                        <div>
+                            <div style="font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 4px; display: flex; justify-content: space-between;">
+                                <span>ID: <?php echo e($item['id_data'] ?? '-'); ?></span>
+                                <span style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; color: #00B69B; background: rgba(0, 182, 155, 0.1);">
+                                    <?php echo e($item['pemutahiran'] ?? '-'); ?>
+
+                                </span>
+                            </div>
+                            <div style="font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.35;"><?php echo e($item['nama_data'] ?? '-'); ?></div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--muted); font-weight: 500;">
+                            Cakupan: <?php echo e($item['cakupan'] ?? '-'); ?>
+
+                        </div>
+                    </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                    <div style="padding: 32px; text-align: center;">
+                        <div style="font-weight: 700; color: var(--navy); margin-bottom: 4px;">Tidak ada data</div>
+                        <div style="color: var(--muted); font-size: 13.5px;">Belum ada indikator yang ditarik dari API Sedata Sebantul untuk instansi ini.</div>
+                    </div>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH D:\PASEBAN APP\resources\views/livewire/public-aliran-data-table.blade.php ENDPATH**/ ?>

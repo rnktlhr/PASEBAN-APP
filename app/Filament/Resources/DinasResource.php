@@ -29,6 +29,10 @@ class DinasResource extends Resource
         return $form->components([
             Forms\Components\TextInput::make('nama')
                 ->required()->maxLength(255)->columnSpanFull(),
+            Forms\Components\TextInput::make('instansi_code')
+                ->label('Kode Instansi (API Sedata)')
+                ->helperText('Diperlukan untuk menarik data dari Sedata Sebantul. Contoh: 10200')
+                ->maxLength(50),
             Forms\Components\TextInput::make('singkatan')
                 ->maxLength(50),
             Forms\Components\TextInput::make('kategori')

@@ -24,7 +24,6 @@ Route::middleware(['throttle:exports'])->group(function () {
     Route::get('/kegiatan/export', [HomeController::class, 'exportKegiatanStatistik'])->name('kegiatan.export');
     Route::get('/metadata/export', [HomeController::class, 'exportMetadata'])->name('metadata.export');
     Route::get('/romantik/export', [HomeController::class, 'exportRomantik'])->name('romantik.export');
-    Route::get('/aliran-data/export', [HomeController::class, 'exportAliranData'])->name('aliran-data.export');
 });
 
 // Public data views

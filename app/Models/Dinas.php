@@ -17,6 +17,7 @@ class Dinas extends Model implements HasName
         'nama',
         'singkatan',
         'slug',
+        'instansi_code',
         'kategori',
     ];
 

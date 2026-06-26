@@ -74,10 +74,7 @@ class KegiatanStatistik extends Model
         return $this->hasMany(Metadata::class, 'kegiatan_id');
     }
 
-    public function aliranData(): HasMany
-    {
-        return $this->hasMany(AliranData::class, 'kegiatan_id');
-    }
+
 
     public function monev(): HasMany
     {

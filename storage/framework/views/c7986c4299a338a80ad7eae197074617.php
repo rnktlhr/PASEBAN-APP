@@ -293,9 +293,6 @@ if (isset($__slots)) unset($__slots);
                 </div>
 
                 <div style="position: relative; color: #fff;">
-                    <div
-                        style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange); text-transform: uppercase; font-weight: 700; margin-bottom: 10px;">
-                        ◆ Pembinaan Statistik</div>
                     <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">
                         Pembinaan Statistik Sektoral Kabupaten Bantul</h2>
                     <p
@@ -349,9 +346,6 @@ if (isset($__slots)) unset($__slots);
     <section style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line);">
         <div class="container">
             <div style="margin-bottom: 28px;">
-                <div
-                    style="font-size: 12px; letter-spacing: 1.5px; color: var(--orange-600); text-transform: uppercase; font-weight: 700; margin-bottom: 6px;">
-                    ◆ Kegiatan Pendampingan</div>
                 <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Kegiatan
                     Pendampingan</h2>
             </div>

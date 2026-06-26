@@ -29,6 +29,11 @@ $cards = [
 ?>
 
 <div class="container" style="padding: 40px 32px 0;">
+    <div style="margin-bottom: 32px;">
+        <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Pelaporan Metadata <?php echo e($tahun); ?></h1>
+        <p style="color: var(--muted); font-size: 15px; margin: 0;">Status pelaporan Metadata Statistik (Kegiatan, Indikator, dan Variabel) oleh OPD.</p>
+    </div>
+
     <div style="margin-bottom: 24px;">
         <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: var(--navy);">Capaian Metadata Tahun <?php echo e($tahun); ?></h2>
     </div>
@@ -59,6 +64,7 @@ $cards = [
         </div>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
+</div>
 
     <?php
 $__split = function ($name, $params = []) {
@@ -81,7 +87,6 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-</div>
 
 <style>
     @media (max-width: 1024px) {

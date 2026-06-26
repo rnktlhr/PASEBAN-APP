@@ -8,5 +8,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+Schedule::command('app:sync-aliran-stats')->daily();
+
 // Scheduled commands (migrated from App\Console\Kernel)
 Schedule::command('monev:remind')->dailyAt('08:00');

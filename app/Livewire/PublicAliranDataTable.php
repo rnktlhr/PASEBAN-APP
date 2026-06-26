@@ -3,69 +3,78 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\Attributes\Url;
-use App\Models\AliranData;
-use App\Models\Dinas;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class PublicAliranDataTable extends Component
 {
-    use WithPagination;
-
     public $tahun;
-
-    #[Url(except: '')]
-    public $status = '';
 
     #[Url(except: '')]
     public $dinasFilter = '';
 
-    #[Url(except: '')]
-    public $search = '';
+    public $indikatorData = [];
+    public $isLoading = false;
 
-    public function updatingStatus()
+    public function updatedDinasFilter()
     {
-        $this->resetPage();
+        $this->fetchData();
     }
 
-    public function updatingDinasFilter()
+    public function mount()
     {
-        $this->resetPage();
+        if ($this->dinasFilter) {
+            $this->fetchData();
+        }
     }
 
-    public function updatingSearch()
+    public function fetchData()
     {
-        $this->resetPage();
+        $this->indikatorData = [];
+        if (!$this->dinasFilter) {
+            return;
+        }
+
+        $this->isLoading = true;
+
+        try {
+            $response = Http::timeout(15)->withHeaders([
+                'X-instansi-Code' => $this->dinasFilter,
+            ])->get('https://data.bantulkab.go.id/api/indikator');
+
+            if ($response->successful()) {
+                $data = $response->json('data.result');
+                if (is_array($data)) {
+                    $this->indikatorData = $data;
+                }
+            }
+        } catch (\Exception $e) {
+            // handle error silently
+        }
+
+        $this->isLoading = false;
     }
 
     public function render()
     {
-        $query = AliranData::with('kegiatanStatistik.dinas')->where('tahun', $this->tahun);
+        // Ambil daftar instansi dari API Sedata Sebantul
+        $dinasList = Cache::remember('api_instansi_list', 3600, function () {
+            try {
+                $response = Http::timeout(10)->get('https://data.bantulkab.go.id/api/instansi');
+                if ($response->successful()) {
+                    $options = collect($response->json('data.result'))
+                        ->pluck('instansi_name', 'instansi_cd')
+                        ->toArray();
+                    asort($options);
+                    return $options;
+                }
+            } catch (\Exception $e) {
+                // silently handle
+            }
+            return [];
+        });
 
-        if (!empty($this->dinasFilter)) {
-            $query->whereHas('kegiatanStatistik', function($q) {
-                $q->where('dinas_id', $this->dinasFilter);
-            });
-        }
-        if ($this->status !== '') {
-            $query->where('sudah_tayang', $this->status == '1');
-        }
-        if (!empty($this->search)) {
-            $search = str_replace(['%', '_'], ['\\%', '\\_'], $this->search);
-            $query->where(function($q) use ($search) {
-                $q->where('nama_data', 'like', "%{$search}%")
-                  ->orWhereHas('kegiatanStatistik', function($q2) use ($search) {
-                      $q2->where('nama', 'like', "%{$search}%")
-                         ->orWhereHas('dinas', function($q3) use ($search) {
-                             $q3->where('nama', 'like', "%{$search}%")->orWhere('singkatan', 'like', "%{$search}%");
-                         });
-                  });
-            });
-        }
-
-        $aliranData = $query->paginate(10);
-        $dinasList = Dinas::orderBy('nama')->get();
-
-        return view('livewire.public-aliran-data-table', compact('aliranData', 'dinasList'));
+        return view('livewire.public-aliran-data-table', compact('dinasList'));
     }
 }

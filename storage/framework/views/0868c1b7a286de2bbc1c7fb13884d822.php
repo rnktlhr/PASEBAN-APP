@@ -266,18 +266,26 @@
                         <div style="font-size: 13px; margin-top: 6px;">Kehadiran OPD akan muncul setelah sesi pembinaan berjalan.</div>
                     </div>
                     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                </div>
-                <div class="flex-col-mobile" style="padding: 16px 20px; border-top: 1px solid var(--line); justify-content: space-between; align-items: center;">
-                    <div style="font-size: 13.5px; color: var(--muted);">
-                        Menampilkan entri dari total <?php echo e(count($rekapKehadiran)); ?>
+            </div>
+            
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($rekapKehadiran) > 0): ?>
+            <div style="padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <div style="font-size: 13.5px; color: var(--muted);">
+                    Menampilkan entri dari total <?php echo e(count($rekapKehadiran)); ?>
 
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button @click="if(page > 1) page--" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page === 1 ? 'opacity: 0.5; cursor: not-allowed;' : ''">Sebelumnya</button>
-                        <button @click="if(page < Math.ceil(<?php echo e(count($rekapKehadiran)); ?> / perPage)) page++" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page >= Math.ceil(<?php echo e(count($rekapKehadiran)); ?> / perPage) ? 'opacity: 0.5; cursor: not-allowed;' : ''">Selanjutnya</button>
-                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button @click="if(page > 1) page--" style="padding: 8px 16px; font-size: 14px; font-weight: 500; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: #475569; cursor: pointer; transition: all 0.2s;" :style="page === 1 ? 'color: #94a3b8; cursor: not-allowed;' : ''" onmouseover="if(page > 1) this.style.background='#f8fafc';" onmouseout="this.style.background='#fff';">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Previous
+                    </button>
+                    <button @click="if(page < Math.ceil(<?php echo e(count($rekapKehadiran)); ?> / perPage)) page++" style="padding: 8px 16px; font-size: 14px; font-weight: 500; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: #0052CC; cursor: pointer; transition: all 0.2s;" :style="page >= Math.ceil(<?php echo e(count($rekapKehadiran)); ?> / perPage) ? 'color: #94a3b8; cursor: not-allowed;' : ''" onmouseover="if(page < Math.ceil(<?php echo e(count($rekapKehadiran)); ?> / perPage)) this.style.background='#f0f4ff';" onmouseout="this.style.background='#fff';">
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
             </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 
@@ -294,8 +302,9 @@
             </div>
         </div>
 
-        <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);" x-data="{ perPage: 10, page: 1 }">
-            <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+        <div x-data="{ perPage: 10, page: 1 }">
+            <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);">
+                <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 13.5px; color: var(--muted);">Tampilkan</span>
                     <select class="styled-select" x-model.number="perPage" style="padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; outline: none;">
@@ -431,16 +440,25 @@
                 </div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
-            <div class="flex-col-mobile" style="padding: 16px 20px; border-top: 1px solid var(--line); justify-content: space-between; align-items: center;">
+            
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(count($materiPembinaan) > 0): ?>
+            <div style="padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                 <div style="font-size: 13.5px; color: var(--muted);">
                     Menampilkan entri dari total <?php echo e(count($materiPembinaan)); ?>
 
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button @click="if(page > 1) page--" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page === 1 ? 'opacity: 0.5; cursor: not-allowed;' : ''">Sebelumnya</button>
-                    <button @click="if(page < Math.ceil(<?php echo e(count($materiPembinaan)); ?> / perPage)) page++" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page >= Math.ceil(<?php echo e(count($materiPembinaan)); ?> / perPage) ? 'opacity: 0.5; cursor: not-allowed;' : ''">Selanjutnya</button>
+                <div style="display: flex; gap: 12px;">
+                    <button @click="if(page > 1) page--" style="padding: 8px 16px; font-size: 14px; font-weight: 500; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: #475569; cursor: pointer; transition: all 0.2s;" :style="page === 1 ? 'color: #94a3b8; cursor: not-allowed;' : ''" onmouseover="if(page > 1) this.style.background='#f8fafc';" onmouseout="this.style.background='#fff';">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Previous
+                    </button>
+                    <button @click="if(page < Math.ceil(<?php echo e(count($materiPembinaan)); ?> / perPage)) page++" style="padding: 8px 16px; font-size: 14px; font-weight: 500; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: #0052CC; cursor: pointer; transition: all 0.2s;" :style="page >= Math.ceil(<?php echo e(count($materiPembinaan)); ?> / perPage) ? 'color: #94a3b8; cursor: not-allowed;' : ''" onmouseover="if(page < Math.ceil(<?php echo e(count($materiPembinaan)); ?> / perPage)) this.style.background='#f0f4ff';" onmouseout="this.style.background='#fff';">
+                        Next
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
             </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
     </div>
 </div>

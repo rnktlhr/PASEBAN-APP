@@ -6,7 +6,6 @@ use App\Enums\JenisKegiatan;
 use App\Enums\JenisMetadata;
 use App\Enums\StatusDinas;
 use App\Enums\StatusKominfo;
-use App\Models\AliranData;
 use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
 use App\Models\Romantik;
@@ -59,11 +58,7 @@ class DashboardApiController extends Controller
         }
 
         if ($type === 'aliran') {
-            $done = AliranData::where('tahun', $year)->where('sudah_tayang', true)->count();
-            $belum = AliranData::where('tahun', $year)->where('sudah_tayang', false)->count();
-            $total = $done + $belum;
-            $pct = $total > 0 ? round($done / $total * 100) : 0;
-            return response()->json(['done' => $done, 'belum' => $belum, 'pct' => $pct]);
+            return response()->json(['done' => 0, 'belum' => 0, 'pct' => 0]);
         }
 
         return response()->json(['error' => 'Invalid type'], 400);
@@ -146,25 +141,8 @@ class DashboardApiController extends Controller
                 ];
             });
         } elseif ($type === 'aliran') {
-            $title = "Rincian Aliran Data ($year) - " . ($status === 'done' ? 'Sudah Tayang' : 'Belum Tayang');
-            $query = AliranData::with('kegiatanStatistik.dinas')->where('tahun', $year);
-            if ($status === 'done') {
-                $query->where('sudah_tayang', true);
-            } else {
-                $query->where('sudah_tayang', false);
-            }
-            $items = $query->get()->map(function($item) {
-                $label = $item->sudah_tayang ? 'Sudah Tayang' : 'Belum Tayang';
-                $color = $item->sudah_tayang ? '#002B6A' : '#EB891B';
-                $bg = $item->sudah_tayang ? '#eef2f6' : 'rgba(235,137,27,.1)';
-                return [
-                    'kegiatan' => $item->kegiatanStatistik->nama ?? '-',
-                    'dinas' => $item->kegiatanStatistik->dinas->nama ?? '-',
-                    'status_label' => $label,
-                    'status_color' => $color,
-                    'status_bg' => $bg,
-                ];
-            });
+            $title = "Rincian Aliran Data (Sedang dinonaktifkan sementara)";
+            $items = collect([]);
         }
 
         return response()->json([

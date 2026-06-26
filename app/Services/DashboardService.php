@@ -6,7 +6,6 @@ use App\Enums\JenisKegiatan;
 use App\Enums\JenisMetadata;
 use App\Enums\StatusDinas;
 use App\Enums\StatusKominfo;
-use App\Models\AliranData;
 use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
 use App\Models\Pembinaan;
@@ -60,9 +59,9 @@ class DashboardService
         $metaTotalBelum = max(0, $metaTotalTarget - $metaTotalDone - $metaTotalDraft);
 
         // Aliran Data
-        $aliranTotal = AliranData::where('tahun', $tahun)->count();
-        $aliranTayang = AliranData::where('tahun', $tahun)->where('sudah_tayang', true)->count();
-        $aliranBelum = $aliranTotal - $aliranTayang;
+        $aliranTotal = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', 0);
+        $aliranTayang = \Illuminate\Support\Facades\Cache::get('aliran_stats_tayang', 0);
+        $aliranBelum = \Illuminate\Support\Facades\Cache::get('aliran_stats_belum', 0);
 
         // Donut percentages
         $pctRomantik = $totalKegiatan > 0 ? round($romantikDiajukan / $totalKegiatan * 100) : 0;
@@ -145,7 +144,7 @@ class DashboardService
         return [
             'heroMonthlyRomantik' => $getMonthly(Romantik::whereIn('status_dinas', StatusDinas::submittedValues())),
             'heroMonthlyMetadata' => $getMonthly(Metadata::where('jenis', JenisMetadata::KEGIATAN->value)->whereIn('status_kominfo', StatusKominfo::completedValues())),
-            'heroMonthlyAliran' => $getMonthly(AliranData::where('sudah_tayang', true)),
+            'heroMonthlyAliran' => collect(),
         ];
     }
 

@@ -3,7 +3,6 @@
 use App\Models\KegiatanStatistik;
 use App\Models\Romantik;
 use App\Models\Metadata;
-use App\Models\AliranData;
 use App\Models\Monev;
 use App\Enums\StatusDinas;
 use App\Enums\StatusKominfo;
@@ -13,7 +12,7 @@ use App\Enums\JenisKegiatan;
 use Illuminate\Support\Facades\DB;
 
 DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-AliranData::truncate();
+
 Metadata::truncate();
 Romantik::truncate();
 Monev::truncate();
@@ -65,14 +64,6 @@ for ($i = 1; $i <= 5; $i++) {
         'status_dinas' => StatusDinas::BELUM_DIAJUKAN->value,
         'status_kominfo' => StatusKominfo::DRAFT->value,
         'status_bps' => StatusBps::SEDANG_DIPERIKSA->value,
-    ]);
-
-    AliranData::create([
-        'kegiatan_id' => $kegiatan->id,
-        'nama_data' => "Data Output Sedata $i",
-        'tahun' => $tahun,
-        'frekuensi' => 'tahunan',
-        'sudah_tayang' => $i == 1 ? true : false,
     ]);
 }
 

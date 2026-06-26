@@ -27,16 +27,17 @@
                     <div style="font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 1px; text-transform: uppercase;">Distribusi</div>
                     <h3 style="margin: 4px 0 0; font-size: 18px; font-weight: 800; color: var(--navy);">Status Publikasi Data (<?php echo e($totalData); ?> Data)</h3>
                 </div>
-                <div style="border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 4px;">
-                    <?php echo e($tahun); ?> <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <div style="border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: var(--navy); display: inline-block;">
+                    Tahun <?php echo e(date('Y')); ?>
+
                 </div>
             </div>
 
-            <div style="flex: 1; display: flex; justify-content: center; align-items: center; gap: 40px; width: 100%;">
-                <div style="width: 220px; display: flex; justify-content: center; position: relative;">
+            <div style="flex: 1; display: flex; align-items: center; gap: 32px; width: 100%;">
+                <div style="flex-shrink: 0; width: 220px; display: flex; justify-content: center; position: relative;">
                     <div id="aliran-donut-chart"></div>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 16px; width: 280px;">
+                <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
                     <div style="border: 1px solid var(--line); border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; background: #f8f9fb;">
                         <div style="display: flex; gap: 12px; align-items: center;">
                             <span style="width: 12px; height: 12px; border-radius: 3px; background: #002B6A; flex-shrink: 0;"></span>
@@ -103,9 +104,10 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 </div>
-
+    
 <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
@@ -140,9 +142,13 @@ if (isset($__slots)) unset($__slots);
 <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.49.0"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        const sudahTayang = <?php echo e($sudahTayang); ?>;
+        const belumTayang = <?php echo e($belumTayang); ?>;
+        const isEmpty = (sudahTayang + belumTayang) === 0;
+
         const options = {
-            series: [<?php echo e($sudahTayang); ?>, <?php echo e($belumTayang); ?>],
-            labels: ['Sudah Tayang', 'Belum Tayang'],
+            series: isEmpty ? [1] : [sudahTayang, belumTayang],
+            labels: isEmpty ? ['Belum ada data'] : ['Sudah Tayang', 'Belum Tayang'],
             chart: {
                 type: 'donut',
                 height: 200,
@@ -154,7 +160,7 @@ if (isset($__slots)) unset($__slots);
                     dynamicAnimation: { enabled: true, speed: 350 }
                 }
             },
-            colors: ['#002B6A', '#EB891B'],
+            colors: isEmpty ? ['#f1f5f9'] : ['#002B6A', '#EB891B'],
             plotOptions: {
                 pie: {
                     donut: {
@@ -162,25 +168,25 @@ if (isset($__slots)) unset($__slots);
                         labels: {
                             show: true,
                             name: { show: true, color: '#6B6560', fontSize: '10px', fontWeight: 700, fontFamily: 'Inter', offsetY: 24 },
-                            value: { show: true, color: '#002B6A', fontSize: '32px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -8 },
+                            value: { show: true, color: isEmpty ? '#94a3b8' : '#002B6A', fontSize: '32px', fontWeight: 800, fontFamily: 'JetBrains Mono', offsetY: -8 },
                             total: {
                                 show: true,
                                 showAlways: true,
-                                label: 'SUDAH TAYANG',
+                                label: isEmpty ? 'BELUM ADA DATA' : 'SUDAH TAYANG',
                                 fontSize: '10px',
                                 fontWeight: 700,
                                 color: '#6B6560',
-                                formatter: function (w) { return "<?php echo e($pctTayang); ?>%"; }
+                                formatter: function (w) { return isEmpty ? "0" : "<?php echo e($pctTayang); ?>%"; }
                             }
                         }
                     }
                 }
             },
             dataLabels: { enabled: false },
-            stroke: { width: 3, colors: ['#fff'] },
+            stroke: { width: isEmpty ? 0 : 3, colors: ['#fff'] },
             legend: { show: false },
             tooltip: {
-                enabled: true,
+                enabled: !isEmpty,
                 theme: 'dark',
                 fillSeriesColor: false,
                 y: { formatter: function(val) { return val + " data" } }

@@ -1,12 +1,6 @@
-<div class="container" style="padding: 40px 32px; min-height: calc(100vh - 74px);">
-    <div class="flex-col-mobile" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
-        <div>
-            <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Identifikasi Kegiatan Statistik <?php echo e($tahun); ?></h1>
-            <p style="color: var(--muted); font-size: 15px; margin: 0;">Daftar seluruh rancangan kegiatan statistik sektoral yang diidentifikasi dari OPD Kabupaten Bantul.</p>
-        </div>
-        
-        <div class="w-full-mobile" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <div style="position: relative;" x-data="{ open: false }">
+<div class="container" style="padding: 16px 32px 40px; min-height: calc(100vh - 74px);">
+    <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px;">
+        <div style="position: relative;" x-data="{ open: false }">
                 <button type="button" @click="open = !open" style="padding: 10px 16px; background: #fff; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; font-weight: 600; color: var(--navy); cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow-sm);">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                     Export
@@ -35,7 +29,6 @@
                 <input type="text" wire:model.live.debounce.400ms="search" class="w-full-mobile" placeholder="Cari kegiatan atau OPD..." style="padding: 10px 14px 10px 36px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; width: 220px; outline: none; color: var(--ink); background: #fff; box-shadow: var(--shadow-sm);">
             </div>
         </div>
-    </div>
 
     <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
         <div class="table-responsive desktop-only">
@@ -52,8 +45,8 @@
                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $kegiatan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $idx => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                 <tr style="border-bottom: 1px solid var(--line);">
                     <td style="padding: 16px; text-align: center; color: var(--muted);"><?php echo e($kegiatan->firstItem() + $idx); ?></td>
-                    <td style="padding: 16px; font-weight: 600; color: var(--navy);"><?php echo e($item->dinas->singkatan ?? '-'); ?></td>
-                    <td style="padding: 16px; color: var(--ink);"><?php echo e($item->nama); ?></td>
+                    <td style="padding: 16px; font-weight: 500; color: var(--ink);"><?php echo e($item->dinas->singkatan ?? '-'); ?></td>
+                    <td style="padding: 16px; font-weight: 500; color: var(--ink);"><?php echo e($item->nama); ?></td>
                     <td style="padding: 16px; text-align: center;">
                         <?php
                             $jenisEnum = $item->jenis instanceof \App\Enums\JenisKegiatan ? $item->jenis : \App\Enums\JenisKegiatan::tryFrom($item->jenis);
@@ -99,12 +92,13 @@
                 <div style="padding: 32px; text-align: center; color: var(--muted);">Belum ada data kegiatan untuk filter yang dipilih.</div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($kegiatan->hasPages()): ?>
-        <div style="padding: 20px;">
-            <?php echo e($kegiatan->links()); ?>
-
-        </div>
-        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
+    
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($kegiatan->hasPages()): ?>
+    <div style="padding-top: 20px;">
+        <?php echo e($kegiatan->links('partials.livewire-pagination')); ?>
+
+    </div>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div>
 <?php /**PATH D:\PASEBAN APP\resources\views/livewire/public-kegiatan-table.blade.php ENDPATH**/ ?>

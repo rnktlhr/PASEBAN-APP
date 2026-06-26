@@ -44,7 +44,7 @@
         </div>
 
         <div style="margin-top: 40px; display: flex; justify-content: center;">
-            {{ $kegiatanPendampingan->links() }}
+            {{ $kegiatanPendampingan->links('partials.pagination') }}
         </div>
     </div>
 </section>

@@ -1,7 +1,14 @@
 <?php $__env->startSection('title', 'Identifikasi Kegiatan Statistik — Paseban'); ?>
 
 <?php $__env->startSection('content'); ?>
-    <?php
+<div class="container" style="padding: 40px 32px 0;">
+    <div style="margin-bottom: 32px;">
+        <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Identifikasi Kegiatan Statistik <?php echo e($tahun); ?></h1>
+        <p style="color: var(--muted); font-size: 15px; margin: 0;">Daftar seluruh rancangan kegiatan statistik sektoral yang diidentifikasi dari OPD Kabupaten Bantul.</p>
+    </div>
+</div>
+
+<?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };

@@ -183,29 +183,4 @@ class HomeController extends Controller
 
         return Excel::download($export, "Romantik_Statistik_{$tahun}.xlsx");
     }
-
-    public function exportAliranData(Request $request)
-    {
-        $request->validate([
-            'tahun' => 'nullable|integer|min:2020|max:2099',
-            'dinas_id' => 'nullable|integer|exists:dinas,id',
-            'status' => 'nullable|string|in:1,0',
-            'search' => 'nullable|string|max:100',
-            'format' => 'nullable|string|in:excel,pdf',
-        ]);
-
-        $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
-        $format = $request->input('format', 'excel');
-        
-        $export = new \App\Exports\AliranDataExport($tahun, $request->input('dinas_id'), $request->input('status'), $request->input('search'));
-        
-        if ($format === 'pdf') {
-            $viewData = $export->view()->getData();
-            $pdf = Pdf::loadView('exports.aliran_data_pdf', $viewData)
-                ->setPaper('a4', 'landscape');
-            return $pdf->download("Aliran_Data_Sedata_Sebantul_{$tahun}.pdf");
-        }
-
-        return Excel::download($export, "Aliran_Data_Sedata_Sebantul_{$tahun}.xlsx");
-    }
 }
