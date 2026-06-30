@@ -63,7 +63,14 @@ class DinasPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 \Filament\View\PanelsRenderHook::HEAD_END,
-                fn (): string => \Illuminate\Support\Facades\Blade::render('<style>.fi-ta-cell .fi-badge { min-width: 140px; justify-content: center; }</style>')
+                fn(): string => \Illuminate\Support\Facades\Blade::render('
+                <style>
+                    .fi-ta-cell .fi-badge { min-width: 140px; justify-content: center; }
+                    .fi-tenant-menu-trigger { pointer-events: none; cursor: default; }
+                    .fi-tenant-menu-trigger svg.fi-tenant-menu-trigger-chevron { visibility: hidden; }
+                    .fi-tenant-menu-trigger > svg:last-of-type { visibility: hidden; }
+                </style>
+                ')
             );
     }
 }
