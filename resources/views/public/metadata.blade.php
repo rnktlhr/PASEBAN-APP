@@ -32,15 +32,9 @@
 
     <div class="container" style="padding: 40px 32px 0;">
         <div style="margin-bottom: 32px;">
-            <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Pelaporan Metadata
-                {{ $tahun }}</h1>
-            <p style="color: var(--muted); font-size: 15px; margin: 0;">Status pelaporan Metadata Statistik (Kegiatan,
+            <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Pencapaian Metadata</h1>
+            <p style="color: var(--muted); font-size: 15px; margin: 0;">Status pencapaian Metadata Statistik (Kegiatan,
                 Indikator, dan Variabel) oleh OPD.</p>
-        </div>
-
-        <div style="margin-bottom: 24px;">
-            <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: var(--navy);">Capaian Metadata Tahun
-                {{ $tahun }}</h2>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px;"
@@ -150,8 +144,8 @@
                     legend: { show: false },
                     tooltip: {
                         enabled: true,
-                        theme: 'dark',
-                        fillSeriesColor: false,
+                        theme: 'light',
+                        fillSeriesColor: true,
                         y: { formatter: function (val) { return val + " Kegiatan" } }
                     }
                 };

@@ -1,1 +1,0 @@
-<style>.fi-ta-cell .fi-badge { min-width: 140px; justify-content: center; }</style>

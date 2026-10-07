@@ -39,7 +39,7 @@
             style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
             <div
                 style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--muted);">
-                Total Kegiatan</div>
+                Rencana</div>
             <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;"
                 x-data="countUp(<?php echo e($totalKegiatan); ?>)" x-text="count">0</div>
         </div>
@@ -47,7 +47,7 @@
             style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
             <div
                 style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: #2e7d32;">
-                Tepat Waktu</div>
+                Realisasi Tepat Waktu</div>
             <div class="mono" style="font-size: 24px; font-weight: 800; color: #2e7d32; margin-top: 6px;"
                 x-data="countUp(<?php echo e($monevTepatWaktu); ?>)" x-text="count">0</div>
         </div>
@@ -58,14 +58,6 @@
                 Terlambat</div>
             <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--red); margin-top: 6px;"
                 x-data="countUp(<?php echo e($monevTerlambat); ?>)" x-text="count">0</div>
-        </div>
-        <div
-            style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
-            <div
-                style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; color: var(--muted);">
-                Keberhasilan</div>
-            <div class="mono" style="font-size: 24px; font-weight: 800; color: var(--navy); margin-top: 6px;"
-                x-data="countUp(<?php echo e($pctKeberhasilan); ?>)"><span x-text="count">0</span>%</div>
         </div>
     </div>
 
@@ -119,8 +111,8 @@
     </div>
 
     
-    <div style="position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm);"
-        x-data="{ perPage: 10, page: 1 }">
+    <div x-data="{ perPage: 10, page: 1 }">
+        <div style="position: relative; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm);">
         <div
             style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; gap: 8px;">
@@ -326,20 +318,25 @@
                 </div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
-
-        <div
-            style="padding: 16px 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-bottom: 30px;">
+        </div>
+        <div style="padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; padding-bottom: 30px;">
             <div style="font-size: 13.5px; color: var(--muted);">
                 Menampilkan entri dari total <?php echo e(count($monevItems)); ?>
 
             </div>
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 12px;">
                 <button type="button" @click="if(page > 1) page--"
-                    style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;"
-                    :style="page === 1 ? 'opacity: 0.5; cursor: not-allowed;' : ''">Sebelumnya</button>
+                    style="padding: 10px 16px; border: 1px solid var(--line); background: #fff; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); color: var(--navy); transition: all 0.2s; flex-direction: row; flex-wrap: nowrap; white-space: nowrap;"
+                    :style="page === 1 ? { opacity: 0.5, cursor: 'not-allowed' } : {}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    Previous
+                </button>
                 <button type="button" @click="if(page < Math.ceil(<?php echo e(count($monevItems)); ?> / perPage)) page++"
-                    style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;"
-                    :style="page >= Math.ceil(<?php echo e(count($monevItems)); ?> / perPage) ? 'opacity: 0.5; cursor: not-allowed;' : ''">Selanjutnya</button>
+                    style="padding: 10px 16px; border: 1px solid var(--line); background: #fff; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); color: var(--navy); transition: all 0.2s; flex-direction: row; flex-wrap: nowrap; white-space: nowrap;"
+                    :style="page >= Math.ceil(<?php echo e(count($monevItems)); ?> / perPage) ? { opacity: 0.5, cursor: 'not-allowed' } : {}">
+                    Next
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
             </div>
         </div>
     </div>

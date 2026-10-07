@@ -16,7 +16,8 @@ class HomeController extends Controller
 {
     public function __construct(
         protected DashboardService $dashboardService
-    ) {}
+    ) {
+    }
 
     public function kegiatanPendampingan()
     {
@@ -121,9 +122,9 @@ class HomeController extends Controller
 
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
         $format = $request->input('format', 'excel');
-        
+
         $export = new \App\Exports\KegiatanStatistikExport($tahun, $request->input('dinas_id'), $request->input('jenis'), $request->input('search'));
-        
+
         if ($format === 'pdf') {
             $viewData = $export->view()->getData();
             $pdf = Pdf::loadView('exports.kegiatan_statistik_pdf', $viewData)
@@ -146,9 +147,9 @@ class HomeController extends Controller
 
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
         $format = $request->input('format', 'excel');
-        
+
         $export = new \App\Exports\MetadataExport($tahun, $request->input('dinas_id'), $request->input('jenis'), $request->input('search'));
-        
+
         if ($format === 'pdf') {
             $viewData = $export->view()->getData();
             $pdf = Pdf::loadView('exports.metadata_pdf', $viewData)
@@ -171,9 +172,9 @@ class HomeController extends Controller
 
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
         $format = $request->input('format', 'excel');
-        
+
         $export = new \App\Exports\RomantikExport($tahun, $request->input('dinas_id'), $request->input('status'), $request->input('search'));
-        
+
         if ($format === 'pdf') {
             $viewData = $export->view()->getData();
             $pdf = Pdf::loadView('exports.romantik_pdf', $viewData)

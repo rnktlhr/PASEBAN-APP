@@ -177,7 +177,8 @@
 
         <div style="display: grid; grid-template-columns: 1fr; gap: 24px;">
             <!-- Table -->
-            <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);" x-data="{ perPage: 10, page: 1 }">
+            <div x-data="{ perPage: 10, page: 1 }">
+                <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);">
                 <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="font-size: 13.5px; color: var(--muted);">Tampilkan</span>
@@ -266,14 +267,22 @@
                     </div>
                     @endforelse
                 </div>
-                <div class="flex-col-mobile" style="padding: 16px 20px; border-top: 1px solid var(--line); justify-content: space-between; align-items: center;">
-                    <div style="font-size: 13.5px; color: var(--muted);">
-                        Menampilkan entri dari total {{ count($rekapKehadiran) }}
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button @click="if(page > 1) page--" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page === 1 ? 'opacity: 0.5; cursor: not-allowed;' : ''">Sebelumnya</button>
-                        <button @click="if(page < Math.ceil({{ count($rekapKehadiran) }} / perPage)) page++" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page >= Math.ceil({{ count($rekapKehadiran) }} / perPage) ? 'opacity: 0.5; cursor: not-allowed;' : ''">Selanjutnya</button>
-                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-col-mobile" style="padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 13.5px; color: var(--muted);">
+                    Menampilkan entri dari total {{ count($rekapKehadiran) }}
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button type="button" @click="if(page > 1) page--" style="padding: 10px 16px; border: 1px solid var(--line); background: #fff; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); color: var(--navy); transition: all 0.2s; flex-direction: row; flex-wrap: nowrap; white-space: nowrap;" :style="page === 1 ? { opacity: 0.5, cursor: 'not-allowed' } : {}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Previous
+                    </button>
+                    <button type="button" @click="if(page < Math.ceil({{ count($rekapKehadiran) }} / perPage)) page++" style="padding: 10px 16px; border: 1px solid var(--line); background: #fff; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); color: var(--navy); transition: all 0.2s; flex-direction: row; flex-wrap: nowrap; white-space: nowrap;" :style="page >= Math.ceil({{ count($rekapKehadiran) }} / perPage) ? { opacity: 0.5, cursor: 'not-allowed' } : {}">
+                        Next
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -292,7 +301,8 @@
             </div>
         </div>
 
-        <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);" x-data="{ perPage: 10, page: 1 }">
+        <div x-data="{ perPage: 10, page: 1 }">
+            <div style="background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);">
             <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="font-size: 13.5px; color: var(--muted);">Tampilkan</span>
@@ -429,28 +439,23 @@
                 </div>
                 @endforelse
             </div>
-            <div class="flex-col-mobile" style="padding: 16px 20px; border-top: 1px solid var(--line); justify-content: space-between; align-items: center;">
+            
+            <div class="flex-col-mobile" style="padding-top: 20px; display: flex; justify-content: space-between; align-items: center;">
                 <div style="font-size: 13.5px; color: var(--muted);">
                     Menampilkan entri dari total {{ count($materiPembinaan) }}
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button @click="if(page > 1) page--" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page === 1 ? 'opacity: 0.5; cursor: not-allowed;' : ''">Sebelumnya</button>
-                    <button @click="if(page < Math.ceil({{ count($materiPembinaan) }} / perPage)) page++" style="padding: 6px 12px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-size: 13px; cursor: pointer;" :style="page >= Math.ceil({{ count($materiPembinaan) }} / perPage) ? 'opacity: 0.5; cursor: not-allowed;' : ''">Selanjutnya</button>
+                <div style="display: flex; gap: 12px;">
+                    <button type="button" @click="if(page > 1) page--" style="padding: 10px 16px; border: 1px solid var(--line); background: #fff; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); color: var(--navy); transition: all 0.2s; flex-direction: row; flex-wrap: nowrap; white-space: nowrap;" :style="page === 1 ? { opacity: 0.5, cursor: 'not-allowed' } : {}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        Previous
+                    </button>
+                    <button type="button" @click="if(page < Math.ceil({{ count($materiPembinaan) }} / perPage)) page++" style="padding: 10px 16px; border: 1px solid var(--line); background: #fff; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm); color: var(--navy); transition: all 0.2s; flex-direction: row; flex-wrap: nowrap; white-space: nowrap;" :style="page >= Math.ceil({{ count($materiPembinaan) }} / perPage) ? { opacity: 0.5, cursor: 'not-allowed' } : {}">
+                        Next
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-@endsection
-                    <span>Previous</span>
-                </button>
-                <button @click="if(page < Math.ceil({{ count($materiPembinaan) }} / perPage)) page++" class="btn-pagination btn-pagination-next" :disabled="page >= Math.ceil({{ count($materiPembinaan) }} / perPage)">
-                    <span>Next</span>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </button>
-            </div>
-        </div>
-        @endif
     </div>
 </div>
 @endsection

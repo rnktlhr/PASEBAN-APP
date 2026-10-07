@@ -2,6 +2,11 @@
 
 @section('content')
     <div class="container" style="padding: 40px 32px 0;">
+        <div style="margin-bottom: 32px;">
+            <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Pemantauan Aliran Data</h1>
+            <p style="color: var(--muted); font-size: 15px; margin: 0;">Status publikasi dan pemantauan aliran data statistik sektoral di Sedata Sebantul oleh OPD.</p>
+        </div>
+
         {{-- Banner Top --}}
         <div class="scroll-reveal"
             style="background: #f0f4f8; border: 1px solid #dce4ec; border-radius: 12px; padding: 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 24px;">
@@ -114,7 +119,7 @@
                                 style="font-size: 32px; font-weight: 800; color: var(--navy); font-family: 'JetBrains Mono', monospace; line-height: 1;"
                                 x-data="countUp({{ $totalData }})" x-text="count">0</span>
                             <span
-                                style="font-size: 11px; font-weight: 600; color: var(--muted); font-family: 'JetBrains Mono', monospace;">data
+                                class="mono" style="font-size: 11px; font-weight: 600; color: var(--muted);">data
                                 disepakati {{ $tahun }}</span>
                         </div>
                     </div>
@@ -137,7 +142,7 @@
                                 style="font-size: 32px; font-weight: 800; color: #002B6A; font-family: 'JetBrains Mono', monospace; line-height: 1;"
                                 x-data="countUp({{ $sudahTayang }})" x-text="count">0</span>
                             <span
-                                style="font-size: 11px; font-weight: 600; color: var(--muted); font-family: 'JetBrains Mono', monospace;">{{ $pctTayang }}%
+                                class="mono" style="font-size: 11px; font-weight: 600; color: var(--muted);">{{ $pctTayang }}%
                                 terpublikasi</span>
                         </div>
                     </div>
@@ -160,7 +165,7 @@
                                 style="font-size: 32px; font-weight: 800; color: #EB891B; font-family: 'JetBrains Mono', monospace; line-height: 1;"
                                 x-data="countUp({{ $belumTayang }})" x-text="count">0</span>
                             <span
-                                style="font-size: 11px; font-weight: 600; color: var(--muted); font-family: 'JetBrains Mono', monospace;">{{ $pctBelum }}%
+                                class="mono" style="font-size: 11px; font-weight: 600; color: var(--muted);">{{ $pctBelum }}%
                                 belum tayang</span>
                         </div>
                     </div>
@@ -230,8 +235,8 @@
                 legend: { show: false },
                 tooltip: {
                     enabled: true,
-                    theme: 'dark',
-                    fillSeriesColor: false,
+                    theme: 'light',
+                    fillSeriesColor: true,
                     y: { formatter: function (val) { return val + " data" } }
                 }
             };

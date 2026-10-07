@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="@yield('meta_description', 'PASEBAN — Platform terpadu BPS Kabupaten Bantul untuk pemantauan, pembinaan, dan monitoring kegiatan statistik sektoral.')">
+    <meta name="description"
+        content="@yield('meta_description', 'PASEBAN — Platform terpadu BPS Kabupaten Bantul untuk pemantauan, pembinaan, dan monitoring kegiatan statistik sektoral.')">
     <title>@yield('title', 'PASEBAN')</title>
     <!-- Memaksa browser menghapus cache favicon -->
     <link rel="icon" href="data:,">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    <script>
+        // Konfigurasi Global ApexCharts agar konsisten menggunakan Inter
+        window.Apex = {
+            chart: {
+                fontFamily: "'Inter', system-ui, sans-serif"
+            }
+        };
+    </script>
 </head>
+
 <body class="page-transition">
     @include('partials.navbar')
 
@@ -30,7 +43,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const body = document.body;
-            
+
             // Slight delay ensures the browser paints the initial opacity:0 state first
             setTimeout(() => {
                 body.classList.add("page-entered");
@@ -42,15 +55,15 @@
                     if (!target || target.startsWith("#") || target.startsWith("javascript:") || link.target === "_blank" || e.ctrlKey || e.metaKey) return;
                     if (target.startsWith("http") && !target.includes(window.location.host)) return;
                     if (target.includes('/export') || target.includes('export')) return;
-                    
+
                     e.preventDefault();
                     body.classList.remove("page-entered");
                     body.classList.add("page-leaving");
-                    
+
                     // Wait exactly the CSS duration (300ms) before navigating
                     setTimeout(() => {
                         window.location.href = link.href;
-                    }, 300); 
+                    }, 300);
                 });
             });
 
@@ -124,7 +137,7 @@
 
                 if (siennaWrapper && !siennaWrapper.dataset.dragBinded) {
                     siennaWrapper.dataset.dragBinded = 'true';
-                    
+
                     let isDragging = false;
                     let hasDragged = false;
                     let startX, startY, initialLeft, initialTop;
@@ -146,7 +159,7 @@
                         if (!isDragging) return;
                         const dx = e.touches[0].clientX - startX;
                         const dy = e.touches[0].clientY - startY;
-                        
+
                         if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
                             hasDragged = true;
                             siennaWrapper.style.setProperty('position', 'fixed', 'important');
@@ -157,14 +170,14 @@
                             siennaWrapper.style.setProperty('top', (initialTop + dy) + 'px', 'important');
                             siennaWrapper.style.setProperty('transform', 'none', 'important');
                             siennaWrapper.style.setProperty('z-index', '999999', 'important');
-                            if(e.cancelable) e.preventDefault(); 
+                            if (e.cancelable) e.preventDefault();
                         }
                     }, { passive: false });
 
                     siennaWrapper.addEventListener('touchend', (e) => {
                         isDragging = false;
                     });
-                    
+
                     // Prevent click if we were dragging
                     siennaWrapper.addEventListener('click', (e) => {
                         if (hasDragged) {
@@ -178,4 +191,5 @@
         });
     </script>
 </body>
+
 </html>

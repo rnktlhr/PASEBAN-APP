@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Role;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
@@ -39,22 +40,22 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin_bps';
+        return $this->role === Role::ADMIN_BPS->value;
     }
 
     public function isKominfo(): bool
     {
-        return $this->role === 'kominfo';
+        return $this->role === Role::KOMINFO->value;
     }
 
     public function isDinas(): bool
     {
-        return $this->role === 'dinas';
+        return $this->role === Role::DINAS->value;
     }
 
     public function isBappeda(): bool
     {
-        return $this->role === 'bappeda';
+        return $this->role === Role::BAPPEDA->value;
     }
 
     // --- Relationships ---

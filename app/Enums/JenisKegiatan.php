@@ -60,6 +60,18 @@ enum JenisKegiatan: string implements HasLabel, HasColor
         };
     }
 
+    /**
+     * Hex colors for charts in dashboard.
+     */
+    public function chartColor(): string
+    {
+        return match ($this) {
+            self::SURVEI => '#002B6A',
+            self::PENDATAAN_LENGKAP => '#00B69B',
+            self::KOMPROMIN => '#EB891B',
+        };
+    }
+
     public function getLabel(): ?string
     {
         return $this->label();

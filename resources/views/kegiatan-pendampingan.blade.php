@@ -14,10 +14,10 @@
 
 <section style="padding: 60px 0; background: #f8fafc; min-height: 50vh;">
     <div class="container">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px;">
             @foreach($kegiatanPendampingan as $berita)
-            <a href="{{ route('kegiatan-pendampingan.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: var(--radius); overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
-                <div style="height: 180px; background: linear-gradient(135deg, var(--navy), var(--teal)); position: relative;">
+            <a href="{{ route('kegiatan-pendampingan.show', $berita) }}" style="text-decoration: none; color: inherit; border-radius: 16px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm); cursor: pointer; display: flex; flex-direction: column; transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .3s cubic-bezier(0.4, 0, 0.2, 1);" onmouseover="this.style.transform='translateY(-12px)'; this.style.boxShadow='0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)';">
+                <div style="height: 240px; background: linear-gradient(135deg, var(--navy), var(--teal)); position: relative;">
                     @php
                         $coverImage = $berita->gambar ? asset('storage/' . $berita->gambar) : null;
                         if (!$coverImage && $berita->narasi) {

@@ -108,7 +108,7 @@
                     @empty
                         <tr>
                             <td colspan="5" style="padding: 32px; text-align: center; color: var(--muted);">Belum ada
-                                pelaporan Metadata untuk filter yang dipilih.</td>
+                                pencapaian Metadata untuk filter yang dipilih.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -156,7 +156,7 @@
                     </div>
                 </div>
             @empty
-                <div style="padding: 32px; text-align: center; color: var(--muted);">Belum ada pelaporan Metadata untuk
+                <div style="padding: 32px; text-align: center; color: var(--muted);">Belum ada pencapaian Metadata untuk
                     filter yang dipilih.</div>
             @endforelse
         </div>

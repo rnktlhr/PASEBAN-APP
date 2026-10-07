@@ -4,7 +4,7 @@
     <div class="container" style="padding: 40px 32px 0;">
         <div style="margin-bottom: 32px;">
             <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Rekomendasi Statistik
-                (Romantik) {{ $tahun }}</h1>
+                (Romantik)</h1>
             <p style="color: var(--muted); font-size: 15px; margin: 0;">Status pengajuan dan persetujuan Romantik
                 (Rekomendasi Kegiatan Statistik).</p>
         </div>
@@ -15,8 +15,7 @@
                 style="background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm);">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px;">
                     <div>
-                        <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: var(--navy);">Capaian Romantik Tahun
-                            {{ $tahun }}</h2>
+                        <h2 style="margin: 0; font-size: 22px; font-weight: 800; color: var(--navy);">Capaian Romantik</h2>
                     </div>
                     <div
                         style="padding: 6px 12px; background: #fff5eb; color: #EB891B; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: .5px;">

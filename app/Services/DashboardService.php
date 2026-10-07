@@ -108,11 +108,7 @@ class DashboardService
         foreach (JenisKegiatan::cases() as $jenis) {
             $jenisLabels[] = $jenis->label();
             $jenisValues[] = KegiatanStatistik::where('tahun', $tahun)->where('jenis', $jenis->value)->count();
-            $jenisColors[] = match ($jenis) {
-                JenisKegiatan::SURVEI => '#002B6A',
-                JenisKegiatan::PENDATAAN_LENGKAP => '#00B69B',
-                JenisKegiatan::KOMPROMIN => '#EB891B',
-            };
+            $jenisColors[] = $jenis->chartColor();
         }
 
         return [

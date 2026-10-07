@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
-    public function kegiatan(Request $request)
+    public function kegiatan(Request $request, PublicDataService $service)
     {
         $request->validate(['tahun' => 'nullable|integer|min:2020|max:2099']);
         $tahun = (int) $request->query('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
@@ -41,7 +41,12 @@ class PublicController extends Controller
         $kegiatan = $query->orderBy('dinas_id')->paginate(10)->withQueryString();
         $dinasList = Dinas::orderBy('nama')->get();
 
-        return view('public.kegiatan', compact('kegiatan', 'tahun', 'dinasList'));
+        $summary = $service->getKegiatanSummary($tahun);
+
+        return view('public.kegiatan', array_merge(
+            compact('kegiatan', 'tahun', 'dinasList'),
+            $summary
+        ));
     }
 
     public function romantik(Request $request, PublicDataService $service)

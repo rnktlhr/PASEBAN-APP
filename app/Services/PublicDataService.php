@@ -9,6 +9,27 @@ use App\Models\Metadata;
 class PublicDataService
 {
     /**
+     * Menghitung rekapitulasi data Identifikasi Kegiatan.
+     */
+    public function getKegiatanSummary(int $tahun): array
+    {
+        $totalKegiatan = KegiatanStatistik::where('tahun', $tahun)->count();
+        
+        $survei = KegiatanStatistik::where('tahun', $tahun)->where('jenis', \App\Enums\JenisKegiatan::SURVEI->value)->count();
+        $pendataanLengkap = KegiatanStatistik::where('tahun', $tahun)->where('jenis', \App\Enums\JenisKegiatan::PENDATAAN_LENGKAP->value)->count();
+        $kompromin = KegiatanStatistik::where('tahun', $tahun)->where('jenis', \App\Enums\JenisKegiatan::KOMPROMIN->value)->count();
+        
+        $pctSurvei = $totalKegiatan > 0 ? round(($survei / $totalKegiatan) * 100) : 0;
+        $pctPendataanLengkap = $totalKegiatan > 0 ? round(($pendataanLengkap / $totalKegiatan) * 100) : 0;
+        $pctKompromin = $totalKegiatan > 0 ? round(($kompromin / $totalKegiatan) * 100) : 0;
+
+        return compact(
+            'totalKegiatan', 'survei', 'pendataanLengkap', 'kompromin',
+            'pctSurvei', 'pctPendataanLengkap', 'pctKompromin'
+        );
+    }
+
+    /**
      * Menghitung rekapitulasi data Romantik.
      */
     public function getRomantikSummary(int $tahun): array

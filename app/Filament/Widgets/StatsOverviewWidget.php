@@ -39,7 +39,7 @@ class StatsOverviewWidget extends BaseWidget
             Stat::make('Aliran Data Tayang', $aliranTayang . ' / ' . $aliranTotal)
                 ->description('Di Sedata Sebantul')
                 ->color('success'),
-            Stat::make('Tepat Waktu', $monevTepat)
+            Stat::make('Realisasi Tepat Waktu', $monevTepat)
                 ->description('Kegiatan selesai tepat waktu')
                 ->color('success'),
             Stat::make('Terlambat', $monevTerlambat)
