@@ -2,24 +2,21 @@
 
 namespace App\Models;
 
-use App\Enums\Role;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasTenants;
-use Filament\Panel;
-use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements FilamentUser, HasTenants
+class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, Notifiable;
+
+    protected $table = 'users';
 
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
         'role',
@@ -31,58 +28,20 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    // --- Role helpers ---
-
-    public function isAdmin(): bool
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return $this->role === Role::ADMIN_BPS->value;
+        return [
+            'password' => 'hashed',
+        ];
     }
-
-    public function isKominfo(): bool
-    {
-        return $this->role === Role::KOMINFO->value;
-    }
-
-    public function isDinas(): bool
-    {
-        return $this->role === Role::DINAS->value;
-    }
-
-    public function isBappeda(): bool
-    {
-        return $this->role === Role::BAPPEDA->value;
-    }
-
-    // --- Relationships ---
 
     public function dinas(): BelongsTo
     {
         return $this->belongsTo(Dinas::class, 'id_dinas');
-    }
-
-    // --- Filament ---
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return match ($panel->getId()) {
-            'admin' => $this->isAdmin(),
-            'dinas' => $this->isDinas() || $this->isKominfo() || $this->isBappeda(),
-            default => false,
-        };
-    }
-
-    public function getTenants(Panel $panel): array|Collection
-    {
-        return $this->dinas ? [$this->dinas] : [];
-    }
-
-    public function canAccessTenant(Model $tenant): bool
-    {
-        return $this->id_dinas === $tenant->id;
     }
 }

@@ -9,7 +9,7 @@ class CustomAvatarProvider implements AvatarProvider
 {
     public function get(Model $record): string
     {
-        $name = urlencode(trim($record->name ?? 'Admin'));
+        $name = urlencode(trim($record->nama ?? 'Admin'));
         return 'https://api.dicebear.com/9.x/initials/svg?seed=' . $name . '&backgroundColor=F58220&textColor=ffffff';
     }
 }

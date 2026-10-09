@@ -61,7 +61,7 @@ class KegiatanStatistikImport implements ToCollection, WithStartRow
                 'nama' => $namaKegiatan,
                 'tahun' => $this->tahun,
             ], [
-                'dinas_id' => $dinasId,
+                'id_dinas' => $dinasId,
                 'jenis' => $jenis,
             ]);
         }

@@ -23,7 +23,7 @@ class PublicController extends Controller
         $query = KegiatanStatistik::with('dinas')->where('tahun', $tahun);
         
         if ($request->filled('dinasFilter')) {
-            $query->where('dinas_id', $request->dinasFilter);
+            $query->where('id_dinas', $request->dinasFilter);
         }
         if ($request->filled('jenis')) {
             $query->where('jenis', $request->jenis);
@@ -38,7 +38,7 @@ class PublicController extends Controller
             });
         }
 
-        $kegiatan = $query->orderBy('dinas_id')->paginate(10)->withQueryString();
+        $kegiatan = $query->orderBy('id_dinas')->paginate(10)->withQueryString();
         $dinasList = Dinas::orderBy('nama')->get();
 
         $summary = $service->getKegiatanSummary($tahun);
@@ -58,7 +58,7 @@ class PublicController extends Controller
 
         if ($request->filled('dinasFilter')) {
             $query->whereHas('kegiatanStatistik', function($q) use ($request) {
-                $q->where('dinas_id', $request->dinasFilter);
+                $q->where('id_dinas', $request->dinasFilter);
             });
         }
         if ($request->filled('status')) {
@@ -98,7 +98,7 @@ class PublicController extends Controller
 
         if ($request->filled('dinasFilter')) {
             $query->whereHas('kegiatanStatistik', function($q) use ($request) {
-                $q->where('dinas_id', $request->dinasFilter);
+                $q->where('id_dinas', $request->dinasFilter);
             });
         }
         if ($request->filled('jenis')) {
@@ -114,7 +114,7 @@ class PublicController extends Controller
             });
         }
 
-        $metadata = $query->orderBy('kegiatan_id')->orderBy('jenis')->paginate(10)->withQueryString();
+        $metadata = $query->orderBy('id_kegiatan')->orderBy('jenis')->paginate(10)->withQueryString();
         $dinasList = Dinas::orderBy('nama')->get();
 
         $summary = $service->getMetadataSummary($tahun);

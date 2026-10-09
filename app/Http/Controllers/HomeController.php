@@ -65,7 +65,7 @@ class HomeController extends Controller
     {
         $request->validate([
             'tahun' => 'nullable|integer|min:2020|max:2099',
-            'dinas_id' => 'nullable|integer|exists:dinas,id',
+            'id_dinas' => 'nullable|integer|exists:dinas,id',
             'status' => ['nullable', 'string', \Illuminate\Validation\Rule::in(StatusMonev::values())],
             'search' => 'nullable|string|max:100',
         ]);
@@ -73,7 +73,7 @@ class HomeController extends Controller
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
 
         return Excel::download(
-            new MonevExport($tahun, $request->input('dinas_id'), $request->input('status'), $request->input('search')),
+            new MonevExport($tahun, $request->input('id_dinas'), $request->input('status'), $request->input('search')),
             'monev_kegiatan_' . $tahun . '.xlsx'
         );
     }
@@ -82,7 +82,7 @@ class HomeController extends Controller
     {
         $request->validate([
             'tahun' => 'nullable|integer|min:2020|max:2099',
-            'dinas_id' => 'nullable|integer|exists:dinas,id',
+            'id_dinas' => 'nullable|integer|exists:dinas,id',
             'status' => ['nullable', 'string', \Illuminate\Validation\Rule::in(StatusMonev::values())],
             'search' => 'nullable|string|max:100',
         ]);
@@ -90,9 +90,9 @@ class HomeController extends Controller
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
         $monevQuery = Monev::with('kegiatanStatistik.dinas')->where('tahun', $tahun);
 
-        if ($request->filled('dinas_id')) {
+        if ($request->filled('id_dinas')) {
             $monevQuery->whereHas('kegiatanStatistik', function ($q) use ($request) {
-                $q->where('dinas_id', (int) $request->input('dinas_id'));
+                $q->where('id_dinas', (int) $request->input('id_dinas'));
             });
         }
         if ($request->filled('status')) {
@@ -114,7 +114,7 @@ class HomeController extends Controller
     {
         $request->validate([
             'tahun' => 'nullable|integer|min:2020|max:2099',
-            'dinas_id' => 'nullable|integer|exists:dinas,id',
+            'id_dinas' => 'nullable|integer|exists:dinas,id',
             'jenis' => 'nullable|string|in:survei,pendataan_lengkap,kompromin',
             'search' => 'nullable|string|max:100',
             'format' => 'nullable|string|in:excel,pdf',
@@ -123,7 +123,7 @@ class HomeController extends Controller
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
         $format = $request->input('format', 'excel');
 
-        $export = new \App\Exports\KegiatanStatistikExport($tahun, $request->input('dinas_id'), $request->input('jenis'), $request->input('search'));
+        $export = new \App\Exports\KegiatanStatistikExport($tahun, $request->input('id_dinas'), $request->input('jenis'), $request->input('search'));
 
         if ($format === 'pdf') {
             $viewData = $export->view()->getData();
@@ -139,7 +139,7 @@ class HomeController extends Controller
     {
         $request->validate([
             'tahun' => 'nullable|integer|min:2020|max:2099',
-            'dinas_id' => 'nullable|integer|exists:dinas,id',
+            'id_dinas' => 'nullable|integer|exists:dinas,id',
             'jenis' => 'nullable|string|in:kegiatan,variabel,indikator',
             'search' => 'nullable|string|max:100',
             'format' => 'nullable|string|in:excel,pdf',
@@ -148,7 +148,7 @@ class HomeController extends Controller
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
         $format = $request->input('format', 'excel');
 
-        $export = new \App\Exports\MetadataExport($tahun, $request->input('dinas_id'), $request->input('jenis'), $request->input('search'));
+        $export = new \App\Exports\MetadataExport($tahun, $request->input('id_dinas'), $request->input('jenis'), $request->input('search'));
 
         if ($format === 'pdf') {
             $viewData = $export->view()->getData();
@@ -164,7 +164,7 @@ class HomeController extends Controller
     {
         $request->validate([
             'tahun' => 'nullable|integer|min:2020|max:2099',
-            'dinas_id' => 'nullable|integer|exists:dinas,id',
+            'id_dinas' => 'nullable|integer|exists:dinas,id',
             'status' => 'nullable|string|in:done,belum',
             'search' => 'nullable|string|max:100',
             'format' => 'nullable|string|in:excel,pdf',
@@ -173,7 +173,7 @@ class HomeController extends Controller
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
         $format = $request->input('format', 'excel');
 
-        $export = new \App\Exports\RomantikExport($tahun, $request->input('dinas_id'), $request->input('status'), $request->input('search'));
+        $export = new \App\Exports\RomantikExport($tahun, $request->input('id_dinas'), $request->input('status'), $request->input('search'));
 
         if ($format === 'pdf') {
             $viewData = $export->view()->getData();

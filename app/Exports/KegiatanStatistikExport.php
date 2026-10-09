@@ -27,7 +27,7 @@ class KegiatanStatistikExport implements FromView
             ->where('tahun', $this->tahun);
 
         if ($this->dinasId) {
-            $query->where('dinas_id', $this->dinasId);
+            $query->where('id_dinas', $this->dinasId);
         }
 
         if ($this->jenis) {

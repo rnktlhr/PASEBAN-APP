@@ -43,7 +43,7 @@ class PublicKegiatanTable extends Component
         $query = KegiatanStatistik::with('dinas')->where('tahun', $this->tahun);
         
         if (!empty($this->dinasFilter)) {
-            $query->where('dinas_id', $this->dinasFilter);
+            $query->where('id_dinas', $this->dinasFilter);
         }
         if (!empty($this->jenis)) {
             $query->where('jenis', $this->jenis);
@@ -58,7 +58,7 @@ class PublicKegiatanTable extends Component
             });
         }
 
-        $kegiatan = $query->orderBy('dinas_id')->paginate(10);
+        $kegiatan = $query->orderBy('id_dinas')->paginate(10);
         $dinasList = Dinas::orderBy('nama')->get();
 
         return view('livewire.public-kegiatan-table', compact('kegiatan', 'dinasList'));

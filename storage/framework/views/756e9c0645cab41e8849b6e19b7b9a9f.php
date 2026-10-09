@@ -16,8 +16,7 @@
         <!-- Content/List -->
         <div style="padding: 20px 24px; overflow-y: auto; flex: 1; background: #f8fafc;">
             <div x-show="modalLoading" style="text-align: center; padding: 40px 0; color: var(--muted);">
-                <div style="width: 30px; height: 30px; border: 3px solid #e2e8f0; border-top-color: var(--orange); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
-                Memuat data...
+                <div style="width: 30px; height: 30px; border: 3px solid #e2e8f0; border-top-color: var(--orange); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
             </div>
             
             <div x-show="!modalLoading && modalItems.length === 0" style="text-align: center; padding: 40px 0; color: var(--muted); font-style: italic; display: none;">

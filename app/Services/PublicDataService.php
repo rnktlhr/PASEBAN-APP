@@ -105,9 +105,27 @@ class PublicDataService
      */
     public function getAliranDataSummary(int $tahun): array
     {
-        $totalData = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', 0);
-        $sudahTayang = \Illuminate\Support\Facades\Cache::get('aliran_stats_tayang', 0);
-        $belumTayang = \Illuminate\Support\Facades\Cache::get('aliran_stats_belum', 0);
+        $totalData = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', 157);
+        
+        $sudahTayang = \Illuminate\Support\Facades\Cache::remember('aliran_stats_tayang_dynamic', 3600, function () {
+            $count = 0;
+            $jsonPath = storage_path('app/aliran_data_all.json');
+            if (file_exists($jsonPath)) {
+                $jsonData = json_decode(file_get_contents($jsonPath), true);
+                if (is_array($jsonData)) {
+                    $uniqueDinas = [];
+                    foreach ($jsonData as $item) {
+                        if (isset($item['dinas_nama'])) {
+                            $uniqueDinas[$item['dinas_nama']] = true;
+                        }
+                    }
+                    $count = count($uniqueDinas);
+                }
+            }
+            return $count;
+        });
+        
+        $belumTayang = max(0, $totalData - $sudahTayang);
 
         $pctTayang = $totalData > 0 ? round(($sudahTayang / $totalData) * 100) : 0;
         $pctBelum = $totalData > 0 ? round(($belumTayang / $totalData) * 100) : 0;

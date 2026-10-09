@@ -31,7 +31,7 @@ class SyncAliranStats extends Command
 
         try {
             // Ambil daftar instansi
-            $response = Http::timeout(15)->get(config('services.bantul.api_url') . '/instansi');
+            $response = Http::withoutVerifying()->timeout(15)->get(config('services.bantul.api_url') . '/instansi');
 
             if (!$response->successful()) {
                 $this->error('Gagal mengambil daftar instansi dari API.');

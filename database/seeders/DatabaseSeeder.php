@@ -36,10 +36,7 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
-        // Bappeda hanya mengakses halaman publik, sehingga tidak dibuatkan akun.
-        $tanpaAkun = ['bappeda'];
-
-        foreach (Dinas::whereNotIn('slug', $tanpaAkun)->get() as $dinas) {
+        foreach (Dinas::all() as $dinas) {
             User::updateOrCreate(
                 ['email' => $dinas->slug.'@bpsbantul.com'],
                 [

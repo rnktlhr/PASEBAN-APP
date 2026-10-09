@@ -44,7 +44,7 @@ class PublicMetadataTable extends Component
 
         if (!empty($this->dinasFilter)) {
             $query->whereHas('kegiatanStatistik', function($q) {
-                $q->where('dinas_id', $this->dinasFilter);
+                $q->where('id_dinas', $this->dinasFilter);
             });
         }
         if (!empty($this->jenis)) {

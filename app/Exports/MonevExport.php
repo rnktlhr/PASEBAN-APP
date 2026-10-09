@@ -28,7 +28,7 @@ class MonevExport implements FromView, ShouldAutoSize
 
         if ($this->dinasId) {
             $monevQuery->whereHas('kegiatanStatistik', function ($q) {
-                $q->where('dinas_id', $this->dinasId);
+                $q->where('id_dinas', $this->dinasId);
             });
         }
         if ($this->status) {

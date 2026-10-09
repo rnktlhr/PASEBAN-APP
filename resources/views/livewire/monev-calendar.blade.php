@@ -7,7 +7,7 @@
                 Kegiatan Statistik Sektoral</h2>
         </div>
         <div style="display: flex; align-items: center; gap: 16px;">
-            <a href="{{ route('monev.export.excel', ['tahun' => $tahun, 'dinas_id' => $dinas_id, 'status' => $status, 'search' => $search]) }}"
+            <a href="{{ route('monev.export.excel', ['tahun' => $tahun, 'id_dinas' => $id_dinas, 'status' => $status, 'search' => $search]) }}"
                 style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 6px; background: #2e7d32; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: .2px; box-shadow: var(--shadow-sm); transition: background .15s;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -17,7 +17,7 @@
                 </svg>
                 Excel
             </a>
-            <a href="{{ route('monev.export.pdf', ['tahun' => $tahun, 'dinas_id' => $dinas_id, 'status' => $status, 'search' => $search]) }}"
+            <a href="{{ route('monev.export.pdf', ['tahun' => $tahun, 'id_dinas' => $id_dinas, 'status' => $status, 'search' => $search]) }}"
                 style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 6px; background: var(--red); color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: .2px; box-shadow: var(--shadow-sm); transition: background .15s;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -33,7 +33,7 @@
     </div>
 
     {{-- Summary Stats --}}
-    <div wire:key="stats-{{ $tahun }}-{{ $dinas_id }}-{{ $status }}-{{ md5($search) }}"
+    <div wire:key="stats-{{ $tahun }}-{{ $id_dinas }}-{{ $status }}-{{ md5($search) }}"
         style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
         <div
             style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-sm);">
@@ -83,7 +83,7 @@
             </button>
         </div>
 
-        <select class="styled-select" wire:model.live="dinas_id"
+        <select class="styled-select" wire:model.live="id_dinas"
             style="padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; background: #fff; min-width: 180px; height: 38px; color: var(--ink);">
             <option value="">Semua OPD</option>
             @foreach($dinasList as $d)
@@ -156,7 +156,7 @@
                         @php
                             $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                         @endphp
-                        <tr wire:key="desk-{{ $monev->kegiatan_id }}" style="border-bottom: 1px solid var(--line);"
+                        <tr wire:key="desk-{{ $monev->id_kegiatan }}" style="border-bottom: 1px solid var(--line);"
                             x-show="page === Math.ceil({{ $idx + 1 }} / perPage)">
                             <td
                                 style="padding: 14px 16px; color: var(--muted); position: sticky; left: 0; background: #fff; z-index: 1; vertical-align: middle;">
@@ -234,7 +234,7 @@
                 @php
                     $statusEnum = $monev->status instanceof \App\Enums\StatusMonev ? $monev->status : \App\Enums\StatusMonev::tryFrom($monev->status);
                 @endphp
-                <div wire:key="mob-{{ $monev->kegiatan_id }}"
+                <div wire:key="mob-{{ $monev->id_kegiatan }}"
                     style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;"
                     x-show="page === Math.ceil({{ $idx + 1 }} / perPage)">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">

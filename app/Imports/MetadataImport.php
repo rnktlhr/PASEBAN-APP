@@ -12,7 +12,7 @@ class MetadataImport implements ToModel, WithHeadingRow, WithValidation
     public function model(array $row)
     {
         return new Metadata([
-            'kegiatan_id'    => $row['kegiatan_id'],
+            'id_kegiatan'    => $row['id_kegiatan'],
             'jenis'          => $row['jenis'],
             'tahun'          => $row['tahun'],
             'status_dinas'   => $row['status_dinas'] ?? 'belum_diajukan',
@@ -25,7 +25,7 @@ class MetadataImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'kegiatan_id'    => 'required|integer|exists:kegiatan_statistik,id',
+            'id_kegiatan'    => 'required|integer|exists:kegiatan_statistik,id',
             'jenis'          => 'required|string|in:kegiatan,variabel,indikator',
             'tahun'          => 'required|integer|min:2020|max:2099',
             'status_dinas'   => 'nullable|string|in:belum_diajukan,sudah_diajukan,belum_diperbaiki,sudah_diperbaiki',

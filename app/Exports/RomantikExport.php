@@ -28,7 +28,7 @@ class RomantikExport implements FromView
 
         if ($this->dinasId) {
             $query->whereHas('kegiatanStatistik', function ($q) {
-                $q->where('dinas_id', $this->dinasId);
+                $q->where('id_dinas', $this->dinasId);
             });
         }
 

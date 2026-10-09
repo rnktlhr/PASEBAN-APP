@@ -59,9 +59,12 @@ class DashboardService
         $metaTotalBelum = max(0, $metaTotalTarget - $metaTotalDone - $metaTotalDraft);
 
         // Aliran Data
-        $aliranTotal = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', 0);
-        $aliranTayang = \Illuminate\Support\Facades\Cache::get('aliran_stats_tayang', 0);
-        $aliranBelum = \Illuminate\Support\Facades\Cache::get('aliran_stats_belum', 0);
+        $publicDataService = app(\App\Services\PublicDataService::class);
+        $aliranStats = $publicDataService->getAliranDataSummary($tahun);
+        
+        $aliranTotal = $aliranStats['totalData'];
+        $aliranTayang = $aliranStats['sudahTayang'];
+        $aliranBelum = $aliranStats['belumTayang'];
 
         // Donut percentages
         $pctRomantik = $totalKegiatan > 0 ? round($romantikDiajukan / $totalKegiatan * 100) : 0;

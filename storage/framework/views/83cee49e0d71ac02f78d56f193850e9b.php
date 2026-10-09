@@ -22,8 +22,8 @@
                         style="font-size: 11px; font-weight: 800; color: #002B6A; letter-spacing: 1px; text-transform: uppercase;">
                         Tentang Pemantauan Aliran Data</div>
                     <div style="font-size: 14px; color: var(--muted); margin-top: 4px; line-height: 1.5;">
-                        Aliran data memantau apakah <strong><?php echo e($totalData); ?> data yang disepakati</strong> sudah
-                        dipublikasikan di Sedata Sebantul. Data diupload oleh dinas langsung ke Sedata Sebantul, BPS
+                        Aliran data memantau apakah <strong><?php echo e($totalData); ?> instansi (OPD/Kapanewon)</strong> sudah
+                        mempublikasikan datanya di Sedata Sebantul. Data diupload oleh dinas langsung ke Sedata Sebantul, BPS
                         memantau status tayangnya.
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                             style="font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 1px; text-transform: uppercase;">
                             Distribusi</div>
                         <h3 style="margin: 4px 0 0; font-size: 18px; font-weight: 800; color: var(--navy);">Status Publikasi
-                            Data (<?php echo e($totalData); ?> Data)</h3>
+                            OPD/Instansi (<?php echo e($totalData); ?> Instansi)</h3>
                     </div>
                     <div
                         style="border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: var(--navy); display: inline-block;">
@@ -73,7 +73,7 @@
                                 <div>
                                     <div style="font-size: 14px; font-weight: 700; color: var(--navy);">Sudah Tayang</div>
                                     <div style="font-size: 12px; color: var(--muted); margin-top: 4px;"><?php echo e($pctTayang); ?>%
-                                        &middot; <?php echo e($sudahTayang); ?> data</div>
+                                        &middot; <?php echo e($sudahTayang); ?> OPD</div>
                                 </div>
                             </div>
                             <div style="font-size: 24px; font-weight: 800; color: #002B6A; font-family: 'JetBrains Mono', monospace;"
@@ -88,7 +88,7 @@
                                 <div>
                                     <div style="font-size: 14px; font-weight: 700; color: var(--navy);">Belum Tayang</div>
                                     <div style="font-size: 12px; color: var(--muted); margin-top: 4px;"><?php echo e($pctBelum); ?>%
-                                        &middot; <?php echo e($belumTayang); ?> data</div>
+                                        &middot; <?php echo e($belumTayang); ?> OPD</div>
                                 </div>
                             </div>
                             <div style="font-size: 24px; font-weight: 800; color: var(--muted); font-family: 'JetBrains Mono', monospace;"
@@ -111,15 +111,15 @@
                         </svg>
                     </div>
                     <div>
-                        <div style="font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 2px;">Total Data
+                        <div style="font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 2px;">Total OPD/Instansi
                             Dipantau</div>
                         <div style="display: flex; align-items: baseline; gap: 8px;">
                             <span
                                 style="font-size: 32px; font-weight: 800; color: var(--navy); font-family: 'JetBrains Mono', monospace; line-height: 1;"
                                 x-data="countUp(<?php echo e($totalData); ?>)" x-text="count">0</span>
                             <span
-                                class="mono" style="font-size: 11px; font-weight: 600; color: var(--muted);">data
-                                disepakati <?php echo e($tahun); ?></span>
+                                class="mono" style="font-size: 11px; font-weight: 600; color: var(--muted);">OPD dipantau
+                                pada <?php echo e($tahun); ?></span>
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                                 x-data="countUp(<?php echo e($sudahTayang); ?>)" x-text="count">0</span>
                             <span
                                 class="mono" style="font-size: 11px; font-weight: 600; color: var(--muted);"><?php echo e($pctTayang); ?>%
-                                terpublikasi</span>
+                                instansi terpublikasi</span>
                         </div>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
                                 x-data="countUp(<?php echo e($belumTayang); ?>)" x-text="count">0</span>
                             <span
                                 class="mono" style="font-size: 11px; font-weight: 600; color: var(--muted);"><?php echo e($pctBelum); ?>%
-                                belum tayang</span>
+                                instansi belum tayang</span>
                         </div>
                     </div>
                 </div>

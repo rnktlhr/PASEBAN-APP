@@ -15,7 +15,7 @@ class MonevCalendar extends Component
     public $tahun;
 
     #[Url]
-    public $dinas_id = '';
+    public $id_dinas = '';
 
     #[Url]
     public $status = '';
@@ -46,10 +46,10 @@ class MonevCalendar extends Component
         $monevQuery = Monev::with('kegiatanStatistik.dinas')
             ->where('tahun', (int) $this->tahun);
 
-        if (!empty($this->dinas_id)) {
-            $dinasId = (int) $this->dinas_id;
+        if (!empty($this->id_dinas)) {
+            $dinasId = (int) $this->id_dinas;
             $monevQuery->whereHas('kegiatanStatistik', function ($q) use ($dinasId) {
-                $q->where('dinas_id', $dinasId);
+                $q->where('id_dinas', $dinasId);
             });
         }
 
