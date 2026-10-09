@@ -23,7 +23,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
         'email',
         'password',
         'role',
-        'dinas_id',
+        'id_dinas',
     ];
 
     protected $hidden = [
@@ -62,7 +62,7 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function dinas(): BelongsTo
     {
-        return $this->belongsTo(Dinas::class);
+        return $this->belongsTo(Dinas::class, 'id_dinas');
     }
 
     // --- Filament ---
@@ -83,6 +83,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants
 
     public function canAccessTenant(Model $tenant): bool
     {
-        return $this->dinas_id === $tenant->id;
+        return $this->id_dinas === $tenant->id;
     }
 }

@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'bantul' => [
+        'api_url' => env('API_BANTUL_BASE_URL', 'https://data.bantulkab.go.id/api'),
+    ],
+
 ];

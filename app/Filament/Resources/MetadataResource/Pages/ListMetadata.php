@@ -18,7 +18,7 @@ class ListMetadata extends ListRecords {
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('info')
                 ->action(function () {
-                    $headers = "kegiatan_id,jenis,tahun,status_dinas,status_kominfo,status_bps,catatan\n";
+                    $headers = "id_kegiatan,jenis,tahun,status_dinas,status_kominfo,status_bps,catatan\n";
                     $sample = "1,kegiatan,2024,belum_diajukan,sedang_diperiksa,sedang_diperiksa,Contoh catatan\n";
                     return response()->streamDownload(function () use ($headers, $sample) {
                         echo $headers . $sample;

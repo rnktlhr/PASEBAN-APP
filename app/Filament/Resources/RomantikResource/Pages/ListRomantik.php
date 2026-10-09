@@ -18,7 +18,7 @@ class ListRomantik extends ListRecords {
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('info')
                 ->action(function () {
-                    $headers = "kegiatan_id,tahun,status_dinas,status_kominfo,status_bps,tanggal_pengajuan,tanggal_persetujuan,catatan\n";
+                    $headers = "id_kegiatan,tahun,status_dinas,status_kominfo,status_bps,tanggal_pengajuan,tanggal_persetujuan,catatan\n";
                     $sample = "1,2024,belum_diajukan,sedang_diperiksa,sedang_diperiksa,2024-01-01,2024-01-02,Contoh catatan\n";
                     return response()->streamDownload(function () use ($headers, $sample) {
                         echo $headers . $sample;

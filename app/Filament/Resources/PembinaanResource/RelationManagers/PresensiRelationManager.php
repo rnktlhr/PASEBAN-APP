@@ -18,7 +18,7 @@ class PresensiRelationManager extends RelationManager
     {
         return $form
             ->components([
-                Forms\Components\Select::make('dinas_id')
+                Forms\Components\Select::make('id_dinas')
                     ->relationship('dinas', 'nama')
                     ->required()
                     ->searchable(),

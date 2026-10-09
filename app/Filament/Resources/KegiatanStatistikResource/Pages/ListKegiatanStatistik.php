@@ -18,7 +18,7 @@ class ListKegiatanStatistik extends ListRecords {
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('info')
                 ->action(function () {
-                    $headers = "dinas_id,nama,jenis,tahun\n";
+                    $headers = "id_dinas,nama,jenis,tahun\n";
                     $sample = "1,Survei Penduduk,survei,2024\n";
                     return response()->streamDownload(function () use ($headers, $sample) {
                         echo $headers . $sample;

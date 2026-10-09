@@ -30,12 +30,12 @@ class KegiatanStatistikResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->components([
-            Forms\Components\Select::make('dinas_id')
+            Forms\Components\Select::make('id_dinas')
                 ->relationship('dinas', 'nama')
                 ->options(function () {
                     $user = auth()->user();
                     if ($user && $user->isDinas()) {
-                        return \App\Models\Dinas::where('id', $user->dinas_id)->pluck('nama', 'id');
+                        return \App\Models\Dinas::where('id', $user->id_dinas)->pluck('nama', 'id');
                     }
                     return \App\Models\Dinas::orderBy('nama')->pluck('nama', 'id');
                 })
@@ -91,8 +91,8 @@ class KegiatanStatistikResource extends Resource
     {
         $query = parent::getEloquentQuery();
         $user = auth()->user();
-        if ($user?->isDinas() && $user->dinas_id) {
-            $query->where('dinas_id', $user->dinas_id);
+        if ($user?->isDinas() && $user->id_dinas) {
+            $query->where('id_dinas', $user->id_dinas);
         }
         return $query;
     }

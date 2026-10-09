@@ -39,7 +39,7 @@ class PantauAliranData extends Page
         // Ambil dari API Sedata Sebantul
         $options = Cache::remember('api_instansi_list', 3600, function () {
             try {
-                $response = Http::timeout(10)->get('https://data.bantulkab.go.id/api/instansi');
+                $response = Http::timeout(10)->get(config('services.bantul.api_url') . '/instansi');
                 if ($response->successful()) {
                     return collect($response->json('data.result'))
                         ->pluck('instansi_name', 'instansi_cd')
@@ -71,18 +71,20 @@ class PantauAliranData extends Page
         $this->isLoading = true;
 
         try {
-            $response = Http::timeout(15)->withHeaders([
-                'X-instansi-Code' => $this->dinasId,
-            ])->get('https://data.bantulkab.go.id/api/indikator');
+            $response = Http::withoutVerifying()->timeout(15)->get(config('services.bantul.api_url') . '/indikator', [
+                'instansi_code' => $this->dinasId,
+            ]);
 
             if ($response->successful()) {
                 $data = $response->json('data.result');
                 if (is_array($data)) {
                     $this->indikatorData = $data;
                 }
+            } else {
+                \Illuminate\Support\Facades\Log::error('API Indikator Error', ['status' => $response->status(), 'body' => $response->body()]);
             }
         } catch (\Exception $e) {
-            // handle error silently or log
+            \Illuminate\Support\Facades\Log::error('API Indikator Exception', ['msg' => $e->getMessage()]);
         }
 
         $this->isLoading = false;

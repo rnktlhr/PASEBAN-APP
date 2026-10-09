@@ -105,9 +105,9 @@ class PublicDataService
      */
     public function getAliranDataSummary(int $tahun): array
     {
-        $totalData = 0;
-        $sudahTayang = 0;
-        $belumTayang = max(0, $totalData - $sudahTayang);
+        $totalData = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', 0);
+        $sudahTayang = \Illuminate\Support\Facades\Cache::get('aliran_stats_tayang', 0);
+        $belumTayang = \Illuminate\Support\Facades\Cache::get('aliran_stats_belum', 0);
 
         $pctTayang = $totalData > 0 ? round(($sudahTayang / $totalData) * 100) : 0;
         $pctBelum = $totalData > 0 ? round(($belumTayang / $totalData) * 100) : 0;
@@ -130,8 +130,8 @@ class PublicDataService
                 'total' => 0,
             ];
             foreach ($sesiPembinaan as $sesi) {
-                // Berkat eager loading with('presensi'), ini tidak akan melakukan kueri ke DB lagi!
-                $presensi = $sesi->presensi->where('dinas_id', $dinas->id)->first();
+                // Berkat eager loading with('kehadiranPembinaan'), ini tidak akan melakukan kueri ke DB lagi!
+                $presensi = $sesi->kehadiranPembinaan->where('id_dinas', $dinas->id)->first();
                 $hadir = $presensi ? $presensi->hadir : false;
                 $rekapKehadiran[$dinas->id]['kehadiran'][$sesi->id] = $hadir;
                 if ($hadir) {

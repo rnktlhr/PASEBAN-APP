@@ -151,8 +151,8 @@ class PublicController extends Controller
         $request->validate(['tahun' => 'nullable|integer|min:2020|max:2099']);
         $tahun = (int) $request->query('tahun', date('Y'));
 
-        // FIX N+1 Query: Tambahkan with('presensi')
-        $sesiPembinaan = Pembinaan::with('presensi')->whereYear('tanggal', $tahun)
+        // FIX N+1 Query: Tambahkan with('kehadiranPembinaan')
+        $sesiPembinaan = Pembinaan::with('kehadiranPembinaan')->whereYear('tanggal', $tahun)
             ->orderBy('tanggal')
             ->get();
 

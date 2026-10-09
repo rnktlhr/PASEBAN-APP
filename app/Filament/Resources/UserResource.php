@@ -41,7 +41,7 @@ class UserResource extends Resource
             Forms\Components\Select::make('role')
                 ->options(Role::options())
                 ->required(),
-            Forms\Components\Select::make('dinas_id')
+            Forms\Components\Select::make('id_dinas')
                 ->relationship('dinas', 'nama')
                 ->searchable()->preload()->nullable()
                 ->label('Dinas / OPD'),

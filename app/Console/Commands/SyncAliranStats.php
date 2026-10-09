@@ -31,8 +31,8 @@ class SyncAliranStats extends Command
 
         try {
             // Ambil daftar instansi
-            $response = Http::timeout(15)->get('https://data.bantulkab.go.id/api/instansi');
-            
+            $response = Http::timeout(15)->get(config('services.bantul.api_url') . '/instansi');
+
             if (!$response->successful()) {
                 $this->error('Gagal mengambil daftar instansi dari API.');
                 return self::FAILURE;
@@ -47,28 +47,55 @@ class SyncAliranStats extends Command
             $totalDinas = count($instansis);
             $sudahTayang = 0;
             $belumTayang = 0;
+            $allData = [];
 
             $bar = $this->output->createProgressBar($totalDinas);
             $bar->start();
 
             foreach ($instansis as $instansi) {
                 $code = $instansi['instansi_cd'] ?? null;
+                $name = $instansi['instansi_name'] ?? '-';
                 if (!$code) {
                     $bar->advance();
                     continue;
                 }
 
-                // Cek indikator untuk dinas ini
+                // Cek indikator untuk dinas ini dan kumpulkan semua data
                 try {
-                    $res = Http::timeout(10)->withHeaders([
-                        'X-instansi-Code' => $code
-                    ])->get('https://data.bantulkab.go.id/api/indikator');
+                    $page = 1;
+                    $lastPage = 1;
+                    $hasData = false;
 
-                    if ($res->successful() && $res->json('status') !== 'error') {
+                    do {
+                        $res = Http::withoutVerifying()->timeout(10)->get(config('services.bantul.api_url') . '/indikator', [
+                            'instansi_code' => $code,
+                            'page' => $page,
+                        ]);
+
+                        if ($res->successful() && $res->json('status') !== 'error') {
+                            $hasData = true;
+                            $result = $res->json('data.result');
+                            
+                            if (is_array($result)) {
+                                foreach ($result as $item) {
+                                    $item['dinas_nama'] = $name;
+                                    $allData[] = $item;
+                                }
+                            }
+                            
+                            $lastPage = $res->json('data.meta.lastPage') ?? 1;
+                            $page++;
+                        } else {
+                            break;
+                        }
+                    } while ($page <= $lastPage);
+
+                    if ($hasData) {
                         $sudahTayang++;
                     } else {
                         $belumTayang++;
                     }
+
                 } catch (\Exception $e) {
                     // Timeout or error -> anggap belum tayang
                     $belumTayang++;
@@ -79,6 +106,9 @@ class SyncAliranStats extends Command
 
             $bar->finish();
             $this->newLine();
+
+            // Simpan semua data ke file JSON agar bisa diakses cepat tanpa API calls lambat
+            \Illuminate\Support\Facades\Storage::disk('local')->put('aliran_data_all.json', json_encode($allData));
 
             // Simpan ke Cache selama 24 jam (86400 detik)
             Cache::put('aliran_stats_total', $totalDinas, 86400);

@@ -1,4 +1,4 @@
-<div class="container" style="padding: 16px 32px 40px; min-height: calc(100vh - 74px);">
+<div class="container" style="padding: 16px 32px 40px; min-height: calc(100vh - 74px);" wire:init="loadInitialData">
     <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px;">
         <select wire:model.live="dinasFilter" class="w-full-mobile styled-select"
             style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); max-width: 250px; cursor: pointer;">
@@ -8,7 +8,15 @@
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </select>
 
-        <div wire:loading wire:target="dinasFilter"
+        <select wire:model.live="perPage" class="styled-select"
+            style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); cursor: pointer;">
+            <option value="10">10 Baris</option>
+            <option value="25">25 Baris</option>
+            <option value="50">50 Baris</option>
+            <option value="100">100 Baris</option>
+        </select>
+
+        <div wire:loading wire:target="dinasFilter, perPage, loadInitialData, gotoPage, nextPage, previousPage"
             style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 600;">
             <svg class="animate-spin" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24" style="animation: spin 1s linear infinite;">
@@ -24,24 +32,12 @@
                     }
                 }
             </style>
-            Memuat data...
         </div>
     </div>
 
-    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$dinasFilter): ?>
-        <div
-            style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 40px; text-align: center; box-shadow: var(--shadow-sm);">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted); margin: 0 auto 16px;">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
-            <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 700; color: var(--navy);">Pilih OPD / Dinas</h3>
-            <p style="margin: 0; font-size: 14px; color: var(--muted);">Pilih dinas pada menu filter di atas untuk melihat
-                data indikator langsung dari API Sedata Sebantul.</p>
-        </div>
-    <?php else: ?>
+
         <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);"
-            wire:loading.remove wire:target="dinasFilter">
+            wire:loading.remove wire:target="dinasFilter, loadInitialData">
             <div class="table-responsive desktop-only">
                 <table
                     style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">
@@ -59,7 +55,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $indikatorData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $paginatedData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <tr style="border-bottom: 1px solid var(--line);">
                                 <td style="padding: 16px; font-weight: 600; color: var(--muted);">
                                     <?php echo e($item['id_data'] ?? '-'); ?>
@@ -68,6 +64,9 @@
                                 <td style="padding: 16px; font-weight: 500; color: var(--ink);">
                                     <?php echo e($item['nama_data'] ?? '-'); ?>
 
+                                    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($item['dinas_nama']) && !$dinasFilter): ?>
+                                        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;"><?php echo e($item['dinas_nama']); ?></div>
+                                    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                 </td>
                                 <td style="padding: 16px; color: var(--muted);">
                                     <?php echo e($item['cakupan'] ?? '-'); ?>
@@ -102,7 +101,7 @@
 
             
             <div class="mobile-only">
-                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $indikatorData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $paginatedData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <div
                         style="border-bottom: 1px solid var(--line); padding: 16px 20px; display: flex; flex-direction: column; gap: 12px;">
                         <div>
@@ -117,6 +116,12 @@
                             </div>
                             <div style="font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.35;">
                                 <?php echo e($item['nama_data'] ?? '-'); ?></div>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(isset($item['dinas_nama']) && !$dinasFilter): ?>
+                                <div style="font-size: 12.5px; color: var(--muted); margin-top: 4px; font-weight: 500;">
+                                    <?php echo e($item['dinas_nama']); ?>
+
+                                </div>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </div>
                         <div style="font-size: 12px; color: var(--muted); font-weight: 500;">
                             Cakupan: <?php echo e($item['cakupan'] ?? '-'); ?>
@@ -131,6 +136,10 @@
                     </div>
                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
+
+            <div style="padding: 16px 20px; border-top: 1px solid var(--line); background: #f8fafc;">
+                <?php echo e($paginatedData->links()); ?>
+
+            </div>
         </div>
-    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 </div><?php /**PATH D:\PASEBAN APP\resources\views/livewire/public-aliran-data-table.blade.php ENDPATH**/ ?>

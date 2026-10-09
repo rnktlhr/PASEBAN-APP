@@ -29,7 +29,7 @@ class SyncInstansiCode extends Command
     {
         $this->info('Mengambil data instansi dari Sedata Sebantul...');
 
-        $response = Http::timeout(15)->get('https://data.bantulkab.go.id/api/instansi');
+        $response = Http::timeout(15)->get(config('services.bantul.api_url') . '/instansi');
 
         if (!$response->successful()) {
             $this->error('Gagal menghubungi API Sedata Sebantul.');

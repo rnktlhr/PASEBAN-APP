@@ -31,7 +31,7 @@ class MonevResource extends Resource
         $bulanOptions = config('paseban.bulan');
 
         return $form->components([
-            Forms\Components\Select::make('kegiatan_id')
+            Forms\Components\Select::make('id_kegiatan')
                 ->relationship('kegiatanStatistik', 'nama')
                 ->searchable()->preload()->required(),
             Forms\Components\TextInput::make('tahun')
@@ -107,8 +107,8 @@ class MonevResource extends Resource
     {
         $query = parent::getEloquentQuery();
         $user = auth()->user();
-        if ($user?->isDinas() && $user->dinas_id) {
-            $query->whereHas('kegiatanStatistik', fn ($q) => $q->where('dinas_id', $user->dinas_id));
+        if ($user?->isDinas() && $user->id_dinas) {
+            $query->whereHas('kegiatanStatistik', fn ($q) => $q->where('id_dinas', $user->id_dinas));
         }
         return $query;
     }

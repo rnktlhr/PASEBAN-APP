@@ -9,7 +9,7 @@ use App\Enums\StatusKominfo;
 use App\Models\KegiatanStatistik;
 use App\Models\Metadata;
 use App\Models\Pembinaan;
-use App\Models\PresensiPembinaan;
+use App\Models\KehadiranPembinaan;
 use App\Models\Romantik;
 use App\Models\Dinas;
 use App\Models\KegiatanPendampingan;
@@ -153,7 +153,7 @@ class DashboardService
     {
         $totalDinas = Dinas::count();
         $totalSesiPembinaan = Pembinaan::whereYear('tanggal', $tahun)->count();
-        $totalKehadiran = PresensiPembinaan::whereHas('pembinaan', function ($q) use ($tahun) {
+        $totalKehadiran = KehadiranPembinaan::whereHas('pembinaan', function ($q) use ($tahun) {
             $q->whereYear('tanggal', $tahun);
         })->where('hadir', true)->count();
         $maxKehadiran = $totalSesiPembinaan * $totalDinas;

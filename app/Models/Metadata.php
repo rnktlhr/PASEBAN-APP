@@ -2,27 +2,27 @@
 
 namespace App\Models;
 
-use App\Models\Traits\BelongsToKegiatan;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Metadata extends Model
 {
-    use HasFactory, BelongsToKegiatan;
+    use SoftDeletes;
 
     protected $table = 'metadata';
 
     protected $fillable = [
-        'kegiatan_id',
+        'id_romantik',
         'jenis',
         'tahun',
         'status_dinas',
         'status_kominfo',
         'status_bps',
-        'catatan',
     ];
 
-    protected $casts = [
-        'tahun' => 'integer',
-    ];
+    public function romantik(): BelongsTo
+    {
+        return $this->belongsTo(Romantik::class, 'id_romantik');
+    }
 }

@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pembinaan extends Model
 {
-    use HasFactory;
-
     protected $table = 'pembinaan';
 
     protected $fillable = [
@@ -19,12 +17,23 @@ class Pembinaan extends Model
         'file_absensi',
     ];
 
-    protected $casts = [
-        'tanggal' => 'date',
-    ];
-
-    public function presensi(): HasMany
+    protected function casts(): array
     {
-        return $this->hasMany(PresensiPembinaan::class);
+        return [
+            'tanggal' => 'date',
+        ];
+    }
+
+    public function kehadiranPembinaan(): HasMany
+    {
+        return $this->hasMany(KehadiranPembinaan::class, 'id_pembinaan');
+    }
+
+    public function dinas(): BelongsToMany
+    {
+        return $this->belongsToMany(Dinas::class, 'kehadiran_pembinaan', 'id_pembinaan', 'id_dinas')
+            ->using(KehadiranPembinaan::class)
+            ->withPivot('id', 'hadir')
+            ->withTimestamps();
     }
 }

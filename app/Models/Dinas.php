@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Filament\Models\Contracts\HasName;
 
-class Dinas extends Model implements HasName
+class Dinas extends Model
 {
-    use HasFactory;
-
     protected $table = 'dinas';
 
     protected $fillable = [
@@ -18,28 +15,28 @@ class Dinas extends Model implements HasName
         'singkatan',
         'slug',
         'instansi_code',
-        'kategori',
     ];
-
-    public function getFilamentName(): string
-    {
-        return $this->nama;
-    }
-
-    // --- Relationships ---
 
     public function users(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'id_dinas');
     }
 
     public function kegiatanStatistik(): HasMany
     {
-        return $this->hasMany(KegiatanStatistik::class);
+        return $this->hasMany(KegiatanStatistik::class, 'id_dinas');
     }
 
-    public function presensiPembinaan(): HasMany
+    public function kehadiranPembinaan(): HasMany
     {
-        return $this->hasMany(PresensiPembinaan::class);
+        return $this->hasMany(KehadiranPembinaan::class, 'id_dinas');
+    }
+
+    public function pembinaan(): BelongsToMany
+    {
+        return $this->belongsToMany(Pembinaan::class, 'kehadiran_pembinaan', 'id_dinas', 'id_pembinaan')
+            ->using(KehadiranPembinaan::class)
+            ->withPivot('id', 'hadir')
+            ->withTimestamps();
     }
 }

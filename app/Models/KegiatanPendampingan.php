@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class KegiatanPendampingan extends Model
 {
-    use HasFactory;
-
     protected $table = 'kegiatan_pendampingan';
 
     protected $fillable = [
@@ -20,7 +17,10 @@ class KegiatanPendampingan extends Model
         'narasi',
     ];
 
-    protected $casts = [
-        'tanggal' => 'date',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'tanggal' => 'date',
+        ];
+    }
 }
