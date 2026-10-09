@@ -7,12 +7,12 @@
     @include('partials.home-hero')
 
     {{-- Summary Cards --}}
-    <section style="padding: 72px 0 40px;">
+    <section style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 60px 0;">
         <div class="container">
-            <div class="scroll-reveal" style="margin-bottom: 28px;">
-                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
+            <div class="scroll-reveal" style="margin-bottom: 40px;">
+                <h2 style="margin: 0; font-size: 38px; font-weight: 800; color: var(--navy); letter-spacing: -.8px;">
                     Ringkasan Kegiatan Statistik</h2>
-                <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Capaian kegiatan statistik sektoral
+                <p style="margin: 12px 0 0; color: var(--muted); font-size: 16px;">Capaian kegiatan statistik sektoral
                     lintas OPD per tahun {{ $tahun }}.</p>
             </div>
             <div class="summary-cards-grid">
@@ -27,35 +27,35 @@
                     ];
                 @endphp
                 @foreach($cards as $index => $card)
-                    <a href="{{ $card['url'] }}" class="card-link scroll-reveal" style="--delay: {{ $index * 100 }}ms;">
+                    <a href="{{ $card['url'] }}" class="card-link scroll-reveal" style="--delay: {{ $index * 100 }}ms; padding: 28px; display: flex; flex-direction: column; min-height: 220px;">
                         <div
-                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                            style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
                             <div
-                                style="width: 44px; height: 44px; border-radius: 10px; background: var(--orange-50); color: var(--orange-600); display: grid; place-items: center;">
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                style="width: 52px; height: 52px; border-radius: 12px; background: var(--orange-50); color: var(--orange-600); display: grid; place-items: center;">
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{!! $card['icon'] !!}</svg>
                             </div>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted);">
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                                 <polyline points="12 5 19 12 12 19"></polyline>
                             </svg>
                         </div>
-                        <h3 style="margin: 0 0 16px; font-size: 15.5px; font-weight: 700; color: var(--navy);">
+                        <h3 style="margin: 0 0 auto; font-size: 18px; font-weight: 700; color: var(--navy); line-height: 1.4;">
                             {{ $card['title'] }}</h3>
-                        <div style="display: flex; gap: 20px; align-items: flex-end;">
+                        <div style="display: flex; gap: 24px; align-items: flex-end; margin-top: 24px;">
                             <div>
                                 <span class="mono" x-data="countUp({{ $card['value'] }})" x-text="count"
-                                    style="font-size: 28px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;">0</span>
+                                    style="font-size: 36px; font-weight: 800; color: var(--ink); letter-spacing: -.5px; line-height: 1;">0</span>
                                 <span
-                                    style="font-size: 13px; color: var(--muted); margin-left: 6px;">{{ $card['label'] }}</span>
+                                    style="font-size: 14px; color: var(--muted); margin-left: 6px; font-weight: 500;">{{ $card['label'] }}</span>
                             </div>
                             @if($card['sub'])
-                                <div>
+                                <div style="padding-bottom: 4px;">
                                     <span class="mono" x-data="countUp({{ $card['sub']['value'] }})" x-text="count"
-                                        style="font-size: 16px; font-weight: 600; color: var(--muted);">0</span>
+                                        style="font-size: 18px; font-weight: 700; color: var(--muted);">0</span>
                                     <span
-                                        style="font-size: 12px; color: var(--muted); margin-left: 4px;">{{ $card['sub']['label'] }}</span>
+                                        style="font-size: 13px; color: var(--muted); margin-left: 4px;">{{ $card['sub']['label'] }}</span>
                                 </div>
                             @endif
                         </div>
@@ -66,10 +66,10 @@
     </section>
 
     {{-- Visualisasi Data Section --}}
-    <section style="padding: 20px 0 80px;">
+    <section style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 60px 0;">
         <div class="container">
             <div class="scroll-reveal" style="margin-bottom: 28px;">
-                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
+                <h2 style="margin: 0; font-size: 38px; font-weight: 800; color: var(--navy); letter-spacing: -.8px;">
                     Visualisasi Progress Pemantauan</h2>
                 <p style="margin: 8px 0 0; color: var(--muted); font-size: 14.5px;">Klik diagram untuk melihat rincian per
                     dinas.</p>
@@ -82,14 +82,14 @@
 
     {{-- Monitoring & Evaluasi Section --}}
     <section
-        style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+        style="padding: 60px 0; background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 100vh; display: flex; flex-direction: column; justify-content: center;">
         <div class="container scroll-reveal">
             <livewire:monev-calendar :tahun-awal="$tahun" />
         </div>
     </section>
 
     {{-- Pembinaan Section --}}
-    <section style="padding: 72px 0;">
+    <section style="padding: 80px 0;">
         <div class="container">
             <div
                 style="background: var(--navy); border-radius: 12px; padding: 44px 48px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: center; position: relative; overflow: hidden;" class="cards-grid">
@@ -106,7 +106,7 @@
                 </div>
 
                 <div style="position: relative; color: #fff;">
-                    <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">
+                    <h2 style="margin: 0; font-size: 38px; font-weight: 800; letter-spacing: -.8px; line-height: 1.15;">
                         Pembinaan Statistik Sektoral Kabupaten Bantul</h2>
                     <p
                         style="margin: 14px 0 24px; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,.78); max-width: 540px;">
@@ -156,10 +156,10 @@
     </section>
 
     {{-- Kegiatan Pendampingan Section --}}
-    <section style="padding: 72px 0; background: #fff; border-top: 1px solid var(--line);">
+    <section style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 60px 0; background: #fff; border-top: 1px solid var(--line);">
         <div class="container">
             <div style="margin-bottom: 28px;">
-                <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">Kegiatan
+                <h2 style="margin: 0; font-size: 38px; font-weight: 800; color: var(--navy); letter-spacing: -.8px;">Kegiatan
                     Pendampingan</h2>
             </div>
             <style>

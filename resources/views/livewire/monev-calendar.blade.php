@@ -3,7 +3,7 @@
     <div
         style="display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 28px; flex-wrap: wrap;">
         <div>
-            <h2 style="margin: 0; font-size: 30px; font-weight: 800; color: var(--navy); letter-spacing: -.6px;">
+            <h2 style="margin: 0; font-size: 38px; font-weight: 800; color: var(--navy); letter-spacing: -.8px;">
                 Kegiatan Statistik Sektoral</h2>
         </div>
         <div style="display: flex; align-items: center; gap: 16px;">

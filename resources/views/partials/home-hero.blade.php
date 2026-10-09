@@ -4,16 +4,12 @@
 
     {{-- glow --}}
     <div
-        style="position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(235,137,27,.25), transparent 70%); border-radius: 50%;">
+        style="position: absolute; right: -100px; top: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(235,137,27,.25), transparent 70%); border-radius: 50%; z-index: 2;">
     </div>
 
-    <div class="container hero-grid" style="padding-top: 72px; padding-bottom: 88px; position: relative;">
-        <div style="min-width: 0;">
-            <div class="anim-fade-up delay-1"
-                style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; background: rgba(235,137,27,.18); border: 1px solid rgba(235,137,27,.4); font-size: 12px; font-weight: 600; color: var(--orange); margin-bottom: 24px;">
-                <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--orange);"></span>
-                Periode Pelaporan &middot; Tahun {{ $tahun }}
-            </div>
+    <div class="container hero-grid" style="padding-top: 72px; padding-bottom: 88px; position: relative; z-index: 10;">
+        <div style="min-width: 0; max-width: 900px;">
+
             <style>
                 @keyframes cursor-blink {
 
@@ -127,6 +123,10 @@
                 </div>
             </div>
         </div>
+
+
+
+
 
 
     </div>
