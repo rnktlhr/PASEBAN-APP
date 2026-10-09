@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
 
     /**
      * Data awal: daftar dinas, 1 akun Admin BPS, dan 1 akun untuk tiap dinas.
-     * Password seluruh akun diambil dari SEED_DEFAULT_PASSWORD di .env (tidak di-hardcode).
+     * Password seluruh akun diambil dari SEED_DEFAULT_PASSWORD di .env.
      */
     public function run(): void
     {

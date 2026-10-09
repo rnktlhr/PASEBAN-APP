@@ -162,7 +162,7 @@
         <div class="flex-col-mobile" style="margin-bottom: 24px;">
             <div>
                 <h2 style="font-size: 24px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Rekap Kehadiran Pembinaan</h2>
-                <p style="color: var(--muted); font-size: 15px; margin: 0;">Data kehadiran OPD per sesi pembinaan tahun 2026.</p>
+                <p style="color: var(--muted); font-size: 15px; margin: 0;">Data kehadiran OPD per sesi pembinaan tahun {{ request('tahun', date('Y')) }}.</p>
             </div>
             <div class="w-full-mobile" style="display: flex; gap: 12px;">
                 <select class="w-full-mobile" style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236B7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 14px center; background-size: 14px; -webkit-appearance: none; appearance: none; cursor: pointer;">

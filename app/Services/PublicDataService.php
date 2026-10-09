@@ -105,7 +105,7 @@ class PublicDataService
      */
     public function getAliranDataSummary(int $tahun): array
     {
-        $totalData = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', 157);
+        $totalData = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', \App\Models\Dinas::count());
         
         $sudahTayang = \Illuminate\Support\Facades\Cache::remember('aliran_stats_tayang_dynamic', 3600, function () {
             $count = 0;
