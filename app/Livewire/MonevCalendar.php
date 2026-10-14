@@ -43,7 +43,7 @@ class MonevCalendar extends Component
 
     public function getMonevDataProperty()
     {
-        $monevQuery = Monev::with('kegiatanStatistik.dinas')
+        $monevQuery = Monev::with(['kegiatanStatistik.dinas', 'kegiatanStatistik.romantik.metadata'])
             ->where('tahun', (int) $this->tahun);
 
         if (!empty($this->id_dinas)) {

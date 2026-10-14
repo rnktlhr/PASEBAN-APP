@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\StatusBps;
 use App\Enums\StatusMonev;
 use App\Filament\Resources\MonevResource\Pages;
 use App\Models\Monev;
@@ -36,29 +37,11 @@ class MonevResource extends Resource
                 ->searchable()->preload()->required(),
             Forms\Components\TextInput::make('tahun')
                 ->numeric()->required()->default(date('Y')),
-            Forms\Components\Select::make('bulan_rencana_mulai')
+            Forms\Components\Select::make('bulan')
                 ->options($bulanOptions)->required(),
-            Forms\Components\Select::make('bulan_rencana_selesai')
-                ->options($bulanOptions)->required(),
-            Forms\Components\Select::make('bulan_realisasi_mulai')
-                ->options($bulanOptions),
-            Forms\Components\Select::make('bulan_realisasi_selesai')
-                ->options($bulanOptions),
             Forms\Components\Select::make('status')
                 ->options(StatusMonev::options())
                 ->required(),
-            Forms\Components\Select::make('status_metadata')
-                ->label('Status Metadata')
-                ->options([
-                    'Ada' => 'Ada',
-                    'Tidak Ada' => 'Tidak Ada',
-                ])->nullable(),
-            Forms\Components\Select::make('status_romantik')
-                ->label('Status Romantik')
-                ->options([
-                    'Ada' => 'Ada',
-                    'Tidak Ada' => 'Tidak Ada',
-                ])->nullable(),
         ]);
     }
 
@@ -72,8 +55,9 @@ class MonevResource extends Resource
                 ->label('Dinas')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('kegiatanStatistik.nama')
                 ->label('Kegiatan')->limit(30)->searchable(),
-            Tables\Columns\TextColumn::make('bulan_rencana_mulai')
-                ->label('Bulan Mulai')
+            Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
+            Tables\Columns\TextColumn::make('bulan')
+                ->label('Bulan')
                 ->formatStateUsing(fn ($state) => config("paseban.bulan.{$state}") ?? $state)
                 ->alignCenter()
                 ->sortable(),
@@ -81,36 +65,39 @@ class MonevResource extends Resource
                 ->badge()
                 ->alignCenter()
                 ->color(fn ($state) => $state instanceof StatusMonev ? $state->color() : 'gray'),
-            Tables\Columns\TextColumn::make('status_metadata')
-                ->label('Metadata')
-                ->badge()
-                ->alignCenter()
-                ->color(fn (string $state): string => match ($state) {
-                    'Ada' => 'success',
-                    'Tidak Ada' => 'danger',
-                    default => 'gray',
-                }),
-            Tables\Columns\TextColumn::make('status_romantik')
+            // Romantik & Metadata diambil lewat relasi kegiatan (tidak disimpan di tabel monev).
+            Tables\Columns\TextColumn::make('kegiatanStatistik.romantik.status_bps')
                 ->label('Romantik')
                 ->badge()
                 ->alignCenter()
-                ->color(fn (string $state): string => match ($state) {
-                    'Ada' => 'success',
-                    'Tidak Ada' => 'danger',
-                    default => 'gray',
-                }),
+                ->placeholder('-')
+                ->formatStateUsing(fn ($state) => self::bps($state)?->label() ?? $state)
+                ->color(fn ($state) => self::bps($state)?->color() ?? 'gray'),
+            Tables\Columns\TextColumn::make('kegiatanStatistik.romantik.metadata.status_bps')
+                ->label('Metadata')
+                ->badge()
+                ->alignCenter()
+                ->placeholder('-')
+                ->formatStateUsing(fn ($state) => self::bps($state)?->label() ?? $state)
+                ->color(fn ($state) => self::bps($state)?->color() ?? 'gray'),
         ])->filters([        
         ])->actions([\Filament\Actions\EditAction::make(), \Filament\Actions\DeleteAction::make()]);
     }
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        $query = parent::getEloquentQuery();
+        $query = parent::getEloquentQuery()
+            ->with(['kegiatanStatistik.dinas', 'kegiatanStatistik.romantik.metadata']);
         $user = auth()->user();
         if ($user?->isDinas() && $user->id_dinas) {
             $query->whereHas('kegiatanStatistik', fn ($q) => $q->where('id_dinas', $user->id_dinas));
         }
         return $query;
+    }
+
+    private static function bps($state): ?StatusBps
+    {
+        return $state instanceof StatusBps ? $state : StatusBps::tryFrom((string) $state);
     }
 
     public static function getPages(): array

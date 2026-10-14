@@ -24,7 +24,7 @@ class MonevExport implements FromView, ShouldAutoSize
 
     public function view(): View
     {
-        $monevQuery = Monev::with('kegiatanStatistik.dinas')->where('tahun', $this->tahun);
+        $monevQuery = Monev::with(['kegiatanStatistik.dinas', 'kegiatanStatistik.romantik.metadata'])->where('tahun', $this->tahun);
 
         if ($this->dinasId) {
             $monevQuery->whereHas('kegiatanStatistik', function ($q) {

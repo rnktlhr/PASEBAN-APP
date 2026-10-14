@@ -175,29 +175,9 @@
                             </td>
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php for($m = 1; $m <= 12; $m++): ?>
                                 <?php
-                                    $b_renc_m = null;
-                                    $b_renc_s = null;
-                                    $b_real_m = null;
-                                    $b_real_s = null;
-                                    if ($jenis_laporan === 'kegiatan') {
-                                        $b_renc_m = $monev->bulan_rencana_mulai;
-                                        $b_renc_s = $monev->bulan_rencana_selesai;
-                                        $b_real_m = $monev->bulan_realisasi_mulai;
-                                        $b_real_s = $monev->bulan_realisasi_selesai;
-                                    } elseif ($jenis_laporan === 'metadata') {
-                                        $b_renc_m = $monev->metadata_bulan_rencana_mulai ?? null;
-                                        $b_renc_s = $monev->metadata_bulan_rencana_selesai ?? null;
-                                        $b_real_m = $monev->metadata_bulan_realisasi_mulai ?? null;
-                                        $b_real_s = $monev->metadata_bulan_realisasi_selesai ?? null;
-                                    } elseif ($jenis_laporan === 'romantik') {
-                                        $b_renc_m = $monev->romantik_bulan_rencana_mulai ?? null;
-                                        $b_renc_s = $monev->romantik_bulan_rencana_selesai ?? null;
-                                        $b_real_m = $monev->romantik_bulan_realisasi_mulai ?? null;
-                                        $b_real_s = $monev->romantik_bulan_realisasi_selesai ?? null;
-                                    }
-
-                                    $isRencana = $b_renc_m && $m >= $b_renc_m && $m <= $b_renc_s;
-                                    $isRealisasi = $b_real_m && $b_real_s && $m >= $b_real_m && $m <= $b_real_s;
+                                    $state = (int) $monev->bulan === $m ? $monev->jadwalState($jenis_laporan) : null;
+                                    $isRencana = $state === 'rencana';
+                                    $isRealisasi = $state === 'realisasi';
                                     $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'transparent');
                                     $opacity = $isRealisasi ? 1 : ($isRencana ? 0.25 : 0);
                                     $scale = ($isRealisasi || $isRencana) ? 1 : 0.4;
@@ -264,29 +244,9 @@
                         <div style="display: grid; grid-template-columns: repeat(12, 1fr); gap: 2px;">
                             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = config('paseban.bulan'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $m => $namaBulan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php
-                                    $b_renc_m = null;
-                                    $b_renc_s = null;
-                                    $b_real_m = null;
-                                    $b_real_s = null;
-                                    if ($jenis_laporan === 'kegiatan') {
-                                        $b_renc_m = $monev->bulan_rencana_mulai;
-                                        $b_renc_s = $monev->bulan_rencana_selesai;
-                                        $b_real_m = $monev->bulan_realisasi_mulai;
-                                        $b_real_s = $monev->bulan_realisasi_selesai;
-                                    } elseif ($jenis_laporan === 'metadata') {
-                                        $b_renc_m = $monev->metadata_bulan_rencana_mulai ?? null;
-                                        $b_renc_s = $monev->metadata_bulan_rencana_selesai ?? null;
-                                        $b_real_m = $monev->metadata_bulan_realisasi_mulai ?? null;
-                                        $b_real_s = $monev->metadata_bulan_realisasi_selesai ?? null;
-                                    } elseif ($jenis_laporan === 'romantik') {
-                                        $b_renc_m = $monev->romantik_bulan_rencana_mulai ?? null;
-                                        $b_renc_s = $monev->romantik_bulan_rencana_selesai ?? null;
-                                        $b_real_m = $monev->romantik_bulan_realisasi_mulai ?? null;
-                                        $b_real_s = $monev->romantik_bulan_realisasi_selesai ?? null;
-                                    }
-
-                                    $isRencana = $b_renc_m && $m >= $b_renc_m && $m <= $b_renc_s;
-                                    $isRealisasi = $b_real_m && $b_real_s && $m >= $b_real_m && $m <= $b_real_s;
+                                    $state = (int) $monev->bulan === $m ? $monev->jadwalState($jenis_laporan) : null;
+                                    $isRencana = $state === 'rencana';
+                                    $isRealisasi = $state === 'realisasi';
                                     $cellBg = $isRealisasi ? 'var(--orange)' : ($isRencana ? 'var(--navy)' : 'rgba(0,0,0,0.03)');
                                     $opacity = $isRealisasi ? 1 : ($isRencana ? 0.3 : 1);
                                     $border = (!$isRealisasi && !$isRencana) ? '1px solid rgba(0,0,0,0.06)' : 'none';

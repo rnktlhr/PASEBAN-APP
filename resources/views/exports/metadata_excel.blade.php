@@ -8,7 +8,6 @@
             <th>Status Dinas</th>
             <th>Status Kominfo</th>
             <th>Status BPS</th>
-            <th>Catatan</th>
         </tr>
     </thead>
     <tbody>
@@ -21,7 +20,6 @@
             <td>{{ $metadata->status_dinas instanceof \App\Enums\StatusDinas ? $metadata->status_dinas->label() : ucwords(str_replace('_', ' ', $metadata->status_dinas)) }}</td>
             <td>{{ $metadata->status_kominfo instanceof \App\Enums\StatusKominfo ? $metadata->status_kominfo->label() : ucwords(str_replace('_', ' ', $metadata->status_kominfo)) }}</td>
             <td>{{ $metadata->status_bps instanceof \App\Enums\StatusBps ? $metadata->status_bps->label() : ucwords(str_replace('_', ' ', $metadata->status_bps)) }}</td>
-            <td>{{ $metadata->catatan ?? '-' }}</td>
         </tr>
         @endforeach
     </tbody>

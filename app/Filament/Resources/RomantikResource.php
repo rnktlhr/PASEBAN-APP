@@ -52,9 +52,6 @@ class RomantikResource extends Resource
                 ->options(StatusBps::options())
                 ->required()
                 ->disabled(fn () => !$user?->isAdmin()),
-            Forms\Components\DatePicker::make('tanggal_pengajuan'),
-            Forms\Components\DatePicker::make('tanggal_persetujuan'),
-            Forms\Components\Textarea::make('catatan')->columnSpanFull(),
         ]);
     }
 

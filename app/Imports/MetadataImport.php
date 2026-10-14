@@ -12,26 +12,25 @@ class MetadataImport implements ToModel, WithHeadingRow, WithValidation
     public function model(array $row)
     {
         return new Metadata([
-            'id_kegiatan'    => $row['id_kegiatan'],
+            'id_romantik'    => $row['id_romantik'],
             'jenis'          => $row['jenis'],
             'tahun'          => $row['tahun'],
-            'status_dinas'   => $row['status_dinas'] ?? 'belum_diajukan',
-            'status_kominfo' => $row['status_kominfo'] ?? 'sedang_diperiksa',
+            'status_dinas'   => $row['status_dinas'] ?? 'belum_menyusun',
+            'status_kominfo' => $row['status_kominfo'] ?? 'belum_diajukan',
             'status_bps'     => $row['status_bps'] ?? 'sedang_diperiksa',
-            'catatan'        => $row['catatan'] ?? null,
         ]);
     }
 
     public function rules(): array
     {
         return [
-            'id_kegiatan'    => 'required|integer|exists:kegiatan_statistik,id',
+            // unique: relasi 1:1 dengan romantik
+            'id_romantik'    => 'required|integer|exists:romantik,id|unique:metadata,id_romantik',
             'jenis'          => 'required|string|in:kegiatan,variabel,indikator',
             'tahun'          => 'required|integer|min:2020|max:2099',
-            'status_dinas'   => 'nullable|string|in:belum_diajukan,sudah_diajukan,belum_diperbaiki,sudah_diperbaiki',
-            'status_kominfo' => 'nullable|string|in:sedang_diperiksa,perlu_perbaikan,disetujui',
+            'status_dinas'   => 'nullable|string|in:belum_menyusun,sudah_menyusun',
+            'status_kominfo' => 'nullable|string|in:belum_diajukan,draft,submit,sudah_diperbaiki,disetujui',
             'status_bps'     => 'nullable|string|in:sedang_diperiksa,perlu_perbaikan,disetujui',
-            'catatan'        => 'nullable|string',
         ];
     }
 }

@@ -34,9 +34,11 @@ class MetadataResource extends Resource
     {
         $user = auth()->user();
         return $form->components([
-            Forms\Components\Select::make('id_kegiatan')
-                ->relationship('kegiatanStatistik', 'nama')
-                ->searchable()->preload()->required()
+            Forms\Components\Select::make('id_romantik')
+                ->label('Kegiatan (Romantik)')
+                ->relationship('romantik', 'id', fn ($query) => $query->with('kegiatanStatistik'))
+                ->getOptionLabelFromRecordUsing(fn ($record) => $record->kegiatanStatistik?->nama ?? "Romantik #{$record->id}")
+                ->preload()->required()
                 ->disabled(fn () => !$user?->isAdmin()),
             Forms\Components\Select::make('jenis')
                 ->options(JenisMetadata::options())
@@ -57,7 +59,6 @@ class MetadataResource extends Resource
                 ->options(StatusBps::options())
                 ->required()
                 ->disabled(fn () => !$user?->isAdmin()),
-            Forms\Components\Textarea::make('catatan')->columnSpanFull(),
         ]);
     }
 

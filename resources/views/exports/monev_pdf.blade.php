@@ -31,13 +31,14 @@
                 <td>{{ $monev->kegiatanStatistik->nama ?? '-' }}</td>
                 <td>{{ $monev->kegiatanStatistik->dinas->nama ?? '-' }}</td>
                 <td>{{ $monev->status?->label() ?? '-' }}</td>
-                <td>{{ $monev->status_metadata ?? '-' }}</td>
-                <td>{{ $monev->status_romantik ?? '-' }}</td>
+                <td>{{ $monev->statusBpsLabel('metadata') }}</td>
+                <td>{{ $monev->statusBpsLabel('romantik') }}</td>
                 @for($m = 1; $m <= 12; $m++)
                     @php
-                        $isRencana = $m >= $monev->bulan_rencana_mulai && $m <= $monev->bulan_rencana_selesai;
-                        $isRealisasi = $monev->bulan_realisasi_mulai && $monev->bulan_realisasi_selesai && $m >= $monev->bulan_realisasi_mulai && $m <= $monev->bulan_realisasi_selesai;
-                        
+                        $state = (int) $monev->bulan === $m ? $monev->jadwalState('kegiatan') : null;
+                        $isRealisasi = $state === 'realisasi';
+                        $isRencana = $state === 'rencana';
+
                         $symbol = '';
                         if ($isRealisasi) $symbol = 'V';
                         elseif ($isRencana) $symbol = 'O';

@@ -28,7 +28,8 @@ class UserResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form->components([
-            Forms\Components\TextInput::make('name')
+            Forms\Components\TextInput::make('nama')
+                ->label('Nama')
                 ->required()->maxLength(255),
             Forms\Components\TextInput::make('email')
                 ->email()->required()->maxLength(255),
@@ -54,7 +55,7 @@ class UserResource extends Resource
             ->defaultPaginationPageOption(25)
             ->striped()
             ->columns([
-            Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
+            Tables\Columns\TextColumn::make('nama')->label('Nama')->searchable()->sortable(),
             Tables\Columns\TextColumn::make('email')->searchable(),
             Tables\Columns\TextColumn::make('role')
                 ->badge()

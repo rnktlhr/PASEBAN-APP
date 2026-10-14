@@ -88,7 +88,7 @@ class HomeController extends Controller
         ]);
 
         $tahun = (int) $request->input('tahun', KegiatanStatistik::max('tahun') ?? date('Y'));
-        $monevQuery = Monev::with('kegiatanStatistik.dinas')->where('tahun', $tahun);
+        $monevQuery = Monev::with(['kegiatanStatistik.dinas', 'kegiatanStatistik.romantik.metadata'])->where('tahun', $tahun);
 
         if ($request->filled('id_dinas')) {
             $monevQuery->whereHas('kegiatanStatistik', function ($q) use ($request) {
