@@ -48,7 +48,7 @@ class MetadataResource extends Resource
                 ->numeric()->required()
                 ->disabled(fn () => !$user?->isAdmin()),
             Forms\Components\Select::make('status_dinas')
-                ->options(StatusDinas::options())
+                ->options(StatusDinas::metadataOptions())
                 ->required()
                 ->disabled(fn () => !($user?->isAdmin() || $user?->isDinas())),
             Forms\Components\Select::make('status_kominfo')
@@ -84,7 +84,7 @@ class MetadataResource extends Resource
                 }),
             Tables\Columns\TextColumn::make('tahun')->alignCenter()->sortable(),
             Tables\Columns\SelectColumn::make('status_dinas')
-                ->options(StatusDinas::options())
+                ->options(StatusDinas::metadataOptions())
                 ->disabled(fn () => !(auth()->user()?->isAdmin() || auth()->user()?->isDinas()))
                 ,
             Tables\Columns\SelectColumn::make('status_kominfo')

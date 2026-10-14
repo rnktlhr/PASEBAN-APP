@@ -2,13 +2,19 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Dinas extends Model
+class Dinas extends Model implements HasName
 {
     protected $table = 'dinas';
+
+    public function getFilamentName(): string
+    {
+        return $this->nama ?? $this->singkatan ?? 'Dinas';
+    }
 
     protected $fillable = [
         'nama',
