@@ -67,23 +67,23 @@ class PublicDataService
         $totalKegiatan = KegiatanStatistik::where('tahun', $tahun)->count();
 
         // Kegiatan
-        $metaKegiatanDone = Metadata::where('tahun', $tahun)->where('jenis', 'kegiatan')
+        $metaKegiatanDone = Metadata::where('tahun', $tahun)->where('jenis', \App\Enums\JenisMetadata::KEGIATAN->value)
             ->whereIn('status_kominfo', \App\Enums\StatusKominfo::completedValues())->count();
-        $metaKegiatanDraft = Metadata::where('tahun', $tahun)->where('jenis', 'kegiatan')
+        $metaKegiatanDraft = Metadata::where('tahun', $tahun)->where('jenis', \App\Enums\JenisMetadata::KEGIATAN->value)
             ->where('status_kominfo', \App\Enums\StatusKominfo::DRAFT->value)->count();
         $metaKegiatanBelum = max(0, $totalKegiatan - $metaKegiatanDone - $metaKegiatanDraft);
 
         // Variabel
-        $metaVariabelDone = Metadata::where('tahun', $tahun)->where('jenis', 'variabel')
+        $metaVariabelDone = Metadata::where('tahun', $tahun)->where('jenis', \App\Enums\JenisMetadata::VARIABEL->value)
             ->whereIn('status_kominfo', \App\Enums\StatusKominfo::completedValues())->count();
-        $metaVariabelDraft = Metadata::where('tahun', $tahun)->where('jenis', 'variabel')
+        $metaVariabelDraft = Metadata::where('tahun', $tahun)->where('jenis', \App\Enums\JenisMetadata::VARIABEL->value)
             ->where('status_kominfo', \App\Enums\StatusKominfo::DRAFT->value)->count();
         $metaVariabelBelum = max(0, $totalKegiatan - $metaVariabelDone - $metaVariabelDraft);
 
         // Indikator
-        $metaIndikatorDone = Metadata::where('tahun', $tahun)->where('jenis', 'indikator')
+        $metaIndikatorDone = Metadata::where('tahun', $tahun)->where('jenis', \App\Enums\JenisMetadata::INDIKATOR->value)
             ->whereIn('status_kominfo', \App\Enums\StatusKominfo::completedValues())->count();
-        $metaIndikatorDraft = Metadata::where('tahun', $tahun)->where('jenis', 'indikator')
+        $metaIndikatorDraft = Metadata::where('tahun', $tahun)->where('jenis', \App\Enums\JenisMetadata::INDIKATOR->value)
             ->where('status_kominfo', \App\Enums\StatusKominfo::DRAFT->value)->count();
         $metaIndikatorBelum = max(0, $totalKegiatan - $metaIndikatorDone - $metaIndikatorDraft);
 
@@ -101,37 +101,56 @@ class PublicDataService
     }
 
     /**
-     * Menghitung rekapitulasi data Aliran Data.
+     * Menghitung rekapitulasi data Aliran Data termasuk total volume indikator riil dari API.
      */
     public function getAliranDataSummary(int $tahun): array
     {
         $totalData = \Illuminate\Support\Facades\Cache::get('aliran_stats_total', \App\Models\Dinas::count());
-        
-        $sudahTayang = \Illuminate\Support\Facades\Cache::remember('aliran_stats_tayang_dynamic', 3600, function () {
-            $count = 0;
-            $jsonPath = storage_path('app/aliran_data_all.json');
-            if (file_exists($jsonPath)) {
-                $jsonData = json_decode(file_get_contents($jsonPath), true);
-                if (is_array($jsonData)) {
-                    $uniqueDinas = [];
-                    foreach ($jsonData as $item) {
-                        if (isset($item['dinas_nama'])) {
-                            $uniqueDinas[$item['dinas_nama']] = true;
-                        }
-                    }
-                    $count = count($uniqueDinas);
+        $totalIndikator = 0;
+        $topDinas = [];
+        $lastSyncTime = null;
+        $terbaruPemutakhiran = '-';
+        $sudahTayang = 0;
+
+        $jsonPath = storage_path('app/aliran_data_all.json');
+        if (file_exists($jsonPath)) {
+            $lastSyncTime = date('d M Y, H:i', filemtime($jsonPath));
+            $jsonData = json_decode(file_get_contents($jsonPath), true);
+            if (is_array($jsonData)) {
+                $totalIndikator = count($jsonData);
+                if (!empty($jsonData)) {
+                    $terbaruPemutakhiran = $jsonData[0]['pemutahiran'] ?? '-';
                 }
+
+                $dinasCount = [];
+                $uniqueDinas = [];
+                foreach ($jsonData as $item) {
+                    if (isset($item['dinas_nama'])) {
+                        $name = $item['dinas_nama'];
+                        $uniqueDinas[$name] = true;
+                        $dinasCount[$name] = ($dinasCount[$name] ?? 0) + 1;
+                    }
+                }
+                arsort($dinasCount);
+                $topDinas = array_slice($dinasCount, 0, 5, true);
+                $sudahTayang = count($uniqueDinas);
             }
-            return $count;
-        });
-        
+        }
+
+        if ($sudahTayang === 0) {
+            $sudahTayang = \Illuminate\Support\Facades\Cache::get('aliran_stats_tayang', $totalData);
+        }
+
         $belumTayang = max(0, $totalData - $sudahTayang);
 
         $pctTayang = $totalData > 0 ? round(($sudahTayang / $totalData) * 100) : 0;
         $pctBelum = $totalData > 0 ? round(($belumTayang / $totalData) * 100) : 0;
 
+        $maxTopDinas = !empty($topDinas) ? max($topDinas) : 1;
+
         return compact(
-            'totalData', 'sudahTayang', 'belumTayang', 'pctTayang', 'pctBelum'
+            'totalData', 'sudahTayang', 'belumTayang', 'pctTayang', 'pctBelum',
+            'totalIndikator', 'topDinas', 'maxTopDinas', 'lastSyncTime', 'terbaruPemutakhiran'
         );
     }
 

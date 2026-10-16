@@ -69,9 +69,9 @@
             </h1>
             <p class="anim-fade-up delay-3"
                 style="margin: 20px 0 0; max-width: 560px; font-size: 17px; line-height: 1.6; color: rgba(255,255,255,.78); font-weight: 400;">
-                <strong style="color: #fff; font-weight: 600;">Pemantauan Statistik Sektoral Bantul</strong> — platform
-                terpadu BPS Kabupaten Bantul untuk pembinaan, pendampingan, dan monitoring kegiatan statistik sektoral
-                di lingkungan Pemerintah Kabupaten Bantul.
+                <strong style="color: #fff; font-weight: 600;">{{ setting('app_kepanjangan') }}</strong> — platform
+                terpadu {{ setting('org_nama') }} untuk pembinaan, pendampingan, dan monitoring kegiatan statistik sektoral
+                di lingkungan Pemerintah {{ setting('org_wilayah') }}.
             </p>
 
             <div class="hero-stats">

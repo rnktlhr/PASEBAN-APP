@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class KegiatanStatistik extends Model
 {
+    use LogsActivity;
+
     use SoftDeletes;
 
     protected $table = 'kegiatan_statistik';

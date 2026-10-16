@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class MateriPembinaan extends Model
 {
+    use LogsActivity;
+
     protected $table = 'materi_pembinaan';
 
     protected $fillable = [

@@ -16,7 +16,7 @@
     <div class="container" style="height: 74px; display: flex; align-items: center; gap: 32px;"
         x-data="{ mobileOpen: false }">
         <a href="{{ url('/') }}"
-            style="font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; text-decoration: none;">PASEBAN</a>
+            style="font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; text-decoration: none;">{{ setting('app_nama', 'PASEBAN') }}</a>
 
         {{-- Mobile hamburger button --}}
         <button class="mobile-menu-btn" @click="mobileOpen = !mobileOpen"

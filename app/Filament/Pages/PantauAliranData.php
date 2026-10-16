@@ -30,6 +30,27 @@ class PantauAliranData extends Page
         return 'Aliran Data';
     }
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            \Filament\Actions\Action::make('syncApi')
+                ->label('Sinkronisasi Data API')
+                ->icon('heroicon-o-arrow-path')
+                ->color('primary')
+                ->requiresConfirmation()
+                ->modalHeading('Sinkronkan Data dari API Sedata Sebantul?')
+                ->modalDescription('Proses ini akan menarik data indikator terbaru dari seluruh OPD di Sedata Sebantul dan memperbarui jumlah data.')
+                ->action(function () {
+                    \Illuminate\Support\Facades\Artisan::call('app:sync-aliran-stats');
+                    \Filament\Notifications\Notification::make()
+                        ->title('Sinkronisasi Selesai')
+                        ->body('Data aliran statistik berhasil disinkronkan dari API Sedata Sebantul.')
+                        ->success()
+                        ->send();
+                }),
+        ];
+    }
+
     public $dinasId;
     public $indikatorData = [];
     public $isLoading = false;
@@ -78,6 +99,16 @@ class PantauAliranData extends Page
             if ($response->successful()) {
                 $data = $response->json('data.result');
                 if (is_array($data)) {
+                    usort($data, function ($itemA, $itemB) {
+                        $minA = parse_relative_time_to_minutes($itemA['pemutahiran'] ?? null);
+                        $minB = parse_relative_time_to_minutes($itemB['pemutahiran'] ?? null);
+
+                        if ($minA === $minB) {
+                            return strcmp($itemA['id_data'] ?? '', $itemB['id_data'] ?? '');
+                        }
+
+                        return $minA <=> $minB;
+                    });
                     $this->indikatorData = $data;
                 }
             } else {

@@ -27,6 +27,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->authGuard('admin')
+            ->authPasswordBroker('users')
             ->darkMode(false)
             ->brandName('Paseban Admin')
             ->maxContentWidth(\Filament\Support\Enums\Width::Full)
@@ -63,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
                 'Pemantauan',
                 'Pembinaan',
                 'Konten',
+                'Sistem',
             ])
             ->renderHook(
                 \Filament\View\PanelsRenderHook::HEAD_END,

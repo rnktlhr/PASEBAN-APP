@@ -3,19 +3,19 @@
         <div
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; padding-bottom: 40px;">
             <div>
-                <div style="font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">PASEBAN</div>
+                <div style="font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px;"><?php echo e(setting('app_nama', 'PASEBAN')); ?></div>
                 <div style="margin-top: 20px; font-size: 13.5px; line-height: 1.65; max-width: 320px;">
                     <div style="font-weight: 700; color: #fff; margin-bottom: 6px;">
-                        <?php echo e(config('paseban.organisasi.nama')); ?></div>
+                        <?php echo e(setting('org_nama')); ?></div>
                     <div style="display: flex; gap: 10px;">
                         <span
-                            style="opacity: .78;"><?php echo e(config('paseban.organisasi.alamat')); ?><br /><?php echo e(config('paseban.organisasi.kota')); ?></span>
+                            style="opacity: .78;"><?php echo e(setting('org_alamat')); ?><br /><?php echo e(setting('org_kota')); ?></span>
                     </div>
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
-                        <span class="mono" style="opacity: .78;"><?php echo e(config('paseban.organisasi.telepon')); ?></span>
+                        <span class="mono" style="opacity: .78;"><?php echo e(setting('org_telepon')); ?></span>
                     </div>
                     <div style="display: flex; gap: 10px; margin-top: 10px;">
-                        <span class="mono" style="opacity: .78;"><?php echo e(config('paseban.organisasi.email')); ?></span>
+                        <span class="mono" style="opacity: .78;"><?php echo e(setting('org_email')); ?></span>
                     </div>
                 </div>
             </div>
@@ -45,14 +45,15 @@
                     style="font-size: 12px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px;">
                     Platform</div>
                 <div style="font-size: 13.5px; opacity: .78; line-height: 1.65; max-width: 280px;">
-                    Pemantauan Statistik Sektoral Bantul — mendukung Satu Data Indonesia.
+                    <?php echo e(setting('app_kepanjangan')); ?> — mendukung Satu Data Indonesia.
                 </div>
             </div>
         </div>
         <div
             style="border-top: 1px solid rgba(255,255,255,.1); padding: 22px 0; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; flex-wrap: wrap; gap: 12px;">
             <div style="opacity: .65; letter-spacing: .3px;">
-                Copyright &copy; <?php echo e(date('Y')); ?> <?php echo e(config('paseban.organisasi.nama')); ?> &middot; PASEBAN
+                Copyright &copy; <?php echo e(date('Y')); ?> <?php echo e(setting('org_nama')); ?> &middot; <?php echo e(setting('app_nama', 'PASEBAN')); ?>
+
             </div>
             <div style="display: flex; gap: 20px; opacity: .78;">
                 <a href="https://www.instagram.com/bpsbantul?igsh=dDF2Y2x2ZDVpNjdn" target="_blank"

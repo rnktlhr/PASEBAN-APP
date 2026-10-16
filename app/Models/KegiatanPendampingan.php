@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class KegiatanPendampingan extends Model
 {
+    use LogsActivity;
+
     protected $table = 'kegiatan_pendampingan';
 
     protected $fillable = [

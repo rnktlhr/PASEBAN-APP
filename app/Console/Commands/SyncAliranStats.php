@@ -107,8 +107,20 @@ class SyncAliranStats extends Command
             $bar->finish();
             $this->newLine();
 
+            // Urutkan data dari pemutakhiran yang paling baru
+            usort($allData, function ($itemA, $itemB) {
+                $minA = parse_relative_time_to_minutes($itemA['pemutahiran'] ?? null);
+                $minB = parse_relative_time_to_minutes($itemB['pemutahiran'] ?? null);
+
+                if ($minA === $minB) {
+                    return strcmp($itemA['id_data'] ?? '', $itemB['id_data'] ?? '');
+                }
+
+                return $minA <=> $minB;
+            });
+
             // Simpan semua data ke file JSON agar bisa diakses cepat tanpa API calls lambat
-            \Illuminate\Support\Facades\Storage::disk('local')->put('aliran_data_all.json', json_encode($allData));
+            \Illuminate\Support\Facades\Storage::disk('local')->put('aliran_data_all.json', json_encode($allData, JSON_UNESCAPED_UNICODE));
 
             // Simpan ke Cache selama 24 jam (86400 detik)
             Cache::put('aliran_stats_total', $totalDinas, 86400);

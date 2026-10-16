@@ -14,7 +14,7 @@ class ListMetadata extends ListRecords {
     protected function getHeaderActions(): array { 
         return [
             Action::make('download_template')
-                ->label('Download Template')
+                ->label(__('messages.import.download_template'))
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('info')
                 ->action(function () {
@@ -25,12 +25,12 @@ class ListMetadata extends ListRecords {
                     }, 'template_import_metadata.csv', ['Content-Type' => 'text/csv']);
                 }),
             Action::make('import')
-                ->label('Import Excel')
+                ->label(__('messages.import.import_excel'))
                 ->icon('heroicon-o-document-arrow-up')
                 ->color('success')
                 ->form([
                     FileUpload::make('file')
-                        ->label('Pilih File Excel')
+                        ->label(__('messages.import.choose_file'))
                         ->disk('local')
                         ->directory('imports')
                         ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel', 'text/csv', 'text/plain'])
@@ -43,7 +43,7 @@ class ListMetadata extends ListRecords {
                         Storage::disk('local')->delete($data['file']);
                         
                         \Filament\Notifications\Notification::make()
-                            ->title('Import Berhasil')
+                            ->title(__('messages.import.success'))
                             ->success()
                             ->send();
                     } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
@@ -51,19 +51,19 @@ class ListMetadata extends ListRecords {
                         $failures = $e->failures();
                         $messages = [];
                         foreach ($failures as $failure) {
-                            $messages[] = 'Baris ' . $failure->row() . ': ' . implode(', ', $failure->errors());
+                            $messages[] = __('messages.import.row_error', ['row' => $failure->row(), 'errors' => implode(', ', $failure->errors())]);
                         }
                         \Filament\Notifications\Notification::make()
-                            ->title('Import Gagal (Validasi)')
-                            ->body(implode('<br>', array_slice($messages, 0, 5)) . (count($messages) > 5 ? '<br>...dan ' . (count($messages) - 5) . ' error lainnya.' : ''))
+                            ->title(__('messages.import.validation_failed'))
+                            ->body(implode('<br>', array_slice($messages, 0, 5)) . (count($messages) > 5 ? '<br>' . __('messages.import.more_errors', ['count' => count($messages) - 5]) : ''))
                             ->danger()
                             ->persistent()
                             ->send();
                     } catch (\Exception $e) {
                         Storage::disk('local')->delete($data['file']);
                         \Filament\Notifications\Notification::make()
-                            ->title('Import Gagal')
-                            ->body('Pastikan format file sesuai template. Error: ' . $e->getMessage())
+                            ->title(__('messages.import.failed'))
+                            ->body(__('messages.import.failed_body', ['error' => $e->getMessage()]))
                             ->danger()
                             ->persistent()
                             ->send();

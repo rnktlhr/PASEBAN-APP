@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use App\Enums\StatusBps;
 use App\Enums\StatusMonev;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Monev extends Model
 {
+    use LogsActivity;
+
     protected $table = 'monev';
 
     protected $fillable = [

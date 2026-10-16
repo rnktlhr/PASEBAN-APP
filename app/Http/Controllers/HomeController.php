@@ -27,6 +27,14 @@ class HomeController extends Controller
 
     public function loginRedirect()
     {
+        if (auth('admin')->check()) {
+            return redirect('/admin');
+        }
+
+        if (auth('web')->check()) {
+            return redirect('/dinas');
+        }
+
         return redirect('/dinas/login');
     }
 

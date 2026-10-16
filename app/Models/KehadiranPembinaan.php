@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class KehadiranPembinaan extends Pivot
 {
+    use LogsActivity;
+
     protected $table = 'kehadiran_pembinaan';
 
     public $incrementing = true;

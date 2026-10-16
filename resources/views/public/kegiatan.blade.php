@@ -6,7 +6,7 @@
 <div class="container" style="padding: 40px 32px 0;">
     <div style="margin-bottom: 32px;">
         <h1 style="font-size: 28px; font-weight: 800; color: var(--navy); margin: 0 0 8px;">Identifikasi Kegiatan Statistik</h1>
-        <p style="color: var(--muted); font-size: 15px; margin: 0;">Daftar seluruh rancangan kegiatan statistik sektoral yang diidentifikasi dari OPD Kabupaten Bantul.</p>
+        <p style="color: var(--muted); font-size: 15px; margin: 0;">Daftar seluruh rancangan kegiatan statistik sektoral yang diidentifikasi dari OPD {{ setting('org_wilayah') }}.</p>
     </div>
 
     <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 8px;" class="cards-grid">

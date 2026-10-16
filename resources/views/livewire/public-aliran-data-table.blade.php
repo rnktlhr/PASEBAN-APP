@@ -8,6 +8,15 @@
             @endforeach
         </select>
 
+        <select wire:model.live="sortBy" class="styled-select"
+            style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); cursor: pointer;">
+            <option value="terbaru">Pemutakhiran: Terbaru</option>
+            <option value="terlama">Pemutakhiran: Terlama</option>
+            <option value="id_asc">ID Data (A - Z)</option>
+            <option value="id_desc">ID Data (Z - A)</option>
+            <option value="nama_asc">Nama Data (A - Z)</option>
+        </select>
+
         <select wire:model.live="perPage" class="styled-select"
             style="padding: 10px 36px 10px 14px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm); cursor: pointer;">
             <option value="10">10 Baris</option>
@@ -16,7 +25,15 @@
             <option value="100">100 Baris</option>
         </select>
 
-        <div wire:loading wire:target="dinasFilter, perPage, loadInitialData, gotoPage, nextPage, previousPage"
+        <div style="flex: 1; min-width: 200px; max-width: 320px; position: relative;">
+            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari nama atau ID data..."
+                style="width: 100%; padding: 10px 14px 10px 36px; border: 1px solid var(--line); border-radius: 8px; font-size: 13.5px; outline: none; color: var(--ink); background-color: #fff; box-shadow: var(--shadow-sm);">
+            <svg style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--muted); pointer-events: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+        </div>
+
+        <div wire:loading wire:target="dinasFilter, sortBy, search, perPage, loadInitialData, gotoPage, nextPage, previousPage"
             style="display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 600;">
             <svg class="animate-spin" width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24" style="animation: spin 1s linear infinite;">
@@ -33,11 +50,15 @@
                 }
             </style>
         </div>
+
+        <div style="margin-left: auto; font-size: 13px; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 6px;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00B69B;"></span>
+            Total: <span style="font-weight: 800; color: var(--navy); font-family: 'JetBrains Mono', monospace;">{{ number_format($totalFiltered, 0, ',', '.') }}</span> data
+        </div>
     </div>
 
-
-        <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);"
-            wire:loading.remove wire:target="dinasFilter, loadInitialData">
+    <div style="background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);"
+        wire:loading.remove wire:target="dinasFilter, sortBy, search, loadInitialData">
             <div class="table-responsive desktop-only">
                 <table
                     style="width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; min-width: 900px;">

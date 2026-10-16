@@ -9,7 +9,7 @@
     <div style="margin-bottom: 40px;">
         <h1 style="font-size: 32px; font-weight: 800; color: var(--navy); margin: 0 0 12px; letter-spacing: -0.5px;">Pembinaan Statistik Sektoral</h1>
         <p style="color: var(--muted); font-size: 16px; line-height: 1.6; max-width: 800px; margin: 0;">
-            Materi dan dokumentasi pembinaan kegiatan statistik sektoral OPD Kabupaten Bantul — sosialisasi, panduan teknis, hingga forum evaluasi tahunan.
+            Materi dan dokumentasi pembinaan kegiatan statistik sektoral OPD {{ setting('org_wilayah') }} — sosialisasi, panduan teknis, hingga forum evaluasi tahunan.
         </p>
     </div>
 
@@ -29,12 +29,12 @@
         <div style="position: relative; color: #fff;">
 
             <h2 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -.6px; line-height: 1.15;">
-                Pembinaan Statistik Sektoral Kabupaten Bantul
+                Pembinaan Statistik Sektoral {{ setting('org_wilayah') }}
             </h2>
             <p style="margin: 14px 0 24px; font-size: 14.5px; line-height: 1.7; color: rgba(255,255,255,.78); max-width: 540px;">
-                Materi dan dokumentasi pembinaan kegiatan statistik sektoral — akses panduan teknis, regulasi, dan modul pelatihan untuk seluruh OPD se-Kabupaten Bantul.
+                Materi dan dokumentasi pembinaan kegiatan statistik sektoral — akses panduan teknis, regulasi, dan modul pelatihan untuk seluruh OPD se-{{ setting('org_wilayah') }}.
             </p>
-            <a href="https://bpsbantul.my.canva.site/pss2026" target="_blank" rel="noopener noreferrer" class="w-full-mobile" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(235,137,27,.4); text-decoration: none; transition: transform .15s ease;">
+            <a href="{{ setting('pedoman_url') }}" target="_blank" rel="noopener noreferrer" class="w-full-mobile" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 13px 22px; border-radius: 6px; background: var(--orange); color: #fff; font-weight: 700; font-size: 14px; box-shadow: 0 6px 18px rgba(235,137,27,.4); text-decoration: none; transition: transform .15s ease;">
                 Masuk Modul Pembinaan
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>

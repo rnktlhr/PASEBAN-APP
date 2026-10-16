@@ -19,10 +19,26 @@ class PublicAliranDataTable extends Component
     #[Url(except: '')]
     public $dinasFilter = '';
 
+    #[Url(except: 'terbaru')]
+    public $sortBy = 'terbaru';
+
+    #[Url(except: '')]
+    public $search = '';
+
     public $perPage = 10;
     public $isLoading = false;
 
     public function updatedDinasFilter()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSortBy()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedSearch()
     {
         $this->resetPage();
     }
@@ -82,6 +98,49 @@ class PublicAliranDataTable extends Component
             }
         }
 
+        // Filter pencarian jika diisi
+        if ($this->search && trim($this->search) !== '') {
+            $keyword = strtolower(trim($this->search));
+            $filteredData = [];
+            foreach ($allData as $item) {
+                $nama = strtolower($item['nama_data'] ?? '');
+                $idData = strtolower($item['id_data'] ?? '');
+                $cakupan = strtolower($item['cakupan'] ?? '');
+                $dinas = strtolower($item['dinas_nama'] ?? '');
+                if (str_contains($nama, $keyword) || str_contains($idData, $keyword) || str_contains($cakupan, $keyword) || str_contains($dinas, $keyword)) {
+                    $filteredData[] = $item;
+                }
+            }
+            $allData = $filteredData;
+        }
+
+        // Urutkan data berdasarkan opsi sortBy (default: terbaru)
+        if ($this->sortBy === 'terbaru') {
+            usort($allData, function ($a, $b) {
+                $minA = parse_relative_time_to_minutes($a['pemutahiran'] ?? null);
+                $minB = parse_relative_time_to_minutes($b['pemutahiran'] ?? null);
+                if ($minA === $minB) {
+                    return strcmp($a['id_data'] ?? '', $b['id_data'] ?? '');
+                }
+                return $minA <=> $minB;
+            });
+        } elseif ($this->sortBy === 'terlama') {
+            usort($allData, function ($a, $b) {
+                $minA = parse_relative_time_to_minutes($a['pemutahiran'] ?? null);
+                $minB = parse_relative_time_to_minutes($b['pemutahiran'] ?? null);
+                if ($minA === $minB) {
+                    return strcmp($b['id_data'] ?? '', $a['id_data'] ?? '');
+                }
+                return $minB <=> $minA;
+            });
+        } elseif ($this->sortBy === 'id_asc') {
+            usort($allData, fn($a, $b) => strcmp($a['id_data'] ?? '', $b['id_data'] ?? ''));
+        } elseif ($this->sortBy === 'id_desc') {
+            usort($allData, fn($a, $b) => strcmp($b['id_data'] ?? '', $a['id_data'] ?? ''));
+        } elseif ($this->sortBy === 'nama_asc') {
+            usort($allData, fn($a, $b) => strcmp($a['nama_data'] ?? '', $b['nama_data'] ?? ''));
+        }
+
         // Array Pagination
         $page = $this->getPage();
         $total = count($allData);
@@ -94,7 +153,8 @@ class PublicAliranDataTable extends Component
 
         return view('livewire.public-aliran-data-table', [
             'paginatedData' => $paginatedData,
-            'dinasList' => $dinasListOptions
+            'dinasList' => $dinasListOptions,
+            'totalFiltered' => $total,
         ]);
     }
 }

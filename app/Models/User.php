@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Role;
+use App\Models\Concerns\LogsActivity;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
@@ -17,6 +18,8 @@ use Illuminate\Support\Collection;
 
 class User extends Authenticatable implements HasName, FilamentUser, HasTenants
 {
+    use LogsActivity;
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
@@ -44,6 +47,7 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
     {
         return [
             'password' => 'hashed',
+            'role' => Role::class,
         ];
     }
 
@@ -56,11 +60,21 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
     }
 
     /**
-     * Kontrol hak akses masuk ke Filament Panel.
+     * Kontrol hak akses masuk ke Filament Panel:
+     * - Panel 'admin' eksklusif untuk Admin BPS (/admin).
+     * - Panel 'dinas' eksklusif untuk Dinas, Kominfo, dan Bappeda (/dinas).
      */
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        if ($panel->getId() === 'admin') {
+            return $this->isAdmin();
+        }
+
+        if ($panel->getId() === 'dinas') {
+            return $this->hasRole(Role::DINAS, Role::KOMINFO, Role::BAPPEDA);
+        }
+
+        return false;
     }
 
     /**
@@ -69,7 +83,7 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
      */
     public function getTenants(Panel $panel): array|Collection
     {
-        if ($this->isAdmin() || $this->isKominfo()) {
+        if ($this->hasRole(Role::KOMINFO, Role::BAPPEDA)) {
             return Dinas::all();
         }
 
@@ -86,35 +100,43 @@ class User extends Authenticatable implements HasName, FilamentUser, HasTenants
      */
     public function canAccessTenant(Model $tenant): bool
     {
-        if ($this->isAdmin() || $this->isKominfo()) {
+        if ($this->hasRole(Role::KOMINFO, Role::BAPPEDA)) {
             return true;
         }
 
         return (int) $this->id_dinas === (int) $tenant->id;
     }
 
+    /**
+     * Cek apakah user memiliki salah satu role yang diberikan.
+     */
+    public function hasRole(Role ...$roles): bool
+    {
+        $current = $this->role instanceof Role
+            ? $this->role
+            : Role::tryFrom((string) $this->role);
+
+        return $current !== null && in_array($current, $roles, true);
+    }
+
     public function isAdmin(): bool
     {
-        $r = $this->role instanceof Role ? $this->role->value : $this->role;
-        return $r === 'admin_bps';
+        return $this->hasRole(Role::ADMIN_BPS);
     }
 
     public function isKominfo(): bool
     {
-        $r = $this->role instanceof Role ? $this->role->value : $this->role;
-        return $r === 'kominfo';
+        return $this->hasRole(Role::KOMINFO);
     }
 
     public function isDinas(): bool
     {
-        $r = $this->role instanceof Role ? $this->role->value : $this->role;
-        return $r === 'dinas';
+        return $this->hasRole(Role::DINAS);
     }
 
     public function isBappeda(): bool
     {
-        $r = $this->role instanceof Role ? $this->role->value : $this->role;
-        return $r === 'bappeda';
+        return $this->hasRole(Role::BAPPEDA);
     }
 
     public function dinas(): BelongsTo

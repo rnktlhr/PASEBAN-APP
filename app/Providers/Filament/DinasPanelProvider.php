@@ -26,6 +26,8 @@ class DinasPanelProvider extends PanelProvider
             ->id('dinas')
             ->path('dinas')
             ->login()
+            ->authGuard('web')
+            ->authPasswordBroker('users')
             ->darkMode(false)
             ->tenant(\App\Models\Dinas::class, slugAttribute: 'slug')
             ->brandName('Paseban')

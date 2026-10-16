@@ -4,25 +4,70 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Informasi Organisasi
+    | Pengaturan Dinamis (Default)
     |--------------------------------------------------------------------------
+    |
+    | Nilai di bawah ini HANYA digunakan sebagai nilai awal (seed) dan
+    | fallback apabila tabel `settings` belum tersedia. Nilai yang aktif
+    | dikelola oleh Admin melalui menu "Pengaturan Sistem" di panel admin
+    | dan dibaca menggunakan helper `setting('key')`.
+    |
+    | Format: 'key' => [default, type, group, label/deskripsi]
+    |
     */
 
-    'organisasi' => [
-        'nama' => 'BPS Kabupaten Bantul',
-        'alamat' => 'Jl. Gatot Subroto No. 3',
-        'kota' => 'Bantul, DI Yogyakarta 55711',
-        'telepon' => '(0274) 367424',
-        'email' => 'bps3402@bps.go.id',
+    'settings' => [
+        // Identitas aplikasi
+        'app_nama'          => [env('PASEBAN_APP_NAMA', 'PASEBAN'), 'string', 'aplikasi', 'Nama singkat aplikasi'],
+        'app_kepanjangan'   => [env('PASEBAN_APP_KEPANJANGAN', 'Pemantauan Statistik Sektoral Bantul'), 'string', 'aplikasi', 'Kepanjangan / slogan aplikasi'],
+        'app_deskripsi'     => [env('PASEBAN_APP_DESKRIPSI', 'Platform terpadu BPS Kabupaten Bantul untuk pemantauan, pembinaan, dan monitoring kegiatan statistik sektoral.'), 'text', 'aplikasi', 'Deskripsi singkat (meta description)'],
+
+        // Identitas instansi
+        'org_nama'          => [env('PASEBAN_ORG_NAMA', 'BPS Kabupaten Bantul'), 'string', 'instansi', 'Nama instansi pengelola'],
+        'org_wilayah'       => [env('PASEBAN_ORG_WILAYAH', 'Kabupaten Bantul'), 'string', 'instansi', 'Nama wilayah / pemerintah daerah'],
+        'org_alamat'        => [env('PASEBAN_ORG_ALAMAT', 'Jl. Gatot Subroto No. 3'), 'string', 'instansi', 'Alamat instansi'],
+        'org_kota'          => [env('PASEBAN_ORG_KOTA', 'Bantul, DI Yogyakarta 55711'), 'string', 'instansi', 'Kota, provinsi, dan kode pos'],
+        'org_telepon'       => [env('PASEBAN_ORG_TELEPON', '(0274) 367424'), 'string', 'instansi', 'Nomor telepon'],
+        'org_email'         => [env('PASEBAN_ORG_EMAIL', 'bps3402@bps.go.id'), 'email', 'instansi', 'Alamat email resmi'],
+
+        // Tautan eksternal
+        'pedoman_url'       => [env('PEDOMAN_URL', 'https://bpsbantul.my.canva.site/pss2026'), 'url', 'tautan', 'URL pedoman / materi pembinaan'],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | URL Eksternal
+    | Cache Pengaturan
     |--------------------------------------------------------------------------
     */
 
-    'pedoman_url' => env('PEDOMAN_URL', 'https://bpsbantul.my.canva.site/pss2026'),
+    'settings_cache_key' => 'app_settings',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Data Awal (Seeder)
+    |--------------------------------------------------------------------------
+    */
+
+    'seed' => [
+        'default_password' => env('SEED_DEFAULT_PASSWORD'),
+        'email_domain' => env('SEED_EMAIL_DOMAIN', 'bpsbantul.com'),
+        'kominfo_slug' => env('SEED_KOMINFO_SLUG', 'diskominfo'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Jejak Audit
+    |--------------------------------------------------------------------------
+    |
+    | Atribut yang tidak boleh dicatat ke log (selain atribut $hidden model),
+    | serta masa simpan log dalam hari (dipakai oleh `model:prune`).
+    |
+    */
+
+    'audit' => [
+        'excluded_attributes' => ['password', 'remember_token', 'updated_at', 'created_at'],
+        'retention_days' => (int) env('PASEBAN_AUDIT_RETENTION_DAYS', 365),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -48,19 +93,6 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'chart_year_range' => 5, // Jumlah tahun yang ditampilkan di bar chart
-
-    /*
-    |--------------------------------------------------------------------------
-    | Roles
-    |--------------------------------------------------------------------------
-    */
-
-    'roles' => [
-        'admin_bps' => 'Admin BPS',
-        'kominfo' => 'Kominfo',
-        'dinas' => 'Dinas',
-        'bappeda' => 'Bappeda',
-    ],
+    'chart_year_range' => (int) env('PASEBAN_CHART_YEAR_RANGE', 5), // Jumlah tahun yang ditampilkan di bar chart
 
 ];

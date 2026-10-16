@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <meta name="description"
-        content="<?php echo $__env->yieldContent('meta_description', 'PASEBAN — Platform terpadu BPS Kabupaten Bantul untuk pemantauan, pembinaan, dan monitoring kegiatan statistik sektoral.'); ?>">
-    <title><?php echo $__env->yieldContent('title', 'PASEBAN'); ?></title>
+        content="<?php echo $__env->yieldContent('meta_description', setting('app_deskripsi')); ?>">
+    <title><?php echo $__env->yieldContent('title', setting('app_nama', 'PASEBAN')); ?></title>
     <!-- Memaksa browser menghapus cache favicon -->
     <link rel="icon" href="data:,">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -112,11 +112,11 @@
                         if (!startTime) startTime = timestamp;
                         const progress = Math.min((timestamp - startTime) / this.duration, 1);
                         const ease = 1 - Math.pow(1 - progress, 3); // cubic ease out
-                        this.count = Math.floor(ease * this.target);
+                        this.count = Math.floor(ease * this.target).toLocaleString('id-ID');
                         if (progress < 1) {
                             window.requestAnimationFrame(step);
                         } else {
-                            this.count = this.target;
+                            this.count = Number(this.target).toLocaleString('id-ID');
                         }
                     };
                     window.requestAnimationFrame(step);
